@@ -1,0 +1,66 @@
+---
+import type { ImageMetadata } from 'astro';
+import { Image } from 'astro:assets';
+
+interface Props {
+  src: ImageMetadata;
+  alt: string;
+  /** How wide the picture is displayed, so the browser can pick a suitable file. */
+  sizes: string;
+}
+
+const { src, alt, sizes } = Astro.props;
+---
+
+<div class="frame">
+  <!-- Eager so that pictures further down the list also load before the preloader finishes. -->
+  <Image
+    class="cover"
+    src={src}
+    alt={alt}
+    widths={[240, 480, 800]}
+    sizes={sizes}
+    loading="eager"
+  />
+</div>
+
+<style>
+  .frame {
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Keeps the frame at least square, while still letting it stretch to fill a taller parent. */
+  .frame::before {
+    content: '';
+    display: block;
+    padding-top: 100%;
+  }
+
+  /* Pictures that don't match the frame's shape are cropped to fit. */
+  .cover {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform var(--post-hover-speed) ease;
+  }
+
+  /* Zooms inside the frame when the surrounding post is hovered or focused. */
+  :global([data-post]:hover) .cover,
+  :global([data-post]:focus-within) .cover {
+    transform: scale(1.08);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .cover {
+      transition: none;
+    }
+
+    :global([data-post]:hover) .cover,
+    :global([data-post]:focus-within) .cover {
+      transform: none;
+    }
+  }
+</style>

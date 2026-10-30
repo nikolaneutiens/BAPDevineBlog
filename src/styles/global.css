@@ -1,0 +1,56 @@
+:root {
+  color-scheme: light dark;
+  --muted: color-mix(in srgb, CanvasText 60%, Canvas);
+  --border: color-mix(in srgb, CanvasText 20%, Canvas);
+  --hover: color-mix(in srgb, CanvasText 15%, Canvas);
+  --post-hover-speed: 400ms;
+  --tag-text: #1a1a1a;
+}
+
+[data-tag='Develop'] {
+  --tag-color: #e57373;
+}
+
+[data-tag='Research'] {
+  --tag-color: #81c784;
+}
+
+[data-tag='Design'] {
+  --tag-color: #64b5f6;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+body {
+  max-width: 42rem;
+  margin: 0 auto;
+  padding: 1.5rem 1rem 4rem;
+  font-family: system-ui, sans-serif;
+  line-height: 1.6;
+}
+
+h1 {
+  line-height: 1.2;
+}
+
+img,
+pre {
+  max-width: 100%;
+}
+
+img {
+  height: auto;
+}
+
+pre {
+  padding: 1rem;
+  overflow-x: auto;
+}

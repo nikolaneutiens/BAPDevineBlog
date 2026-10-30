@@ -1,0 +1,60 @@
+---
+import { render } from 'astro:content';
+import PostDate from '../../components/PostDate.astro';
+import PostGallery from '../../components/PostGallery.astro';
+import PostNav from '../../components/PostNav.astro';
+import TagList from '../../components/TagList.astro';
+import Base from '../../layouts/Base.astro';
+import { withBase } from '../../lib/paths';
+import { getPosts } from '../../lib/posts';
+
+export async function getStaticPaths() {
+  const posts = await getPosts();
+  // Posts are sorted newest first, so the older post comes after this one.
+  return posts.map((post, index) => ({
+    params: { id: post.id },
+    props: { post, previous: posts[index + 1], next: posts[index - 1] },
+  }));
+}
+
+const { post, previous, next } = Astro.props;
+const { Content } = await render(post);
+const { title, description, date, gallery, tags } = post.data;
+---
+
+<Base title={title} description={description}>
+  <p><a href={withBase('/')}>← All posts</a></p>
+  <article>
+    <div class="header">
+      <h1>{title}</h1>
+      <div class="tags">
+        <TagList tags={tags} linked align="end" />
+      </div>
+    </div>
+    <PostDate date={date} />
+    <Content />
+    <PostGallery images={gallery} />
+    <PostNav previous={previous} next={next} />
+  </article>
+</Base>
+
+<style>
+  .header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 0.5rem;
+  }
+
+  h1 {
+    margin: 0;
+  }
+
+  /* On narrow screens the pills wrap in the corner rather than squeezing the title. */
+  .tags {
+    flex: none;
+    max-width: 50%;
+    margin-top: 0.5rem;
+  }
+</style>

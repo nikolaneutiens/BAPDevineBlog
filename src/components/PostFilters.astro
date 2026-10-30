@@ -1,0 +1,123 @@
+---
+import { TAGS } from '../lib/tags';
+---
+
+<!-- Stays hidden until the script runs, so without JS visitors just get the full list. -->
+<div id="post-filters" role="group" aria-label="Filter by tag" hidden>
+  {
+    TAGS.map((tag) => (
+      <button type="button" class="tag" data-tag={tag} aria-pressed="false">
+        {tag}
+      </button>
+    ))
+  }
+  <button type="button" id="clear-filters">Clear</button>
+</div>
+
+<style>
+  #post-filters {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 2rem;
+  }
+
+  button {
+    font: inherit;
+    color: inherit;
+    cursor: pointer;
+  }
+
+  .tag {
+    padding: 0.75rem 1.5rem;
+    font-size: 1.125rem;
+    background: none;
+    border: 2px solid CanvasText;
+    transition: background-color 150ms;
+  }
+
+  .tag[aria-pressed='true'] {
+    color: Canvas;
+    background: CanvasText;
+  }
+
+  @media (hover: hover) {
+    .tag:hover {
+      background: var(--hover);
+    }
+
+    .tag[aria-pressed='true']:hover {
+      background: color-mix(in srgb, CanvasText 80%, Canvas);
+    }
+
+    #clear-filters:enabled:hover {
+      text-decoration: none;
+    }
+  }
+
+  #clear-filters {
+    margin-left: auto;
+    padding: 0.5rem;
+    background: none;
+    border: none;
+    text-decoration: underline;
+  }
+
+  #clear-filters:disabled {
+    color: var(--muted);
+    text-decoration: none;
+    cursor: default;
+  }
+</style>
+
+<script>
+  const container = document.querySelector<HTMLElement>('#post-filters')!;
+  const clear = document.querySelector<HTMLButtonElement>('#clear-filters')!;
+  const empty = document.querySelector<HTMLElement>('#no-posts')!;
+  const buttons = [...container.querySelectorAll<HTMLButtonElement>('[data-tag]')];
+  const posts = [...document.querySelectorAll<HTMLElement>('[data-post]')];
+
+  // Selecting several tags matches posts with any of them.
+  function apply() {
+    const tags = buttons
+      .filter((button) => button.getAttribute('aria-pressed') === 'true')
+      .map((button) => button.dataset.tag!);
+
+    let visible = 0;
+    for (const post of posts) {
+      const postTags: string[] = JSON.parse(post.dataset.tags!);
+      const matches = !tags.length || tags.some((tag) => postTags.includes(tag));
+      post.hidden = !matches;
+      if (matches) visible++;
+    }
+
+    empty.hidden = visible > 0;
+    clear.disabled = !tags.length;
+
+    // Keep the selection in the URL so filtered views can be linked to and survive a reload.
+    const params = new URLSearchParams(tags.map((tag) => ['tag', tag]));
+    const query = params.toString();
+    history.replaceState(null, '', query ? `?${query}` : location.pathname);
+  }
+
+  for (const button of buttons) {
+    button.addEventListener('click', () => {
+      const pressed = button.getAttribute('aria-pressed') === 'true';
+      button.setAttribute('aria-pressed', String(!pressed));
+      apply();
+    });
+  }
+
+  clear.addEventListener('click', () => {
+    buttons.forEach((button) => button.setAttribute('aria-pressed', 'false'));
+    apply();
+  });
+
+  const selected = new URLSearchParams(location.search).getAll('tag');
+  buttons.forEach((button) => {
+    button.setAttribute('aria-pressed', String(selected.includes(button.dataset.tag!)));
+  });
+  apply();
+  container.hidden = false;
+</script>

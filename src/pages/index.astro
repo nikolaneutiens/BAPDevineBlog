@@ -1,0 +1,33 @@
+---
+import PostCard from '../components/PostCard.astro';
+import PostFilters from '../components/PostFilters.astro';
+import Preloader from '../components/Preloader.astro';
+import Base from '../layouts/Base.astro';
+import { getPosts } from '../lib/posts';
+
+const posts = await getPosts();
+---
+
+<Base title="My Blog">
+  <Preloader />
+
+  <h1>Blog</h1>
+
+  <PostFilters />
+
+  <ul class="posts">
+    {posts.map((post) => <PostCard post={post} />)}
+  </ul>
+
+  <p id="no-posts" hidden>No posts match these filters.</p>
+</Base>
+
+<style>
+  .posts {
+    display: grid;
+    gap: 1rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+</style>

@@ -1,0 +1,43 @@
+---
+import { withBase } from '../lib/paths';
+import TagPill from './TagPill.astro';
+
+interface Props {
+  tags: readonly string[];
+  /** Link each tag to the post list filtered by that tag. */
+  linked?: boolean;
+  align?: 'start' | 'end';
+}
+
+const { tags, linked = false, align = 'start' } = Astro.props;
+---
+
+{
+  tags.length > 0 && (
+    <ul class:list={['tags', { end: align === 'end' }]}>
+      {tags.map((tag) => (
+        <li>
+          <TagPill
+            tag={tag}
+            href={linked ? withBase(`/?tag=${encodeURIComponent(tag)}`) : undefined}
+          />
+        </li>
+      ))}
+    </ul>
+  )
+}
+
+<style>
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.375rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .end {
+    justify-content: flex-end;
+  }
+</style>

@@ -1,0 +1,21 @@
+---
+import { formatDate } from '../lib/posts';
+
+interface Props {
+  date: Date;
+}
+
+const { date } = Astro.props;
+---
+
+<p class="date">
+  <time datetime={date.toISOString()}>{formatDate(date)}</time>
+</p>
+
+<style>
+  .date {
+    margin: 0;
+    font-size: 0.875rem;
+    color: var(--muted);
+  }
+</style>
