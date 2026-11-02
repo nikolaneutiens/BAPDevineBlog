@@ -8,7 +8,7 @@ import { getPosts } from '../lib/posts';
 const posts = await getPosts();
 ---
 
-<Base title="My Blog">
+<Base title="BAP Devine Blog">
   <Preloader />
 
   <h1>Blog</h1>
@@ -23,9 +23,13 @@ const posts = await getPosts();
 </Base>
 
 <style>
+  h1 {
+    margin: 0 0 1.5rem;
+  }
+
   .posts {
     display: grid;
-    gap: 1rem;
+    gap: 1.25rem;
     margin: 0;
     padding: 0;
     list-style: none;

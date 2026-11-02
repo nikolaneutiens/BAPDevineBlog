@@ -23,7 +23,7 @@ const { title, description, date, gallery, tags } = post.data;
 ---
 
 <Base title={title} description={description}>
-  <p><a href={withBase('/')}>← All posts</a></p>
+  <p class="back"><a href={withBase('/')}>← All posts</a></p>
   <article>
     <div class="header">
       <h1>{title}</h1>
@@ -49,6 +49,26 @@ const { title, description, date, gallery, tags } = post.data;
 
   h1 {
     margin: 0;
+  }
+
+  .back {
+    margin: 0 0 1.5rem;
+  }
+
+  .back a {
+    font-weight: 700;
+    text-decoration: none;
+  }
+
+  .back a:hover {
+    text-decoration: underline;
+  }
+
+  /* The intro paragraph right under the date reads a bit larger. */
+  article :global(.date + p) {
+    margin-top: 1.5rem;
+    font-size: 1.2rem;
+    line-height: 1.55;
   }
 
   /* On narrow screens the pills wrap in the corner rather than squeezing the title. */

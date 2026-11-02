@@ -1,22 +1,46 @@
+/* Colours: warm cardboard paper, dark ink and the red of RITS's cap. */
 :root {
-  color-scheme: light dark;
-  --muted: color-mix(in srgb, CanvasText 60%, Canvas);
-  --border: color-mix(in srgb, CanvasText 20%, Canvas);
-  --hover: color-mix(in srgb, CanvasText 15%, Canvas);
-  --post-hover-speed: 400ms;
-  --tag-text: #1a1a1a;
+  color-scheme: light;
+  --bg: #efe6d6;
+  --surface: #faf5ec;
+  --ink: #221b14;
+  --muted: #6d604f;
+  --border: #d9cbb4;
+  --hover: #e6dac6;
+  --accent: #c2372b;
+  --shadow: 0 1px 2px rgb(60 40 20 / 0.06), 0 6px 18px rgb(60 40 20 / 0.08);
+  --shadow-lift: 0 2px 4px rgb(60 40 20 / 0.08), 0 14px 32px rgb(60 40 20 / 0.14);
+  --radius: 14px;
+  --post-hover-speed: 300ms;
+  --tag-text: #1f1812;
+  --font: 'Bricolage Grotesque', system-ui, sans-serif;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    color-scheme: dark;
+    --bg: #1a1511;
+    --surface: #241e18;
+    --ink: #f3ebde;
+    --muted: #a89984;
+    --border: #3b3229;
+    --hover: #2f2720;
+    --accent: #e45a4b;
+    --shadow: 0 1px 2px rgb(0 0 0 / 0.3), 0 6px 18px rgb(0 0 0 / 0.25);
+    --shadow-lift: 0 2px 4px rgb(0 0 0 / 0.35), 0 14px 32px rgb(0 0 0 / 0.4);
+  }
 }
 
 [data-tag='Develop'] {
-  --tag-color: #e57373;
+  --tag-color: #f08c70;
 }
 
 [data-tag='Research'] {
-  --tag-color: #81c784;
+  --tag-color: #95c78c;
 }
 
 [data-tag='Design'] {
-  --tag-color: #64b5f6;
+  --tag-color: #7db3e3;
 }
 
 *,
@@ -29,16 +53,69 @@
   display: none !important;
 }
 
+html {
+  background: var(--bg);
+}
+
 body {
-  max-width: 42rem;
+  max-width: 44rem;
   margin: 0 auto;
-  padding: 1.5rem 1rem 4rem;
-  font-family: system-ui, sans-serif;
-  line-height: 1.6;
+  padding: 0 1rem 5rem;
+  font-family: var(--font);
+  font-size: 1.0625rem;
+  font-optical-sizing: auto;
+  line-height: 1.65;
+  color: var(--ink);
+  background: var(--bg);
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  color: #fff;
+  background: var(--accent);
+}
+
+h1,
+h2,
+h3 {
+  font-weight: 800;
+  line-height: 1.12;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
 }
 
 h1 {
-  line-height: 1.2;
+  font-size: clamp(2.1rem, 6vw, 3.1rem);
+}
+
+article h2 {
+  margin: 2.75rem 0 0.75rem;
+  font-size: 1.6rem;
+}
+
+/* A short red stroke above every section heading in a post. */
+article h2::before {
+  content: '';
+  display: block;
+  width: 2.25rem;
+  height: 0.3rem;
+  margin-bottom: 0.65rem;
+  background: var(--accent);
+  border-radius: 999px;
+}
+
+a {
+  color: var(--accent);
+  text-decoration-thickness: 0.08em;
+  text-underline-offset: 0.18em;
+}
+
+a:hover {
+  text-decoration-thickness: 0.14em;
+}
+
+strong {
+  font-weight: 700;
 }
 
 img,
@@ -50,7 +127,28 @@ img {
   height: auto;
 }
 
+article img {
+  display: block;
+  margin-block: 1.5rem;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+
+article ul {
+  padding-left: 1.25rem;
+}
+
+article li {
+  margin-block: 0.4rem;
+}
+
+article li::marker {
+  color: var(--accent);
+}
+
 pre {
   padding: 1rem;
   overflow-x: auto;
+  background: var(--surface);
+  border-radius: var(--radius);
 }

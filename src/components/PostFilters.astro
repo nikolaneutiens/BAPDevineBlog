@@ -30,25 +30,46 @@ import { TAGS } from '../lib/tags';
   }
 
   .tag {
-    padding: 0.75rem 1.5rem;
-    font-size: 1.125rem;
-    background: none;
-    border: 2px solid CanvasText;
-    transition: background-color 150ms;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.55rem 1.15rem;
+    font-size: 1rem;
+    font-weight: 700;
+    background: var(--surface);
+    border: 2px solid var(--border);
+    border-radius: 999px;
+    transition:
+      background-color 150ms,
+      border-color 150ms;
+  }
+
+  /* A dot in the tag's own colour. */
+  .tag::before {
+    content: '';
+    width: 0.6rem;
+    height: 0.6rem;
+    background: var(--tag-color);
+    border-radius: 50%;
   }
 
   .tag[aria-pressed='true'] {
-    color: Canvas;
-    background: CanvasText;
+    color: var(--tag-text);
+    background: var(--tag-color);
+    border-color: var(--tag-color);
+  }
+
+  .tag[aria-pressed='true']::before {
+    background: var(--tag-text);
   }
 
   @media (hover: hover) {
     .tag:hover {
-      background: var(--hover);
+      border-color: var(--tag-color);
     }
 
     .tag[aria-pressed='true']:hover {
-      background: color-mix(in srgb, CanvasText 80%, Canvas);
+      filter: brightness(0.95);
     }
 
     #clear-filters:enabled:hover {

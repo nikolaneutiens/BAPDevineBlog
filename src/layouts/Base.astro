@@ -1,13 +1,14 @@
 ---
 import '../styles/global.css';
+import { withBase } from '../lib/paths';
 
 interface Props {
   title: string;
   description?: string;
 }
 
-const siteName = 'My Blog';
-const { title, description = 'A minimal blog built with Astro.' } = Astro.props;
+const siteName = 'BAP Devine Blog';
+const { title, description = 'Process blog for our BAP project at Devine.' } = Astro.props;
 ---
 
 <!doctype html>
@@ -17,11 +18,57 @@ const { title, description = 'A minimal blog built with Astro.' } = Astro.props;
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content={description} />
     <meta name="generator" content={Astro.generator} />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&display=swap"
+    />
     <title>{title === siteName ? title : `${title} | ${siteName}`}</title>
   </head>
   <body>
+    <header class="site-header">
+      <a class="wordmark" href={withBase('/')}>
+        <span class="mark" aria-hidden="true"></span>
+        {siteName}
+      </a>
+    </header>
     <main>
       <slot />
     </main>
   </body>
 </html>
+
+<style>
+  .site-header {
+    display: flex;
+    align-items: center;
+    padding: 1.5rem 0 2.25rem;
+  }
+
+  .wordmark {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-size: 1.05rem;
+    font-weight: 800;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+    text-decoration: none;
+  }
+
+  /* A little box, like the Boxlings themselves. */
+  .mark {
+    width: 1.35rem;
+    height: 1.35rem;
+    background: var(--accent);
+    border-radius: 5px;
+    box-shadow: inset 0 -0.3rem 0 rgb(0 0 0 / 0.18);
+    transform: rotate(-6deg);
+    transition: transform 250ms ease;
+  }
+
+  .wordmark:hover .mark {
+    transform: rotate(6deg);
+  }
+</style>
