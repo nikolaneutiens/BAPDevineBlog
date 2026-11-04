@@ -33,7 +33,7 @@ export const HOURS: HourEntry[] = [
   { date: '2026-11-01', person: 'ximen', hours: 5.75, task: 'Rigging, weights, running cycle, idle and dust clouds for RITS' },
   { date: '2026-11-02', person: 'ximen', hours: 1.5, task: 'Blog post about the RITS animations' },
   { date: '2026-11-03', person: 'ximen', hours: 3.5, task: 'Designing SPRIET, KRABBEL and PUK' },
-  { date: '2026-11-04', person: 'ximen', hours: 1.25, task: 'Final KRABBEL and PUK, organising files, blog pages' },
+  { date: '2026-11-04', person: 'ximen', hours: 2.75, task: 'Final KRABBEL and PUK, organising files, blog pages, first Unity prototype' },
 
   // Add your hours here.
 ];
