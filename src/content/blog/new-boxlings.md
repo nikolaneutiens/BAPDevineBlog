@@ -25,7 +25,7 @@ All four Boxlings share exactly the same body: the same blocky torso, arms, legs
 What makes them different is everything on top of that body:
 
 - **A colour.** Red for RITS, green for SPRIET, blue for KRABBEL and yellow for PUK. The paint splotches, the backpack and the emblem all use it.
-- **An emblem on the chest.** A crown for RITS and PUK, a leaf for SPRIET and a lightning bolt for KRABBEL.
+- **An emblem on the chest.** A crown for RITS, a leaf for SPRIET, a lightning bolt for KRABBEL and a paw print for PUK.
 - **Headgear.** The biggest part of each silhouette, so you can tell them apart even when they're small on screen.
 
 ![SPRIET, KRABBEL and PUK side by side](./images/new-boxlings/lineup.webp)
@@ -56,11 +56,11 @@ The goggles only exist at the front: their strap disappears into the hair at the
 
 ## PUK
 
-PUK is the playful one, with a cardboard cap with cat ears and big round ear cups, like headphones. PUK's emblem is a yellow crown.
+PUK is the playful one, with a cardboard cap with cat ears and big round ear cups, like headphones. PUK's emblem is a yellow paw print.
 
-![PUK with a cardboard cap with cat ears and round ear cups, and a yellow crown on the chest](./images/new-boxlings/puk-ref.webp)
+![PUK with a cardboard cap with cat ears and round ear cups, and a yellow paw print on the chest](./images/new-boxlings/puk-ref.webp)
 
-The cap started out round and soft, but that didn't fit the rest of the Boxlings, so I made it more angular, like a folded piece of cardboard. I also remodelled the ears: two flat cardboard triangles standing straight up, with a lighter inside, which makes PUK look curious and alert. The yellow needed a second pass too: the first version leaned too much towards orange.
+The cap started out round and soft, but that didn't fit the rest of the Boxlings, so I made it more angular, like a folded piece of cardboard. I also remodelled the ears: two flat cardboard triangles standing straight up, with a lighter inside, which makes PUK look curious and alert. The yellow needed a second pass too: the first version leaned too much towards orange. And at first PUK wore the same crown as RITS; now PUK has a symbol of their own, a painted paw print that fits the cat ears.
 
 ![PUK from the side, with a cat ear and an ear cup](./images/new-boxlings/puk-side.webp)
 
