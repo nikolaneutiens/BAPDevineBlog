@@ -1,0 +1,253 @@
+---
+import { Image } from 'astro:assets';
+import PostCard from '../../components/PostCard.astro';
+import Base from '../../layouts/Base.astro';
+import { dayLabel, fmtHours, hourStats } from '../../lib/hours';
+import { withBase } from '../../lib/paths';
+import { photoOf } from '../../lib/photos';
+import { getPosts } from '../../lib/posts';
+import { initials, TEAM } from '../../lib/team';
+
+export function getStaticPaths() {
+  return TEAM.map((m) => ({ params: { id: m.id }, props: { m } }));
+}
+
+const { m } = Astro.props;
+const photo = photoOf(m.id);
+const posts = (await getPosts()).filter((p) => p.data.author === m.id);
+const stats = hourStats(m.id);
+const maxDay = Math.max(1, ...stats.perDay.map((d) => d.hours));
+---
+
+<Base title={m.name} description={`${m.name}, ${m.role} in our bachelor's project.`}>
+  <p class="back"><a href={withBase('/team/')}>← Team</a></p>
+
+  <section class="hero" style={`--c: ${m.color}`}>
+    <div class="intro">
+      <h1>{m.name}</h1>
+      <p class="role">{m.role}</p>
+      <dl class="stats">
+        <div>
+          <dt>Hours in total</dt>
+          <dd>{fmtHours(stats.total)}</dd>
+        </div>
+        <div>
+          <dt>Days worked</dt>
+          <dd>{stats.days.length}</dd>
+        </div>
+        <div>
+          <dt>Hours per day</dt>
+          <dd>{fmtHours(stats.average)}</dd>
+        </div>
+        <div>
+          <dt>Blog posts</dt>
+          <dd>{posts.length}</dd>
+        </div>
+      </dl>
+    </div>
+    <div class="photo">
+      {
+        photo ? (
+          <Image src={photo} alt={`Photo of ${m.name}`} widths={[320, 640]} sizes="(max-width: 40rem) 60vw, 16rem" />
+        ) : (
+          <span class="initials" aria-hidden="true">
+            {initials(m.name)}
+          </span>
+        )
+      }
+    </div>
+  </section>
+
+  <section aria-labelledby="hours-title">
+    <h2 id="hours-title">Hours worked</h2>
+    {
+      stats.entries.length === 0 ? (
+        <p class="empty">No hours logged yet.</p>
+      ) : (
+        <div class="chart" role="img" aria-label={`Hours per day worked by ${m.name}`}>
+          {stats.perDay.map((d) => (
+            <div class="day" title={`${dayLabel(d.date)}: ${fmtHours(d.hours)} h — ${d.tasks.join(', ')}`}>
+              <span class="day-total">{fmtHours(d.hours)}</span>
+              <span class="bar" style={`--c: ${m.color}; height: ${(d.hours / maxDay) * 100}%`} />
+              <span class="day-label">{dayLabel(d.date)}</span>
+            </div>
+          ))}
+        </div>
+      )
+    }
+  </section>
+
+  <section aria-labelledby="posts-title">
+    <h2 id="posts-title">Blog posts</h2>
+    {
+      posts.length === 0 ? (
+        <p class="empty">No blog posts yet.</p>
+      ) : (
+        <ul class="posts">
+          {posts.map((post) => (
+            <PostCard post={post} />
+          ))}
+        </ul>
+      )
+    }
+  </section>
+</Base>
+
+<style>
+  .back {
+    margin: 0 0 1.5rem;
+  }
+
+  .back a {
+    font-weight: 700;
+    text-decoration: none;
+  }
+
+  .hero {
+    display: grid;
+    grid-template-columns: 1fr 15rem;
+    gap: 2rem;
+    align-items: start;
+    margin-bottom: 3rem;
+  }
+
+  h1 {
+    margin: 0;
+  }
+
+  .role {
+    margin: 0.35rem 0 1.5rem;
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--accent);
+  }
+
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
+    margin: 0;
+  }
+
+  .stats div {
+    display: flex;
+    flex-direction: column-reverse;
+    padding: 0.9rem 1rem;
+    background: var(--surface);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+  }
+
+  dt {
+    font-size: 0.85rem;
+    color: var(--muted);
+  }
+
+  dd {
+    margin: 0;
+    font-size: 1.9rem;
+    font-weight: 800;
+    line-height: 1.1;
+  }
+
+  .photo {
+    aspect-ratio: 4 / 5;
+    overflow: hidden;
+    background: var(--c);
+    border-radius: calc(var(--radius) * 1.4);
+    box-shadow: var(--shadow-lift);
+  }
+
+  .photo img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .initials {
+    display: grid;
+    place-items: center;
+    width: 100%;
+    height: 100%;
+    font-size: 4.5rem;
+    font-weight: 800;
+    color: var(--tag-text);
+    box-shadow: inset 0 -1rem 0 rgb(0 0 0 / 0.1);
+  }
+
+  section h2 {
+    margin: 0 0 1rem;
+    font-size: 1.5rem;
+  }
+
+  section + section {
+    margin-top: 2.75rem;
+  }
+
+  .empty {
+    padding: 1.25rem;
+    color: var(--muted);
+    background: var(--surface);
+    border-radius: var(--radius);
+  }
+
+  .chart {
+    display: flex;
+    align-items: flex-end;
+    gap: 0.4rem;
+    height: 13rem;
+    padding: 1rem 0.75rem 0;
+    overflow-x: auto;
+    background: var(--surface);
+    border-radius: var(--radius);
+  }
+
+  .day {
+    display: flex;
+    flex: 1 0 2.4rem;
+    flex-direction: column;
+    align-items: center;
+    height: 100%;
+  }
+
+  .day-total {
+    font-size: 0.75rem;
+    font-weight: 700;
+  }
+
+  .bar {
+    width: 70%;
+    min-height: 2px;
+    margin-top: auto;
+    background: var(--c);
+    border-radius: 5px 5px 0 0;
+  }
+
+  .day-label {
+    padding: 0.35rem 0 0.5rem;
+    font-size: 0.72rem;
+    color: var(--muted);
+    white-space: nowrap;
+  }
+
+  .posts {
+    display: grid;
+    gap: 1.25rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  @media (max-width: 40rem) {
+    .hero {
+      grid-template-columns: 1fr;
+    }
+
+    .photo {
+      order: -1;
+      width: 60%;
+      max-width: 15rem;
+    }
+  }
+</style>

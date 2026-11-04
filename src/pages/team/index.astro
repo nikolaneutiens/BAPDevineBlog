@@ -1,9 +1,11 @@
 ---
-import Base from '../layouts/Base.astro';
-import { HOURS } from '../lib/hours';
-import { withBase } from '../lib/paths';
-import { getPosts } from '../lib/posts';
-import { initials, TEAM } from '../lib/team';
+import { Image } from 'astro:assets';
+import Base from '../../layouts/Base.astro';
+import { HOURS } from '../../lib/hours';
+import { withBase } from '../../lib/paths';
+import { photoOf } from '../../lib/photos';
+import { getPosts } from '../../lib/posts';
+import { initials, TEAM } from '../../lib/team';
 
 const posts = await getPosts();
 
@@ -39,29 +41,23 @@ const dayLabel = (iso: string) =>
     {
       TEAM.map((m) => {
         const own = posts.filter((p) => p.data.author === m.id);
+        const hours = HOURS.filter((h) => h.person === m.id).reduce((s, h) => s + h.hours, 0);
+        const photo = photoOf(m.id);
         return (
           <li class="member" id={m.id}>
             <span class="avatar" style={`--c: ${m.color}`} aria-hidden="true">
-              {initials(m.name)}
+              {photo ? <Image src={photo} alt="" widths={[120, 240]} sizes="3.5rem" /> : initials(m.name)}
             </span>
             <div>
-              <h2>{m.name}</h2>
+              <h2>
+                <a href={withBase(`/team/${m.id}/`)}>{m.name}</a>
+              </h2>
               <p class="role">{m.role}</p>
-              {own.length > 0 ? (
-                <>
-                  <p class="posts-label">Posts</p>
-                  <ul class="posts">
-                    {own.map((p) => (
-                      <li>
-                        <a href={withBase(`/blog/${p.id}/`)}>{p.data.title}</a>
-                      </li>
-                    ))}
-                  </ul>
-                </>
-              ) : (
-                <p class="none">No posts yet.</p>
-              )}
+              <p class="facts">
+                {fmt(hours)} hours · {own.length} {own.length === 1 ? 'post' : 'posts'}
+              </p>
             </div>
+            <span class="arrow" aria-hidden="true">→</span>
           </li>
         );
       })
@@ -157,18 +153,21 @@ const dayLabel = (iso: string) =>
   }
 
   .member {
+    position: relative;
     display: grid;
-    grid-template-columns: auto 1fr;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
     gap: 1.1rem;
     padding: 1.25rem;
     background: var(--surface);
     border-radius: var(--radius);
     box-shadow: var(--shadow);
-    scroll-margin-top: 1rem;
+    transition: transform var(--post-hover-speed) ease, box-shadow var(--post-hover-speed) ease;
   }
 
-  .member:target {
-    outline: 3px solid var(--accent);
+  .member:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-lift);
   }
 
   .avatar {
@@ -176,6 +175,7 @@ const dayLabel = (iso: string) =>
     place-items: center;
     width: 3.5rem;
     height: 3.5rem;
+    overflow: hidden;
     font-size: 1.15rem;
     font-weight: 800;
     color: var(--tag-text);
@@ -184,9 +184,31 @@ const dayLabel = (iso: string) =>
     box-shadow: inset 0 -0.35rem 0 rgb(0 0 0 / 0.12);
   }
 
+  .avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
   .member h2 {
     margin: 0;
     font-size: 1.35rem;
+  }
+
+  .member h2 a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  /* De hele kaart is klikbaar. */
+  .member h2 a::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+  }
+
+  .member:hover h2 a {
+    color: var(--accent);
   }
 
   .role {
@@ -195,23 +217,20 @@ const dayLabel = (iso: string) =>
     color: var(--accent);
   }
 
-  .posts-label {
-    margin: 0.75rem 0 0.25rem;
-    font-size: 0.8rem;
-    font-weight: 800;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
+  .facts {
+    margin: 0.3rem 0 0;
+    font-size: 0.9rem;
     color: var(--muted);
   }
 
-  .posts {
-    margin: 0;
-    padding-left: 1.1rem;
+  .arrow {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--muted);
   }
 
-  .none {
-    margin: 0.75rem 0 0;
-    color: var(--muted);
+  .member:hover .arrow {
+    color: var(--accent);
   }
 
   .hours h2 {

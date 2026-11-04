@@ -13,7 +13,7 @@ const m = member(id);
 const Element = linked ? 'a' : 'span';
 ---
 
-<Element class="author" href={linked ? withBase(`/team/#${m.id}`) : undefined}>
+<Element class="author" href={linked ? withBase(`/team/${m.id}/`) : undefined}>
   <span class="avatar" style={`--c: ${m.color}`} aria-hidden="true">{initials(m.name)}</span>
   <span class="name">{m.name}</span>
 </Element>
