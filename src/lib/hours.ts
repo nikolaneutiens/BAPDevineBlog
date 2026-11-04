@@ -16,7 +16,25 @@ export interface HourEntry {
   task: string;
 }
 
+/** The same entry for every team member (things we did together). */
+const together = (date: string, hours: number, task: string): HourEntry[] =>
+  (['lomme', 'ximen', 'nicolas'] as const).map((person) => ({ date, person, hours, task }));
+
 export const HOURS: HourEntry[] = [
+  // ---- together
+  ...together('2026-10-27', 3, 'Kick-off at school (9:00–12:00)'),
+  ...together('2026-10-28', 2, 'Team call'),
+  ...together('2026-10-29', 6.25, 'Working on campus (9:00–16:00, 45 min lunch break)'),
+  ...together('2026-10-30', 5, 'Working together (10:00–15:00)'),
+
+  // ---- Ximen
+  { date: '2026-10-28', person: 'ximen', hours: 2.5, task: 'Extra work after the call' },
+  { date: '2026-10-31', person: 'ximen', hours: 2.5, task: 'Texturing RITS, cap study, first blog post' },
+  { date: '2026-11-01', person: 'ximen', hours: 5.75, task: 'Rigging, weights, running cycle, idle and dust clouds for RITS' },
+  { date: '2026-11-02', person: 'ximen', hours: 0.5, task: 'Blog post about the RITS animations' },
+  { date: '2026-11-03', person: 'ximen', hours: 3.5, task: 'Designing SPRIET, KRABBEL and PUK' },
+  { date: '2026-11-04', person: 'ximen', hours: 1.25, task: 'Final KRABBEL and PUK, organising files, blog pages' },
+
   // Add your hours here.
 ];
 
