@@ -2,6 +2,7 @@
 title: "Meet SPRIET, KRABBEL and PUK: Boxlings 2 to 4"
 description: Three new cardboard friends for RITS, built on the same body and rig, each with their own colour, emblem and headgear.
 date: 2026-11-03
+author: ximen
 cover: ./images/new-boxlings/cover.webp
 coverAlt: The four Boxlings RITS, SPRIET, KRABBEL and PUK standing in a row and waving at the camera
 gallery:
@@ -12,6 +13,7 @@ gallery:
   - src: ./images/new-boxlings/puk-back.webp
     alt: PUK from behind, with the round cap, the cat ears and the yellow backpack
 tags: [Design]
+ai: The textures were made with AI, because they were hard to realise otherwise. The render pictures were also made with AI renders, because this is much faster.
 ---
 
 RITS isn't alone anymore. The Boxlings are a team of four, and this week the other three joined him: SPRIET, KRABBEL and PUK. Together they're the cast of the game, each with a personality you can read from a distance.

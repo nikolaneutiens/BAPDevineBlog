@@ -1,0 +1,370 @@
+---
+import Base from '../layouts/Base.astro';
+import { HOURS } from '../lib/hours';
+import { withBase } from '../lib/paths';
+import { getPosts } from '../lib/posts';
+import { initials, TEAM } from '../lib/team';
+
+const posts = await getPosts();
+
+// ---- hours statistics
+const total = HOURS.reduce((sum, h) => sum + h.hours, 0);
+const perPerson = TEAM.map((m) => ({
+  ...m,
+  hours: HOURS.filter((h) => h.person === m.id).reduce((sum, h) => sum + h.hours, 0),
+}));
+const maxPerson = Math.max(1, ...perPerson.map((p) => p.hours));
+
+const days = [...new Set(HOURS.map((h) => h.date))].sort();
+const perDay = days.map((date) => ({
+  date,
+  parts: TEAM.map((m) => ({
+    ...m,
+    hours: HOURS.filter((h) => h.date === date && h.person === m.id).reduce((sum, h) => sum + h.hours, 0),
+  })),
+}));
+const maxDay = Math.max(1, ...perDay.map((d) => d.parts.reduce((s, p) => s + p.hours, 0)));
+const average = days.length ? total / days.length : 0;
+
+const fmt = (n: number) => (Number.isInteger(n) ? String(n) : n.toFixed(1));
+const dayLabel = (iso: string) =>
+  new Date(iso + 'T00:00:00Z').toLocaleDateString('en-GB', { day: 'numeric', month: 'short', timeZone: 'UTC' });
+---
+
+<Base title="Team" description="Who we are, who does what, and how many hours we spend on our bachelor's project.">
+  <h1>Team</h1>
+  <p class="intro">We are three students working on our bachelor's project at Devine. This is who does what.</p>
+
+  <ul class="members">
+    {
+      TEAM.map((m) => {
+        const own = posts.filter((p) => p.data.author === m.id);
+        return (
+          <li class="member" id={m.id}>
+            <span class="avatar" style={`--c: ${m.color}`} aria-hidden="true">
+              {initials(m.name)}
+            </span>
+            <div>
+              <h2>{m.name}</h2>
+              <p class="role">{m.role}</p>
+              {own.length > 0 ? (
+                <>
+                  <p class="posts-label">Posts</p>
+                  <ul class="posts">
+                    {own.map((p) => (
+                      <li>
+                        <a href={withBase(`/blog/${p.id}/`)}>{p.data.title}</a>
+                      </li>
+                    ))}
+                  </ul>
+                </>
+              ) : (
+                <p class="none">No posts yet.</p>
+              )}
+            </div>
+          </li>
+        );
+      })
+    }
+  </ul>
+
+  <section class="hours" aria-labelledby="hours-title">
+    <h2 id="hours-title">Hours</h2>
+    <p class="intro">How many hours each of us spends on the bachelor's project, per day.</p>
+
+    {
+      HOURS.length === 0 ? (
+        <p class="empty">No hours logged yet.</p>
+      ) : (
+        <>
+          <div class="tiles">
+            <div class="tile">
+              <span class="value">{fmt(total)}</span>
+              <span class="label">hours in total</span>
+            </div>
+            <div class="tile">
+              <span class="value">{days.length}</span>
+              <span class="label">days worked</span>
+            </div>
+            <div class="tile">
+              <span class="value">{fmt(average)}</span>
+              <span class="label">hours per day on average</span>
+            </div>
+          </div>
+
+          <h3>Per person</h3>
+          <ul class="bars">
+            {perPerson.map((p) => (
+              <li>
+                <span class="bar-name">{p.name}</span>
+                <span class="bar-track">
+                  <span class="bar" style={`--c: ${p.color}; width: ${(p.hours / maxPerson) * 100}%`} />
+                </span>
+                <span class="bar-value">{fmt(p.hours)} h</span>
+              </li>
+            ))}
+          </ul>
+
+          <h3>Per day</h3>
+          <div class="chart" role="img" aria-label="Hours per day, stacked per team member">
+            {perDay.map((d) => {
+              const sum = d.parts.reduce((s, p) => s + p.hours, 0);
+              return (
+                <div class="day" title={`${dayLabel(d.date)}: ${fmt(sum)} h`}>
+                  <span class="day-total">{fmt(sum)}</span>
+                  <div class="stack" style={`height: ${(sum / maxDay) * 100}%`}>
+                    {d.parts
+                      .filter((p) => p.hours > 0)
+                      .map((p) => (
+                        <span style={`--c: ${p.color}; flex: ${p.hours}`} title={`${p.name}: ${fmt(p.hours)} h`} />
+                      ))}
+                  </div>
+                  <span class="day-label">{dayLabel(d.date)}</span>
+                </div>
+              );
+            })}
+          </div>
+          <ul class="legend">
+            {TEAM.map((m) => (
+              <li>
+                <span style={`--c: ${m.color}`} />
+                {m.name}
+              </li>
+            ))}
+          </ul>
+        </>
+      )
+    }
+  </section>
+</Base>
+
+<style>
+  h1 {
+    margin: 0 0 0.5rem;
+  }
+
+  .intro {
+    margin: 0 0 1.75rem;
+    color: var(--muted);
+  }
+
+  .members {
+    display: grid;
+    gap: 1rem;
+    margin: 0 0 3rem;
+    padding: 0;
+    list-style: none;
+  }
+
+  .member {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 1.1rem;
+    padding: 1.25rem;
+    background: var(--surface);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    scroll-margin-top: 1rem;
+  }
+
+  .member:target {
+    outline: 3px solid var(--accent);
+  }
+
+  .avatar {
+    display: grid;
+    place-items: center;
+    width: 3.5rem;
+    height: 3.5rem;
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: var(--tag-text);
+    background: var(--c);
+    border-radius: 12px;
+    box-shadow: inset 0 -0.35rem 0 rgb(0 0 0 / 0.12);
+  }
+
+  .member h2 {
+    margin: 0;
+    font-size: 1.35rem;
+  }
+
+  .role {
+    margin: 0.15rem 0 0;
+    font-weight: 600;
+    color: var(--accent);
+  }
+
+  .posts-label {
+    margin: 0.75rem 0 0.25rem;
+    font-size: 0.8rem;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .posts {
+    margin: 0;
+    padding-left: 1.1rem;
+  }
+
+  .none {
+    margin: 0.75rem 0 0;
+    color: var(--muted);
+  }
+
+  .hours h2 {
+    margin: 0 0 0.5rem;
+  }
+
+  .hours h3 {
+    margin: 2rem 0 0.75rem;
+    font-size: 1.1rem;
+  }
+
+  .empty {
+    padding: 1.25rem;
+    color: var(--muted);
+    background: var(--surface);
+    border-radius: var(--radius);
+  }
+
+  .tiles {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr));
+    gap: 0.75rem;
+  }
+
+  .tile {
+    display: flex;
+    flex-direction: column;
+    padding: 1rem 1.1rem;
+    background: var(--surface);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+  }
+
+  .value {
+    font-size: 2rem;
+    font-weight: 800;
+    line-height: 1.1;
+  }
+
+  .label {
+    font-size: 0.85rem;
+    color: var(--muted);
+  }
+
+  .bars {
+    display: grid;
+    gap: 0.5rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .bars li {
+    display: grid;
+    grid-template-columns: 10rem 1fr 3.5rem;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .bar-name {
+    font-weight: 600;
+  }
+
+  .bar-track {
+    height: 0.9rem;
+    background: var(--hover);
+    border-radius: 999px;
+    overflow: hidden;
+  }
+
+  .bar {
+    display: block;
+    height: 100%;
+    background: var(--c);
+    border-radius: 999px;
+  }
+
+  .bar-value {
+    font-variant-numeric: tabular-nums;
+    text-align: right;
+  }
+
+  .chart {
+    display: flex;
+    align-items: flex-end;
+    gap: 0.4rem;
+    height: 13rem;
+    padding: 1rem 0.75rem 0;
+    overflow-x: auto;
+    background: var(--surface);
+    border-radius: var(--radius);
+  }
+
+  .day {
+    display: flex;
+    flex: 1 0 2.4rem;
+    flex-direction: column;
+    align-items: center;
+    height: 100%;
+  }
+
+  .day-total {
+    font-size: 0.75rem;
+    font-weight: 700;
+  }
+
+  .stack {
+    display: flex;
+    flex-direction: column-reverse;
+    width: 70%;
+    min-height: 2px;
+    margin-top: auto;
+    overflow: hidden;
+    border-radius: 5px 5px 0 0;
+  }
+
+  .stack span {
+    background: var(--c);
+  }
+
+  .day-label {
+    padding: 0.35rem 0 0.5rem;
+    font-size: 0.72rem;
+    color: var(--muted);
+    white-space: nowrap;
+  }
+
+  .legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin: 0.75rem 0 0;
+    padding: 0;
+    font-size: 0.85rem;
+    list-style: none;
+  }
+
+  .legend span {
+    display: inline-block;
+    width: 0.75rem;
+    height: 0.75rem;
+    margin-right: 0.35rem;
+    background: var(--c);
+    border-radius: 3px;
+  }
+
+  @media (max-width: 30rem) {
+    .bars li {
+      grid-template-columns: 1fr 3rem;
+    }
+
+    .bar-name {
+      grid-column: 1 / -1;
+    }
+  }
+</style>

@@ -1,6 +1,7 @@
 ---
 import type { CollectionEntry } from 'astro:content';
 import { withBase } from '../lib/paths';
+import Author from './Author.astro';
 import PostCover from './PostCover.astro';
 import PostDate from './PostDate.astro';
 import TagList from './TagList.astro';
@@ -10,7 +11,7 @@ interface Props {
 }
 
 const { post } = Astro.props;
-const { title, description, date, cover, coverAlt, tags } = post.data;
+const { title, description, date, cover, coverAlt, tags, author } = post.data;
 ---
 
 <li class="post" data-post data-tags={JSON.stringify(tags)}>
@@ -24,7 +25,10 @@ const { title, description, date, cover, coverAlt, tags } = post.data;
         <TagList tags={tags} align="end" />
       </div>
     </div>
-    <PostDate date={date} />
+    <div class="meta">
+      {author && <Author id={author} />}
+      <PostDate date={date} />
+    </div>
     <p class="description">{description}</p>
   </div>
 </li>
@@ -95,6 +99,14 @@ const { title, description, date, cover, coverAlt, tags } = post.data;
     content: '';
     position: absolute;
     inset: 0;
+  }
+
+  .meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.3rem 0.8rem;
+    margin-top: 0.35rem;
   }
 
   .description {

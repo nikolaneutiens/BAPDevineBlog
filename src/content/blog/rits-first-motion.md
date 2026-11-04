@@ -2,9 +2,11 @@
 title: "RITS Moves: Rigging and a First Wave"
 description: Giving RITS a skeleton, making his blocks move like a robot, and fixing everything that broke the moment he started to wave.
 date: 2026-11-01
+author: ximen
 cover: ./images/rits-motion/cover.webp
 coverAlt: RITS mid-wave, his right hand raised next to his head, in warm orange light
 tags: [Design]
+ai: The textures were made with AI, because they were hard to realise otherwise. The render pictures were also made with AI renders, because this is much faster.
 ---
 
 After texturing RITS, it was time to make him move. The goal for this step was small: one simple animation, a wave. But getting there meant building a skeleton, deciding how his cardboard blocks should follow it, and fixing a few things that only showed up once he started moving.

@@ -2,9 +2,11 @@
 title: "RITS Comes Alive: A Run, Dust Clouds and a Watchful Idle"
 description: A running cycle with cardboard dust clouds and an idle where RITS keeps an eye on the sky, set up so both work in the game.
 date: 2026-11-02
+author: ximen
 cover: ./images/rits-animations/cover.webp
 coverAlt: RITS running, with small cardboard dust clouds puffing up behind his feet
 tags: [Design]
+ai: The textures were made with AI, because they were hard to realise otherwise. The render pictures were also made with AI renders, because this is much faster.
 ---
 
 After the first wave, RITS needed the two animations he'll use most in the game: running and standing still. In the game, objects fall from the sky, so I wanted him to feel aware of that at every moment: busy and determined while he runs, curious and a little on edge when he stands still.

@@ -1,5 +1,7 @@
 ---
 import { render } from 'astro:content';
+import AiNote from '../../components/AiNote.astro';
+import Author from '../../components/Author.astro';
 import PostDate from '../../components/PostDate.astro';
 import PostGallery from '../../components/PostGallery.astro';
 import PostNav from '../../components/PostNav.astro';
@@ -19,7 +21,7 @@ export async function getStaticPaths() {
 
 const { post, previous, next } = Astro.props;
 const { Content } = await render(post);
-const { title, description, date, gallery, tags } = post.data;
+const { title, description, date, gallery, tags, author, ai } = post.data;
 ---
 
 <Base title={title} description={description}>
@@ -31,9 +33,13 @@ const { title, description, date, gallery, tags } = post.data;
         <TagList tags={tags} linked align="end" />
       </div>
     </div>
-    <PostDate date={date} />
+    <div class="meta">
+      {author && <Author id={author} linked />}
+      <PostDate date={date} />
+    </div>
     <Content />
     <PostGallery images={gallery} />
+    {ai && <AiNote text={ai} />}
     <PostNav previous={previous} next={next} />
   </article>
 </Base>
@@ -65,7 +71,14 @@ const { title, description, date, gallery, tags } = post.data;
   }
 
   /* The intro paragraph right under the date reads a bit larger. */
-  article :global(.date + p) {
+  .meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.4rem 0.9rem;
+  }
+
+  article :global(.meta + p) {
     margin-top: 1.5rem;
     font-size: 1.2rem;
     line-height: 1.55;

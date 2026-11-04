@@ -2,6 +2,7 @@
 title: "Making RITS: Boxling 1 of 4"
 description: From a blocky base model to a painted cardboard figure with a backpack. The process behind the first of the four Boxlings.
 date: 2026-10-31
+author: ximen
 cover: ./images/rits/cover.webp
 coverAlt: RITS, a blocky cardboard figure with a red cap worn backwards, a red crown on his chest and red shoulder straps
 gallery:
@@ -14,6 +15,7 @@ gallery:
   - src: ./images/rits/backpack.webp
     alt: Close-up of the red cardboard backpack with its flap, front pocket and buckles
 tags: [Design]
+ai: The textures were made with AI, because they were hard to realise otherwise. The render pictures were also made with AI renders, because this is much faster.
 ---
 
 RITS is the first of the four Boxlings: small figures that look as if they were built from old cardboard boxes. The goal was a character that feels like a handmade toy: straight blocks, tape, a bit of paint, and cardboard that has clearly been through a few things.

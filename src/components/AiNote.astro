@@ -1,0 +1,36 @@
+---
+interface Props {
+  text: string;
+}
+
+const { text } = Astro.props;
+---
+
+<aside class="ai" aria-label="Use of AI">
+  <p class="label">Use of AI</p>
+  <p>{text}</p>
+</aside>
+
+<style>
+  .ai {
+    margin-top: 2.5rem;
+    padding: 1rem 1.25rem;
+    background: var(--surface);
+    border-left: 4px solid var(--accent);
+    border-radius: 0 var(--radius) var(--radius) 0;
+  }
+
+  .label {
+    margin: 0 0 0.25rem;
+    font-size: 0.8rem;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+
+  .ai p:last-child {
+    margin: 0;
+    color: var(--muted);
+  }
+</style>

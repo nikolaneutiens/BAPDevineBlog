@@ -1,0 +1,96 @@
+---
+import { getCollection, render } from 'astro:content';
+import Author from '../../components/Author.astro';
+import PostDate from '../../components/PostDate.astro';
+import Base from '../../layouts/Base.astro';
+import { withBase } from '../../lib/paths';
+import { member } from '../../lib/team';
+
+export async function getStaticPaths() {
+  const reports = await getCollection('feedback');
+  return reports.map((report) => ({ params: { id: report.id }, props: { report } }));
+}
+
+const { report } = Astro.props;
+const { Content } = await render(report);
+const { title, date, type, with: withWho, author, attendees, summary } = report.data;
+---
+
+<Base title={title} description={summary}>
+  <p class="back"><a href={withBase('/feedback/')}>← All feedback</a></p>
+  <article>
+    <span class="type">{type}</span>
+    <h1>{title}</h1>
+    <div class="meta">
+      <Author id={author} linked />
+      <PostDate date={date} />
+    </div>
+    <dl class="facts">
+      <dt>With</dt>
+      <dd>{withWho}</dd>
+      {
+        attendees.length > 0 && (
+          <>
+            <dt>Present</dt>
+            <dd>{attendees.map((a) => member(a).name).join(', ')}</dd>
+          </>
+        )
+      }
+    </dl>
+    <p class="summary">{summary}</p>
+    <Content />
+  </article>
+</Base>
+
+<style>
+  .back {
+    margin: 0 0 1.5rem;
+  }
+
+  .back a {
+    font-weight: 700;
+    text-decoration: none;
+  }
+
+  .type {
+    padding: 0.1rem 0.6rem;
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: #fff;
+    background: var(--accent);
+    border-radius: 999px;
+  }
+
+  h1 {
+    margin: 0.6rem 0 0.5rem;
+  }
+
+  .meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.4rem 0.9rem;
+  }
+
+  .facts {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 0.25rem 1rem;
+    margin: 1.25rem 0 0;
+    padding: 1rem 1.25rem;
+    background: var(--surface);
+    border-radius: var(--radius);
+  }
+
+  dt {
+    font-weight: 700;
+  }
+
+  dd {
+    margin: 0;
+  }
+
+  .summary {
+    font-size: 1.15rem;
+  }
+</style>
