@@ -11,7 +11,7 @@ const blog = defineCollection({
       title: z.string(),
       description: z.string(),
       date: z.coerce.date(),
-      /** Who made the post: 'lomme', 'ximen' or 'nicolas'. */
+      /** Who made the post: 'lomme', 'ximen' or 'nikolas'. */
       author: z.enum(MEMBER_IDS).optional(),
       cover: image(),
       coverAlt: z.string(),
