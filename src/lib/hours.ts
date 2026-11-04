@@ -59,7 +59,7 @@ export function hourStats(person?: MemberId) {
   };
 }
 
-export const fmtHours = (n: number) => (Number.isInteger(n) ? String(n) : n.toFixed(1));
+export const fmtHours = (n: number) => String(Math.round(n * 100) / 100);
 
 export const dayLabel = (iso: string) =>
   new Date(iso + 'T00:00:00Z').toLocaleDateString('en-GB', { day: 'numeric', month: 'short', timeZone: 'UTC' });
