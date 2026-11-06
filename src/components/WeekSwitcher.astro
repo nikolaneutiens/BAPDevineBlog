@@ -1,0 +1,108 @@
+---
+/**
+ * Shows one week of the hours chart at a time, with arrows to go to the previous or next week.
+ * Put one element with `data-week` and `data-title="..."` per week inside it; the last one is shown first.
+ */
+interface Props {
+  titles: string[];
+}
+
+const { titles } = Astro.props;
+const many = titles.length > 1;
+---
+
+<div class="weeks" data-weeks>
+  <div class="nav">
+    {
+      many && (
+        <button type="button" data-prev aria-label="Previous week" disabled={titles.length < 2}>
+          ←
+        </button>
+      )
+    }
+    <p class="title" aria-live="polite" data-title>{titles[titles.length - 1]}</p>
+    {
+      many && (
+        <button type="button" data-next aria-label="Next week" disabled>
+          →
+        </button>
+      )
+    }
+  </div>
+  <slot />
+</div>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-weeks]').forEach((root) => {
+    const panels = [...root.querySelectorAll<HTMLElement>('[data-week]')];
+    const title = root.querySelector<HTMLElement>('[data-title]');
+    const prev = root.querySelector<HTMLButtonElement>('[data-prev]');
+    const next = root.querySelector<HTMLButtonElement>('[data-next]');
+    let i = panels.length - 1;
+    const show = () => {
+      panels.forEach((p, k) => (p.hidden = k !== i));
+      if (title) title.textContent = panels[i]?.dataset.title ?? '';
+      if (prev) prev.disabled = i === 0;
+      if (next) next.disabled = i === panels.length - 1;
+    };
+    prev?.addEventListener('click', () => {
+      if (i > 0) i--;
+      show();
+    });
+    next?.addEventListener('click', () => {
+      if (i < panels.length - 1) i++;
+      show();
+    });
+    show();
+  });
+</script>
+
+<style>
+  .nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    margin-bottom: 0.6rem;
+  }
+
+  .title {
+    flex: 1;
+    margin: 0;
+    font-weight: 700;
+    text-align: center;
+  }
+
+  button {
+    display: grid;
+    place-items: center;
+    width: 2.4rem;
+    height: 2.4rem;
+    font: inherit;
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: var(--text, inherit);
+    background: var(--surface);
+    border: 0;
+    border-radius: 999px;
+    box-shadow: var(--shadow);
+    cursor: pointer;
+    transition: transform 0.15s ease, color 0.15s ease;
+  }
+
+  button:hover:not(:disabled) {
+    color: var(--accent);
+    transform: translateY(-2px);
+  }
+
+  button:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+
+  button:disabled {
+    opacity: 0.35;
+    cursor: default;
+    box-shadow: none;
+  }
+</style>

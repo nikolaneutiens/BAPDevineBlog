@@ -1,7 +1,8 @@
 ---
 import { Image } from 'astro:assets';
 import Base from '../../layouts/Base.astro';
-import { HOURS } from '../../lib/hours';
+import WeekSwitcher from '../../components/WeekSwitcher.astro';
+import { HOURS, weekdayLabel, weeksOf } from '../../lib/hours';
 import { withBase } from '../../lib/paths';
 import { photoOf } from '../../lib/photos';
 import { getPosts } from '../../lib/posts';
@@ -18,19 +19,25 @@ const perPerson = TEAM.map((m) => ({
 const maxPerson = Math.max(1, ...perPerson.map((p) => p.hours));
 
 const days = [...new Set(HOURS.map((h) => h.date))].sort();
-const perDay = days.map((date) => ({
-  date,
-  parts: TEAM.map((m) => ({
+const dayOf = (date: string) => {
+  const parts = TEAM.map((m) => ({
     ...m,
     hours: HOURS.filter((h) => h.date === date && h.person === m.id).reduce((sum, h) => sum + h.hours, 0),
-  })),
-}));
-const maxDay = Math.max(1, ...perDay.map((d) => d.parts.reduce((s, p) => s + p.hours, 0)));
+  }));
+  return { date, parts, sum: parts.reduce((s, p) => s + p.hours, 0) };
+};
+const maxDay = Math.max(1, ...days.map((d) => dayOf(d).sum));
 const average = days.length ? total / days.length : 0;
 
 const fmt = (n: number) => String(Math.round(n * 100) / 100);
 const dayLabel = (iso: string) =>
   new Date(iso + 'T00:00:00Z').toLocaleDateString('en-GB', { day: 'numeric', month: 'short', timeZone: 'UTC' });
+
+const weeks = weeksOf(days).map((w) => {
+  const wd = w.days.map(dayOf);
+  const sum = wd.reduce((s, d) => s + d.sum, 0);
+  return { ...w, days: wd, title: `Week ${w.number} · ${w.label} · ${fmt(sum)} h` };
+});
 ---
 
 <Base title="Team" description="Who we are, who does what, and how many hours we spend on our bachelor's project.">
@@ -102,24 +109,35 @@ const dayLabel = (iso: string) =>
           </ul>
 
           <h3>Per day</h3>
-          <div class="chart" role="img" aria-label="Hours per day, stacked per team member">
-            {perDay.map((d) => {
-              const sum = d.parts.reduce((s, p) => s + p.hours, 0);
-              return (
-                <div class="day" title={`${dayLabel(d.date)}: ${fmt(sum)} h`}>
-                  <span class="day-total">{fmt(sum)}</span>
-                  <div class="stack" style={`height: ${(sum / maxDay) * 100}%`}>
-                    {d.parts
-                      .filter((p) => p.hours > 0)
-                      .map((p) => (
-                        <span style={`--c: ${p.color}; flex: ${p.hours}`} title={`${p.name}: ${fmt(p.hours)} h`} />
-                      ))}
+          <WeekSwitcher titles={weeks.map((w) => w.title)}>
+            {weeks.map((w, i) => (
+              <div
+                class="chart"
+                role="img"
+                aria-label={`Hours per day in week ${w.number}, stacked per team member`}
+                data-week
+                data-title={w.title}
+                hidden={i !== weeks.length - 1}
+              >
+                {w.days.map((d) => (
+                  <div class:list={['day', { off: d.sum === 0 }]} title={`${dayLabel(d.date)}: ${fmt(d.sum)} h`}>
+                    <span class="day-total">{d.sum ? fmt(d.sum) : ''}</span>
+                    <div class="stack" style={`height: ${(d.sum / maxDay) * 100}%`}>
+                      {d.parts
+                        .filter((p) => p.hours > 0)
+                        .map((p) => (
+                          <span style={`--c: ${p.color}; flex: ${p.hours}`} title={`${p.name}: ${fmt(p.hours)} h`} />
+                        ))}
+                    </div>
+                    <span class="day-label">
+                      <b>{weekdayLabel(d.date)}</b>
+                      {dayLabel(d.date)}
+                    </span>
                   </div>
-                  <span class="day-label">{dayLabel(d.date)}</span>
-                </div>
-              );
-            })}
-          </div>
+                ))}
+              </div>
+            ))}
+          </WeekSwitcher>
           <ul class="legend">
             {TEAM.map((m) => (
               <li>
@@ -310,6 +328,7 @@ const dayLabel = (iso: string) =>
 
   .bar-value {
     font-variant-numeric: tabular-nums;
+    white-space: nowrap;
     text-align: right;
   }
 
@@ -352,10 +371,25 @@ const dayLabel = (iso: string) =>
   }
 
   .day-label {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     padding: 0.35rem 0 0.5rem;
     font-size: 0.72rem;
     color: var(--muted);
     white-space: nowrap;
+  }
+
+  .day-label b {
+    color: var(--text, inherit);
+  }
+
+  .off .day-label {
+    opacity: 0.55;
+  }
+
+  .chart[hidden] {
+    display: none;
   }
 
   .legend {

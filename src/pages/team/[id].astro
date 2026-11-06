@@ -2,7 +2,8 @@
 import { Image } from 'astro:assets';
 import PostCard from '../../components/PostCard.astro';
 import Base from '../../layouts/Base.astro';
-import { dayLabel, fmtHours, hourStats } from '../../lib/hours';
+import WeekSwitcher from '../../components/WeekSwitcher.astro';
+import { dayLabel, fmtHours, hourStats, HOURS, weekdayLabel, weeksOf } from '../../lib/hours';
 import { withBase } from '../../lib/paths';
 import { photoOf } from '../../lib/photos';
 import { getPosts } from '../../lib/posts';
@@ -17,6 +18,12 @@ const photo = photoOf(m.id);
 const posts = (await getPosts()).filter((p) => p.data.author === m.id);
 const stats = hourStats(m.id);
 const maxDay = Math.max(1, ...stats.perDay.map((d) => d.hours));
+// The same weeks as on the team page, so everyone's chart lines up.
+const weeks = weeksOf(HOURS.map((h) => h.date)).map((w) => {
+  const days = w.days.map((date) => stats.perDay.find((d) => d.date === date) ?? { date, hours: 0, tasks: [] });
+  const total = days.reduce((s, d) => s + d.hours, 0);
+  return { ...w, days, title: `Week ${w.number} · ${w.label} · ${fmtHours(total)} h` };
+});
 ---
 
 <Base title={m.name} description={`${m.name}, ${m.role} in our bachelor's project.`}>
@@ -64,15 +71,32 @@ const maxDay = Math.max(1, ...stats.perDay.map((d) => d.hours));
       stats.entries.length === 0 ? (
         <p class="empty">No hours logged yet.</p>
       ) : (
-        <div class="chart" role="img" aria-label={`Hours per day worked by ${m.name}`}>
-          {stats.perDay.map((d) => (
-            <div class="day" title={`${dayLabel(d.date)}: ${fmtHours(d.hours)} h — ${d.tasks.join(', ')}`}>
-              <span class="day-total">{fmtHours(d.hours)}</span>
-              <span class="bar" style={`--c: ${m.color}; height: ${(d.hours / maxDay) * 100}%`} />
-              <span class="day-label">{dayLabel(d.date)}</span>
+        <WeekSwitcher titles={weeks.map((w) => w.title)}>
+          {weeks.map((w, i) => (
+            <div
+              class="chart"
+              role="img"
+              aria-label={`Hours per day worked by ${m.name} in week ${w.number}`}
+              data-week
+              data-title={w.title}
+              hidden={i !== weeks.length - 1}
+            >
+              {w.days.map((d) => (
+                <div
+                  class:list={['day', { off: d.hours === 0 }]}
+                  title={`${dayLabel(d.date)}: ${fmtHours(d.hours)} h${d.tasks.length ? ' — ' + d.tasks.join(', ') : ''}`}
+                >
+                  <span class="day-total">{d.hours ? fmtHours(d.hours) : ''}</span>
+                  <span class="bar" style={`--c: ${m.color}; height: ${(d.hours / maxDay) * 100}%`} />
+                  <span class="day-label">
+                    <b>{weekdayLabel(d.date)}</b>
+                    {dayLabel(d.date)}
+                  </span>
+                </div>
+              ))}
             </div>
           ))}
-        </div>
+        </WeekSwitcher>
       )
     }
   </section>
@@ -225,10 +249,25 @@ const maxDay = Math.max(1, ...stats.perDay.map((d) => d.hours));
   }
 
   .day-label {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     padding: 0.35rem 0 0.5rem;
     font-size: 0.72rem;
     color: var(--muted);
     white-space: nowrap;
+  }
+
+  .day-label b {
+    color: var(--text, inherit);
+  }
+
+  .off .day-label {
+    opacity: 0.55;
+  }
+
+  .chart[hidden] {
+    display: none;
   }
 
   .posts {

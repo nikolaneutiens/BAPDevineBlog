@@ -34,6 +34,7 @@ export const HOURS: HourEntry[] = [
   { date: '2026-11-02', person: 'ximen', hours: 1.5, task: 'Blog post about the RITS animations' },
   { date: '2026-11-03', person: 'ximen', hours: 3.5, task: 'Designing SPRIET, KRABBEL and PUK' },
   { date: '2026-11-04', person: 'ximen', hours: 2.75, task: 'Final KRABBEL and PUK, organising files, blog pages, first Unity prototype' },
+  { date: '2026-11-06', person: 'ximen', hours: 3.75, task: 'Falling objects (duck, box, cone, barrel), modelling, colour and rig of TIPPER, two blog posts' },
 
   // Add your hours here.
 ];
@@ -60,6 +61,36 @@ export function hourStats(person?: MemberId) {
 }
 
 export const fmtHours = (n: number) => String(Math.round(n * 100) / 100);
+
+const DAY = 86_400_000;
+const toIso = (t: number) => new Date(t).toISOString().slice(0, 10);
+
+export interface Week {
+  number: number; // 1 = the week we started
+  label: string; // "26 Oct – 1 Nov"
+  days: string[]; // Monday to Sunday, YYYY-MM-DD
+}
+
+/** Every week (Monday to Sunday) from the first to the last logged day, including weeks without hours. */
+export function weeksOf(dates: string[]): Week[] {
+  if (dates.length === 0) return [];
+  const sorted = [...dates].sort();
+  const monday = (d: string) => {
+    const t = Date.parse(d + 'T00:00:00Z');
+    return t - ((new Date(t).getUTCDay() + 6) % 7) * DAY;
+  };
+  const first = monday(sorted[0]);
+  const last = monday(sorted[sorted.length - 1]);
+  const weeks: Week[] = [];
+  for (let t = first, n = 1; t <= last; t += 7 * DAY, n++) {
+    const days = Array.from({ length: 7 }, (_, i) => toIso(t + i * DAY));
+    weeks.push({ number: n, label: `${dayLabel(days[0])} – ${dayLabel(days[6])}`, days });
+  }
+  return weeks;
+}
+
+export const weekdayLabel = (iso: string) =>
+  new Date(iso + 'T00:00:00Z').toLocaleDateString('en-GB', { weekday: 'short', timeZone: 'UTC' });
 
 export const dayLabel = (iso: string) =>
   new Date(iso + 'T00:00:00Z').toLocaleDateString('en-GB', { day: 'numeric', month: 'short', timeZone: 'UTC' });
