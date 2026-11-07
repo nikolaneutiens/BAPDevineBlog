@@ -35,6 +35,7 @@ export const HOURS: HourEntry[] = [
   { date: '2026-11-03', person: 'ximen', hours: 3.5, task: 'Designing SPRIET, KRABBEL and PUK' },
   { date: '2026-11-04', person: 'ximen', hours: 2.75, task: 'Final KRABBEL and PUK, organising files, blog pages, first Unity prototype' },
   { date: '2026-11-06', person: 'ximen', hours: 3.75, task: 'Falling objects (duck, box, cone, barrel), modelling, colour and rig of TIPPER, two blog posts' },
+  { date: '2026-11-07', person: 'ximen', hours: 6.25, task: 'Scene1 environment (cardboard trees, pencils, planks, backdrop, lighting, grass), colour-blind readability check, Feedback section of the blog' },
 
   // Add your hours here.
 ];
