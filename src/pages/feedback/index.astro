@@ -1,42 +1,46 @@
 ---
 import { getCollection } from 'astro:content';
-import Author from '../../components/Author.astro';
-import PostDate from '../../components/PostDate.astro';
+import FeedbackCard from '../../components/FeedbackCard.astro';
 import Base from '../../layouts/Base.astro';
-import { withBase } from '../../lib/paths';
+import { FEEDBACK_CATEGORIES } from '../../lib/feedback';
 
 const reports = (await getCollection('feedback')).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 ---
 
-<Base title="Feedback" description="Reports of our feedback sessions with the customer, experts and teachers.">
+<Base
+  title="Feedback"
+  description="Insights from our conversations with clients, teachers, peers and experts, and how their feedback shapes our project."
+>
   <h1>Feedback</h1>
   <p class="intro">
-    Reports of our talks with the customer, experts and teachers: what we showed, what feedback we got and what we
-    did with it.
+    Insights from our conversations with clients, teachers, peers and experts, and how their feedback shapes our
+    project.
   </p>
+
+  <!-- Stays hidden until the script runs, so without JS visitors just get all reports. -->
+  <div id="feedback-filters" role="group" aria-label="Filter feedback by category" hidden>
+    <button type="button" data-filter="all" aria-pressed="true">All Feedback</button>
+    {
+      FEEDBACK_CATEGORIES.map((c) => (
+        <button type="button" data-filter={c.id} aria-pressed="false">
+          {c.filter}
+        </button>
+      ))
+    }
+  </div>
 
   {
     reports.length === 0 ? (
       <p class="empty">No feedback reports yet.</p>
     ) : (
-      <ul class="reports">
-        {reports.map((r) => (
-          <li class="report">
-            <div class="top">
-              <span class="type">{r.data.type}</span>
-              <PostDate date={r.data.date} />
-            </div>
-            <h2>
-              <a href={withBase(`/feedback/${r.id}/`)}>{r.data.title}</a>
-            </h2>
-            <p class="with">With {r.data.with}</p>
-            <p class="summary">{r.data.summary}</p>
-            <Author id={r.data.author} />
-          </li>
+      <ul class="cards">
+        {reports.map((report) => (
+          <FeedbackCard report={report} />
         ))}
       </ul>
     )
   }
+  <p id="no-feedback" class="empty" hidden>No feedback in this category yet.</p>
 </Base>
 
 <style>
@@ -45,8 +49,63 @@ const reports = (await getCollection('feedback')).sort((a, b) => b.data.date.val
   }
 
   .intro {
-    margin: 0 0 1.75rem;
+    margin: 0 0 1.5rem;
     color: var(--muted);
+  }
+
+  #feedback-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 1.75rem;
+  }
+
+  #feedback-filters button {
+    padding: 0.45rem 1rem;
+    font: inherit;
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: inherit;
+    background: var(--surface);
+    border: 2px solid var(--border);
+    border-radius: 999px;
+    cursor: pointer;
+    transition:
+      background-color 150ms,
+      border-color 150ms,
+      color 150ms;
+  }
+
+  #feedback-filters button[aria-pressed='true'] {
+    color: #fff;
+    background: var(--accent);
+    border-color: var(--accent);
+  }
+
+  #feedback-filters button:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+
+  @media (hover: hover) {
+    #feedback-filters button:hover {
+      border-color: var(--accent);
+    }
+  }
+
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  @media (max-width: 36rem) {
+    .cards {
+      grid-template-columns: 1fr;
+    }
   }
 
   .empty {
@@ -56,70 +115,33 @@ const reports = (await getCollection('feedback')).sort((a, b) => b.data.date.val
     border-radius: var(--radius);
   }
 
-  .reports {
-    display: grid;
-    gap: 1rem;
-    margin: 0;
-    padding: 0;
-    list-style: none;
-  }
-
-  .report {
-    position: relative;
-    padding: 1.25rem;
-    background: var(--surface);
-    border-radius: var(--radius);
-    box-shadow: var(--shadow);
-    transition: transform var(--post-hover-speed) ease, box-shadow var(--post-hover-speed) ease;
-  }
-
-  .report:hover {
-    transform: translateY(-3px);
-    box-shadow: var(--shadow-lift);
-  }
-
-  .top {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-  }
-
-  .type {
-    padding: 0.1rem 0.6rem;
-    font-size: 0.8rem;
-    font-weight: 700;
-    color: #fff;
-    background: var(--accent);
-    border-radius: 999px;
-  }
-
-  h2 {
-    margin: 0.6rem 0 0.2rem;
-    font-size: 1.35rem;
-  }
-
-  h2 a {
-    color: inherit;
-    text-decoration: none;
-  }
-
-  h2 a::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-  }
-
-  .report:hover h2 a {
-    color: var(--accent);
-  }
-
-  .with {
-    margin: 0;
-    font-weight: 600;
-  }
-
-  .summary {
-    margin: 0.4rem 0 0.75rem;
-    color: var(--muted);
+  /* A soft cross-fade between the overview and the reports (only the feedback pages opt in). */
+  @view-transition {
+    navigation: auto;
   }
 </style>
+
+<script>
+  const container = document.querySelector<HTMLElement>('#feedback-filters')!;
+  const buttons = [...container.querySelectorAll<HTMLButtonElement>('[data-filter]')];
+  const cards = [...document.querySelectorAll<HTMLElement>('.cards > [data-category]')];
+  const empty = document.querySelector<HTMLElement>('#no-feedback')!;
+
+  function select(category: string) {
+    if (!buttons.some((b) => b.dataset.filter === category)) category = 'all';
+    let visible = 0;
+    for (const button of buttons) button.setAttribute('aria-pressed', String(button.dataset.filter === category));
+    for (const card of cards) {
+      const show = category === 'all' || card.dataset.category === category;
+      card.hidden = !show;
+      if (show) visible++;
+    }
+    empty.hidden = visible > 0 || cards.length === 0;
+    // Keep the choice in the URL, so a filtered view can be shared and survives going back.
+    history.replaceState(null, '', category === 'all' ? location.pathname : `?category=${category}`);
+  }
+
+  for (const button of buttons) button.addEventListener('click', () => select(button.dataset.filter!));
+  select(new URLSearchParams(location.search).get('category') ?? 'all');
+  container.hidden = false;
+</script>

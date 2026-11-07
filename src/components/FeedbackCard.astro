@@ -1,0 +1,152 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { categoryLabel, feedbackDate } from '../lib/feedback';
+import { withBase } from '../lib/paths';
+
+interface Props {
+  report: CollectionEntry<'feedback'>;
+}
+
+const { report } = Astro.props;
+const { title, date, monthOnly, category, description, tags } = report.data;
+---
+
+<li class="card" data-category={category}>
+  <div class="top">
+    <span class="category">{categoryLabel(category)}</span>
+    <time datetime={date.toISOString()}>{feedbackDate(date, monthOnly)}</time>
+  </div>
+  <h2>
+    <a href={withBase(`/feedback/${report.id}/`)}>{title}</a>
+  </h2>
+  <p class="description">{description}</p>
+  <ul class="tags" aria-label="Key topics">
+    {tags.map((tag) => <li>{tag}</li>)}
+  </ul>
+  <span class="more" aria-hidden="true">Read full report <span class="arrow">→</span></span>
+</li>
+
+<style>
+  .card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    padding: 1.25rem 1.35rem 1.15rem;
+    background: var(--surface);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    transition:
+      transform var(--post-hover-speed) ease,
+      box-shadow var(--post-hover-speed) ease;
+  }
+
+  .card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-lift);
+  }
+
+  .card:focus-within {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+  }
+
+  .top {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.4rem 0.75rem;
+    font-size: 0.85rem;
+    color: var(--muted);
+  }
+
+  .category {
+    padding: 0.1rem 0.6rem;
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: #fff;
+    background: var(--accent);
+    border-radius: 999px;
+  }
+
+  h2 {
+    margin: 0.65rem 0 0.35rem;
+    font-size: 1.25rem;
+    line-height: 1.25;
+  }
+
+  h2 a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  h2 a:focus-visible {
+    outline: none;
+  }
+
+  /* The whole card is clickable. */
+  h2 a::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: var(--radius);
+  }
+
+  .card:hover h2 a {
+    color: var(--accent);
+  }
+
+  .description {
+    margin: 0 0 0.85rem;
+    font-size: 0.95rem;
+    line-height: 1.55;
+    color: var(--muted);
+  }
+
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin: 0 0 0.9rem;
+    padding: 0;
+    list-style: none;
+  }
+
+  .tags li {
+    padding: 0.05rem 0.6rem;
+    font-size: 0.8rem;
+    font-weight: 600;
+    border: 1.5px solid var(--border);
+    border-radius: 999px;
+  }
+
+  .more {
+    margin-top: auto;
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--accent);
+  }
+
+  .arrow {
+    display: inline-block;
+    transition: transform var(--post-hover-speed) ease;
+  }
+
+  .card:hover .arrow {
+    transform: translateX(4px);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .card,
+    .arrow {
+      transition: none;
+    }
+
+    .card:hover {
+      transform: none;
+    }
+
+    .card:hover .arrow {
+      transform: none;
+    }
+  }
+</style>
