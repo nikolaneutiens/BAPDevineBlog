@@ -1,7 +1,7 @@
 ---
 title: "First Steps in Unity: From One Boxling to Four"
 description: How RITS took his first steps in Unity, walking left and right with his own run and idle animations, and how the other three Boxlings joined him.
-date: 2026-11-10
+date: 2026-11-02
 author: lomme
 cover: ./images/unity-movement/cover.jpg
 coverAlt: An untextured, white RITS standing in a simple Unity test scene, looking into the camera
@@ -13,11 +13,11 @@ gallery:
   - src: ./images/unity-movement/run.jpg
     alt: RITS running to the right in profile, with small dust clouds behind his feet
 tags: [Develop]
-ai: The Unity scripts, the setup tool and the Blender bake script were written together with AI (Claude). The Boxling models and their animations were made by Ximen.
+ai: I used AI (Claude) as a helper for some parts of the code.
 draft: true
 ---
 
-In Samen in Balans, every player controls one Boxling by leaning left or right. Before anything else, a Boxling has to be able to do exactly that in Unity: walk left, walk right and stand still. This post is about that first playable test, first with only RITS and later with all four Boxlings.
+In Samen in Balans, every player controls one Boxling by leaning left or right. Before anything else, a Boxling has to be able to do exactly that in Unity: walk left, walk right and stand still. This post is about that first playable test: on 2 November with only RITS, and a week later with all four Boxlings.
 
 <video autoplay loop muted playsinline preload="metadata" poster="../../videos/rits-first-movement-poster.jpg" style="width: 100%; border-radius: 14px; margin-block: 1.5rem;">
   <source src="../../videos/rits-first-movement.mp4" type="video/mp4" />
@@ -62,7 +62,7 @@ The movement script doesn't know anything about animations, and the animation sc
 
 You might have noticed that RITS is completely white in the video. His cardboard look in Blender is made with a procedural shader: a node setup that calculates the colours, the grain and the tape. Unity can't read that, so only the shape came along.
 
-The fix is a small Blender script that **bakes** the shader into one image: it renders all the colours of the character onto a single texture and exports the model to Unity with that texture attached. The Blender file itself is never changed. Now every Boxling arrives in Unity with his own colours.
+When I added the other Boxlings a week later, I fixed this first. The fix is a small Blender script that **bakes** the shader into one image: it renders all the colours of the character onto a single texture and exports the model to Unity with that texture attached. The Blender file itself is never changed. Now every Boxling arrives in Unity with his own colours.
 
 ## Step 6: from one Boxling to four
 
