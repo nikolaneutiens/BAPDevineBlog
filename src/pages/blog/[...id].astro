@@ -25,8 +25,8 @@ const { title, description, date, gallery, tags, author, ai } = post.data;
 ---
 
 <Base title={title} description={description}>
-  <p class="back"><a href={withBase('/')}>← All posts</a></p>
-  <article>
+  <p class="back" data-accent={tags[0]}><a href={withBase('/')}>← All posts</a></p>
+  <article data-accent={tags[0]}>
     <div class="header">
       <h1>{title}</h1>
       <div class="tags">

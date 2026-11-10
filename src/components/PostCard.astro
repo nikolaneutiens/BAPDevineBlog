@@ -14,7 +14,7 @@ const { post } = Astro.props;
 const { title, description, date, cover, coverAlt, tags, author } = post.data;
 ---
 
-<li class="post" data-post data-tags={JSON.stringify(tags)}>
+<li class="post" data-post data-tags={JSON.stringify(tags)} data-accent={tags[0]}>
   <PostCover src={cover} alt={coverAlt} sizes="(max-width: 30rem) 100vw, 11rem" />
   <div class="body">
     <div class="header">
