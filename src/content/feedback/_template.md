@@ -21,6 +21,6 @@ sections:
 actions:
   - text: "What we plan to do with this feedback."
     # status: planned       # planned (default), decided, or done (only when it is really finished)
-# author: ximen            # optional: lomme, ximen or nikolas
-# attendees: [lomme, ximen, nikolas]
+# author: ximen            # optional: lomme, ximen or nikola
+# attendees: [lomme, ximen, nikola]
 ---

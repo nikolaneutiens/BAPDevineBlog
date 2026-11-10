@@ -12,7 +12,7 @@ const blog = defineCollection({
       title: z.string(),
       description: z.string(),
       date: z.coerce.date(),
-      /** Who made the post: 'lomme', 'ximen' or 'nikolas'. */
+      /** Who made the post: 'lomme', 'ximen' or 'nikola'. */
       author: z.enum(MEMBER_IDS).optional(),
       cover: image(),
       coverAlt: z.string(),

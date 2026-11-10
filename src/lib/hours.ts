@@ -7,7 +7,7 @@ import type { MemberId } from './team';
  * Example:
  *   { date: '2026-11-04', person: 'ximen', hours: 6, task: 'Modelled KRABBEL and PUK' },
  *
- * person is one of: 'lomme', 'ximen', 'nikolas'
+ * person is one of: 'lomme', 'ximen', 'nikola'
  */
 export interface HourEntry {
   date: string; // YYYY-MM-DD
@@ -18,7 +18,7 @@ export interface HourEntry {
 
 /** The same entry for every team member (things we did together). */
 const together = (date: string, hours: number, task: string): HourEntry[] =>
-  (['lomme', 'ximen', 'nikolas'] as const).map((person) => ({ date, person, hours, task }));
+  (['lomme', 'ximen', 'nikola'] as const).map((person) => ({ date, person, hours, task }));
 
 export const HOURS: HourEntry[] = [
   // ---- together
