@@ -146,6 +146,34 @@ article li::marker {
   color: var(--accent);
 }
 
+article table {
+  width: 100%;
+  margin-block: 1.25rem;
+  border-collapse: collapse;
+  background: var(--surface);
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: var(--shadow);
+}
+
+article th,
+article td {
+  padding: 0.6rem 1rem;
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+}
+
+article th {
+  font-size: 0.85rem;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+article tr:last-child td {
+  border-bottom: 0;
+}
+
 pre {
   padding: 1rem;
   overflow-x: auto;
