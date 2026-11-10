@@ -38,11 +38,11 @@ A Boxling should look where he's going. While you walk, the model turns smoothly
 
 Only the model turns, not the physics body. That keeps the movement and the looks separate: the body slides left and right, the model on top of it decides which way RITS faces.
 
-![RITS standing still and looking into the camera](./images/unity-movement/idle.jpg)
+![RITS standing still in his idle animation, looking around](./images/unity-movement/idle.jpg)
 
 ## Step 4: idle and run animations
 
-Ximen had already made two animations for RITS: a watchful idle and a running cycle with little dust clouds. In Unity, an Animator switches between the two based on one number: how fast RITS is moving. Standing still plays the idle, walking plays the run. That number is smoothed a little, so the switch between the two never looks jumpy.
+Ximen had already made two animations for RITS: an idle in which he looks around and a running cycle with little dust clouds. In Unity, an Animator switches between the two based on one number: how fast RITS is moving. Standing still plays the idle, walking plays the run. That number is smoothed a little, so the switch between the two never looks jumpy.
 
 ![RITS running to the right, with dust clouds behind his feet](./images/unity-movement/run.jpg)
 
