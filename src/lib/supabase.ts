@@ -32,6 +32,8 @@ export interface TimeEntry {
   track: TrackId | null;
   started_at: string;
   ended_at: string | null;
+  /** Added by hand afterwards instead of with the timer. */
+  manual: boolean;
 }
 
 /** A running or paused work session of one person. No row means that person isn't working. */

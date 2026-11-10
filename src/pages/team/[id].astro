@@ -3,6 +3,7 @@ import { Image } from 'astro:assets';
 import PostCard from '../../components/PostCard.astro';
 import Base from '../../layouts/Base.astro';
 import WeekSwitcher from '../../components/WeekSwitcher.astro';
+import LoggedSessions from '../../components/LoggedSessions.astro';
 import WorkTimer from '../../components/WorkTimer.astro';
 import { dayLabel, fmtHours, getHours, hourStats, weekdayLabel, weeksOf } from '../../lib/hours';
 import { withBase } from '../../lib/paths';
@@ -68,6 +69,7 @@ const weeks = weeksOf(HOURS.map((h) => h.date)).map((w) => {
   </section>
 
   <WorkTimer person={m.id} />
+  <LoggedSessions person={m.id} />
 
   <section aria-labelledby="hours-title">
     <h2 id="hours-title">Hours worked</h2>

@@ -1,0 +1,352 @@
+---
+/**
+ * Add hours afterwards (when you forgot to start the timer) and see the latest timed sessions of one person.
+ * Everyone can see the list; adding and deleting needs the team login at the top of the page.
+ */
+import { member, type MemberId } from '../lib/team';
+
+interface Props {
+  person: MemberId;
+}
+
+const m = member(Astro.props.person);
+---
+
+<section class="sessions" data-sessions={m.id} aria-labelledby="sessions-title">
+  <h2 id="sessions-title">Logged sessions</h2>
+
+  <form class="add" data-add hidden>
+    <p class="add-title">Forgot the timer? Add hours afterwards</p>
+    <div class="fields">
+      <label>
+        <span>Day</span>
+        <input name="day" type="date" required />
+      </label>
+      <label>
+        <span>From</span>
+        <input name="from" type="time" required />
+      </label>
+      <label>
+        <span>To</span>
+        <input name="to" type="time" required />
+      </label>
+      <p class="duration" data-duration aria-live="polite"></p>
+    </div>
+    <div class="row">
+      <input name="note" type="text" maxlength="200" placeholder="What did you work on?" aria-label="What did you work on?" />
+      <button type="submit" class="pill">Add hours</button>
+    </div>
+  </form>
+
+  <p class="message" data-message hidden></p>
+  <ul class="list" data-list aria-live="polite">
+    <li class="empty">Loading…</li>
+  </ul>
+</section>
+
+<script>
+  import type { TimeEntry } from '../lib/supabase';
+  import { canEdit, db, onAuthChange, teamCall } from '../lib/teamAuth';
+
+  const root = document.querySelector<HTMLElement>('[data-sessions]');
+  if (root) {
+    const who = root.dataset.sessions!;
+    const form = root.querySelector<HTMLFormElement>('[data-add]')!;
+    const list = root.querySelector<HTMLElement>('[data-list]')!;
+    const message = root.querySelector<HTMLElement>('[data-message]')!;
+    const durationEl = root.querySelector<HTMLElement>('[data-duration]')!;
+    const field = (name: string) => form.elements.namedItem(name) as HTMLInputElement;
+    let rows: TimeEntry[] = [];
+
+    const pad = (n: number) => String(n).padStart(2, '0');
+    const now = new Date();
+    field('day').value = `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}`;
+    field('day').max = field('day').value;
+
+    const fmtDuration = (ms: number) => {
+      const min = Math.round(ms / 60000);
+      const h = Math.floor(min / 60);
+      return h ? `${h}h${min % 60 ? ` ${pad(min % 60)}m` : ''}` : min ? `${min}m` : '<1m';
+    };
+    const minutes = (t: string) => {
+      const [h, m] = t.split(':').map(Number);
+      return h * 60 + m;
+    };
+
+    // Show how long the stretch is while you type the times.
+    function showDuration() {
+      if (!field('from').value || !field('to').value) return (durationEl.textContent = '');
+      let diff = minutes(field('to').value) - minutes(field('from').value);
+      if (diff <= 0) diff += 24 * 60;
+      durationEl.textContent = `= ${fmtDuration(diff * 60000)}`;
+    }
+    form.addEventListener('input', showDuration);
+
+    function show(text: string) {
+      message.textContent = text;
+      message.hidden = false;
+      setTimeout(() => (message.hidden = true), 6000);
+    }
+
+    function render() {
+      form.hidden = !canEdit();
+      const finished = rows.filter((r) => r.ended_at);
+      if (!finished.length) {
+        const li = document.createElement('li');
+        li.className = 'empty';
+        li.textContent = 'No timed sessions yet.';
+        list.replaceChildren(li);
+        return;
+      }
+      list.replaceChildren(
+        ...finished.map((r) => {
+          const start = new Date(r.started_at);
+          const end = new Date(r.ended_at!);
+          const li = document.createElement('li');
+
+          const when = document.createElement('span');
+          when.className = 'when';
+          when.textContent = `${start.toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short' })} · ${start.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' })}–${end.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' })}`;
+
+          const note = document.createElement('span');
+          note.className = 'note';
+          note.textContent = r.note || 'Work session';
+          if (r.manual) {
+            const tag = document.createElement('span');
+            tag.className = 'manual';
+            tag.textContent = 'added afterwards';
+            note.append(' ', tag);
+          }
+
+          const dur = document.createElement('span');
+          dur.className = 'dur';
+          dur.textContent = fmtDuration(end.getTime() - start.getTime());
+
+          li.append(when, note, dur);
+          if (canEdit()) {
+            const del = document.createElement('button');
+            del.type = 'button';
+            del.className = 'del';
+            del.textContent = '✕';
+            del.title = 'Delete this session';
+            del.setAttribute('aria-label', `Delete the session of ${when.textContent}`);
+            del.addEventListener('click', async () => {
+              if (!confirm(`Delete ${dur.textContent} on ${when.textContent}?`)) return;
+              const problem = await teamCall('delete_time_entry', { entry_id: r.id });
+              if (problem) show(problem);
+              load();
+            });
+            li.append(del);
+          }
+          return li;
+        }),
+      );
+    }
+
+    async function load() {
+      const { data, error } = await db
+        .from('time_entries')
+        .select('*')
+        .eq('person', who)
+        .not('ended_at', 'is', null)
+        .order('started_at', { ascending: false })
+        .limit(15);
+      if (error) return show('Could not load the sessions.');
+      rows = data as TimeEntry[];
+      render();
+    }
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const problem = await teamCall('add_time_entry', {
+        who,
+        day: field('day').value,
+        time_from: field('from').value,
+        time_to: field('to').value,
+        what: field('note').value,
+      });
+      if (problem) return show(problem);
+      field('from').value = '';
+      field('to').value = '';
+      field('note').value = '';
+      showDuration();
+      show('Added. The hours chart shows it after a reload (online: within the hour).');
+      load();
+    });
+
+    let reload: ReturnType<typeof setTimeout> | undefined;
+    db.channel(`sessions-${who}`)
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'time_entries' }, () => {
+        clearTimeout(reload);
+        reload = setTimeout(load, 250);
+      })
+      .subscribe();
+
+    onAuthChange(render);
+    load();
+  }
+</script>
+
+<style>
+  .sessions {
+    margin: 0 0 3rem;
+  }
+
+  h2 {
+    margin: 0 0 1rem;
+  }
+
+  .add {
+    display: grid;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+    padding: 1.1rem 1.25rem;
+    background: var(--surface);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+  }
+
+  .add[hidden] {
+    display: none;
+  }
+
+  .add-title {
+    margin: 0;
+    font-weight: 800;
+  }
+
+  .fields {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    gap: 0.6rem;
+  }
+
+  label {
+    display: grid;
+    gap: 0.2rem;
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--muted);
+  }
+
+  input {
+    min-width: 0;
+    padding: 0.4rem 0.6rem;
+    font: inherit;
+    font-size: 0.95rem;
+    color: var(--ink);
+    background: var(--bg);
+    border: 2px solid var(--border);
+    border-radius: 10px;
+  }
+
+  .duration {
+    margin: 0 0 0.45rem;
+    font-weight: 800;
+  }
+
+  .row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .row input {
+    flex: 1 1 14rem;
+  }
+
+  .message {
+    margin: 0 0 0.75rem;
+    font-weight: 700;
+    color: var(--accent);
+  }
+
+  .list {
+    display: grid;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    background: var(--surface);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+  }
+
+  .list :global(li) {
+    display: grid;
+    grid-template-columns: 11.5rem minmax(0, 1fr) auto auto;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.65rem 1.1rem;
+    font-size: 0.95rem;
+  }
+
+  .list :global(li + li) {
+    border-top: 1px solid var(--border);
+  }
+
+  .list :global(.empty) {
+    display: block;
+    color: var(--muted);
+  }
+
+  .list :global(.when) {
+    font-variant-numeric: tabular-nums;
+    color: var(--muted);
+  }
+
+  .list :global(.note) {
+    overflow-wrap: anywhere;
+  }
+
+  .list :global(.manual) {
+    padding: 0 0.4rem;
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: var(--muted);
+    white-space: nowrap;
+    background: var(--hover);
+    border-radius: 999px;
+  }
+
+  .list :global(.dur) {
+    font-weight: 800;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+
+  .list :global(.del) {
+    width: 1.5rem;
+    height: 1.5rem;
+    padding: 0;
+    font: inherit;
+    font-size: 0.7rem;
+    font-weight: 800;
+    color: var(--muted);
+    background: transparent;
+    border: 0;
+    border-radius: 999px;
+    cursor: pointer;
+  }
+
+  .list :global(.del:hover) {
+    color: var(--accent);
+    background: var(--hover);
+  }
+
+  .list :global(.del:focus-visible) {
+    outline: 2px solid var(--accent);
+  }
+
+  @media (max-width: 34rem) {
+    .list :global(li) {
+      grid-template-columns: minmax(0, 1fr) auto auto;
+      gap: 0.15rem 0.75rem;
+    }
+
+    .list :global(.when) {
+      grid-column: 1 / -1;
+      font-size: 0.85rem;
+    }
+  }
+</style>
