@@ -1,3 +1,5 @@
+import type { MemberId } from './team';
+
 /**
  * Connection to our Supabase database (project "bap-blog"), where the calendar tasks and timed hours live.
  *
@@ -14,7 +16,7 @@ export interface Task {
   date: string; // YYYY-MM-DD
   track: TrackId;
   title: string;
-  assignee: 'lomme' | 'ximen' | 'nikolas' | null;
+  assignee: MemberId | null;
   done: boolean;
   created_at: string;
 }
@@ -23,7 +25,7 @@ export interface TimeEntry {
   id: string;
   task_id: string | null;
   session: string;
-  person: 'lomme' | 'ximen' | 'nikolas';
+  person: MemberId;
   /** What was worked on. */
   note: string;
   track: TrackId | null;
@@ -33,7 +35,7 @@ export interface TimeEntry {
 
 /** A running or paused work session of one person. No row means that person isn't working. */
 export interface WorkTimer {
-  person: 'lomme' | 'ximen' | 'nikolas';
+  person: MemberId;
   session: string;
   note: string;
   started_at: string;
