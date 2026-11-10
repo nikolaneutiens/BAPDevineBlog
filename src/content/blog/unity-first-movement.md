@@ -12,12 +12,14 @@ gallery:
     alt: RITS on the left side of the test scene after walking to the left
   - src: ./images/unity-movement/run.jpg
     alt: RITS running to the right in profile, with small dust clouds behind his feet
+  - src: ./images/unity-movement/four-boxlings.jpg
+    alt: The four Boxlings running side by side in Unity, now with their cardboard textures
 tags: [Develop]
 ai: I used AI (Claude) as a helper for some parts of the code.
 draft: true
 ---
 
-In Samen in Balans, every player controls one Boxling by leaning left or right. Before anything else, a Boxling has to be able to do exactly that in Unity: walk left, walk right and stand still. This post is about that first playable test: on 2 November with only RITS, and a week later with all four Boxlings.
+In Samen in Balans, every player controls one Boxling by leaning left or right. Before anything else, a Boxling has to be able to do exactly that in Unity: walk left, walk right and stand still.
 
 <video autoplay loop muted playsinline preload="metadata" poster="../../videos/rits-first-movement-poster.jpg" style="width: 100%; border-radius: 14px; margin-block: 1.5rem;">
   <source src="../../videos/rits-first-movement.mp4" type="video/mp4" />
@@ -34,7 +36,7 @@ The game is played from the side, like a side-scroller. That's why RITS can only
 
 The movement is done with physics: RITS has a Rigidbody, and the script changes its speed every physics step instead of moving him directly. That way he will later react properly to the plank, the falling objects and the other Boxlings.
 
-- **One input, many controllers.** The script reads one action, *Move*, from Unity's Input System. The arrow keys, A and D and a gamepad stick all work right away, and later our own Arduino controllers can use the same action.
+- **One input, many controllers.** The script reads one action, *Move*, from Unity's Input System. The arrow keys, Q and D and a gamepad stick all work right away, and later our own Arduino controllers can use the same action.
 - **Speeding up and slowing down.** RITS doesn't start or stop instantly. He speeds up to his top speed of 4 m/s and slows down slightly faster than he speeds up, so stopping feels tight.
 - **Staying on the line.** The Rigidbody can't rotate and can't move forwards or backwards. Without this, a small bump would make him tip over or slide out of the scene.
 
@@ -62,7 +64,7 @@ The movement script doesn't know anything about animations, and the animation sc
 
 You might have noticed that RITS is completely white in the video. His cardboard look in Blender is made with a procedural shader: a node setup that calculates the colours, the grain and the tape. Unity can't read that, so only the shape came along.
 
-When I added the other Boxlings a week later, I fixed this first. The fix is a small Blender script that **bakes** the shader into one image: it renders all the colours of the character onto a single texture and exports the model to Unity with that texture attached. The Blender file itself is never changed. Now every Boxling arrives in Unity with his own colours.
+When I added the other Boxlings a week later, I fixed this first. The fix is a small Blender script that **bakes** the shader into one image: it renders all the colours of the character onto a single texture and exports the model to Unity with that texture attached. The Blender file itself is never changed. Now every Boxling arrives in Unity with his cardboard texture. Not every painted detail comes along yet, so that's something to finish later.
 
 ## Step 6: from one Boxling to four
 
@@ -71,6 +73,8 @@ Setting up one Boxling by hand is fine. Doing it four times, and again every tim
 - **One shared brain for the animations.** All Boxlings use the same idle-and-run logic. Each one only brings his own two animations, so a change in the logic works for all four at once.
 - **A prefab per Boxling.** Each Boxling becomes a ready-made prefab with his physics, his scripts and his model. Changing the prefab changes him everywhere he's used.
 - **Into the scene, side by side.** The tool places RITS, SPRIET, KRABBEL and PUK next to each other, ready to test.
+
+![The four Boxlings running side by side in Unity, now with their cardboard textures](./images/unity-movement/four-boxlings.jpg)
 
 ## What's next
 
