@@ -62,3 +62,5 @@ They live in a kingdom that hangs high above the ravines on ropes, safe from the
 ## What happened next
 
 After the pitch, the other teams gave us feedback on the number of players, the pressure pads, the connection to the film festival, the start of a session and Tipper's story. You can read everything they said, and what we plan to do with it, in the [feedback report on this pitch](../../feedback/peer-concept-pitch/).
+
+We also sent the pitch video to our client. Her feedback was about the use of AI, our team introduction, the research behind the concept and the durability of the foot controllers. You can read it in the [client's feedback on the pitch video](../../feedback/client-pitch-feedback/).

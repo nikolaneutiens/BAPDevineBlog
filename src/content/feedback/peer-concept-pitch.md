@@ -49,3 +49,5 @@ actions:
 ## The pitch itself
 
 Want to see what we presented? The pitch video and the slides are in our blog post [Our Concept Pitch: Samen in Balans](../../blog/concept-pitch/).
+
+Our client also gave feedback on the same pitch: [Pitch Video Feedback — JEF](../client-pitch-feedback/).
