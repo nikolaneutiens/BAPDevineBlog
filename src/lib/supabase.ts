@@ -16,7 +16,8 @@ export interface Task {
   date: string; // YYYY-MM-DD
   track: TrackId;
   title: string;
-  assignee: MemberId | null;
+  /** Who does it: zero, one or more people. */
+  assignees: MemberId[];
   done: boolean;
   created_at: string;
 }
