@@ -17,7 +17,7 @@ export interface CalendarEvent {
 export const TRACKS = [
   { id: 'design', label: 'Design', tag: 'Design' },
   { id: 'ux', label: 'UX', tag: 'Research' },
-  { id: 'develop', label: 'Development', tag: 'Develop' },
+  { id: 'develop', label: 'Development', tag: 'Development' },
 ] as const;
 
 export const EVENTS: CalendarEvent[] = [

@@ -31,7 +31,7 @@
   }
 }
 
-[data-tag='Develop'] {
+[data-tag='Development'] {
   --tag-color: #7db3e3;
 }
 
@@ -53,7 +53,7 @@
   --accent: #3b7a33;
 }
 
-[data-accent='Develop'] {
+[data-accent='Development'] {
   --accent: #2a659e;
 }
 
@@ -66,7 +66,7 @@
     --accent: #8fcf85;
   }
 
-  [data-accent='Develop'] {
+  [data-accent='Development'] {
     --accent: #7db8ee;
   }
 }

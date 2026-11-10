@@ -47,7 +47,7 @@ coverAlt: What the picture shows # required
 gallery: # optional, shown as a grid at the end of the post
   - src: ./images/my-post/photo.jpg
     alt: What the picture shows
-tags: [Develop, Design] # optional: Develop, Research or Design
+tags: [Development, Design] # optional: Development, Research or Design
 draft: true # optional, hides the post from production builds
 ```
 
@@ -57,7 +57,7 @@ Store pictures in `src/content/blog/images/<post-name>/`. To place a picture bet
 ![What the picture shows](./images/my-post/photo.jpg)
 ```
 
-A tag that isn't in `src/lib/tags.ts` fails the build. Selected filters are stored in the URL, for example `/?tag=Develop&tag=Design`.
+A tag that isn't in `src/lib/tags.ts` fails the build. Selected filters are stored in the URL, for example `/?tag=Development&tag=Design`.
 
 ## Calendar (live tasks and timer)
 

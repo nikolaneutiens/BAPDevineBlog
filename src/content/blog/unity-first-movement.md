@@ -1,7 +1,7 @@
 ---
 title: "First Steps in Unity: From One Boxling to Four"
 description: How RITS took his first steps in Unity, walking left and right with his own run and idle animations, and how the other three Boxlings joined him.
-date: 2026-11-02
+date: 2026-11-03
 author: lomme
 cover: ./images/unity-movement/cover.jpg
 coverAlt: An untextured, white RITS standing in a simple Unity test scene, looking into the camera
@@ -14,7 +14,7 @@ gallery:
     alt: RITS running to the right in profile, with small dust clouds behind his feet
   - src: ./images/unity-movement/four-boxlings.jpg
     alt: The four Boxlings running side by side in Unity, now with their cardboard textures
-tags: [Develop]
+tags: [Development]
 ai: I used AI (Claude) as a helper for some parts of the code.
 draft: true
 ---
