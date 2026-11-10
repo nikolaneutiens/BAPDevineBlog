@@ -1,0 +1,147 @@
+---
+/**
+ * Team login in the site header. Logging in once unlocks editing on every page
+ * (calendar tasks and the work timer) until you log out.
+ */
+---
+
+<div class="team-login" data-team-login>
+  <button type="button" class="pill ghost small" data-open aria-expanded="false" aria-controls="team-login-form">
+    <span aria-hidden="true">🔒</span> Log in
+  </button>
+  <button type="button" class="pill ghost small on" data-logout hidden title="You can edit. Click to log out.">
+    <span class="dot" aria-hidden="true"></span> Team · Log out
+  </button>
+
+  <form class="form" id="team-login-form" data-form hidden>
+    <label>
+      <span>Team password</span>
+      <input type="password" autocomplete="current-password" required />
+    </label>
+    <div class="row">
+      <button type="submit" class="pill">Log in</button>
+      <button type="button" class="pill ghost" data-cancel>Cancel</button>
+    </div>
+    <p class="error" data-error hidden></p>
+  </form>
+</div>
+
+<script>
+  import { canEdit, login, logout, onAuthChange } from '../lib/teamAuth';
+
+  document.querySelectorAll<HTMLElement>('[data-team-login]').forEach((root) => {
+    const open = root.querySelector<HTMLButtonElement>('[data-open]')!;
+    const out = root.querySelector<HTMLButtonElement>('[data-logout]')!;
+    const form = root.querySelector<HTMLFormElement>('[data-form]')!;
+    const input = form.querySelector('input')!;
+    const error = root.querySelector<HTMLElement>('[data-error]')!;
+
+    const close = () => {
+      form.hidden = true;
+      open.setAttribute('aria-expanded', 'false');
+    };
+
+    onAuthChange(() => {
+      open.hidden = canEdit();
+      out.hidden = !canEdit();
+      if (canEdit()) close();
+    });
+
+    open.addEventListener('click', () => {
+      if (!form.hidden) return close();
+      form.hidden = false;
+      open.setAttribute('aria-expanded', 'true');
+      error.hidden = true;
+      input.focus();
+    });
+    root.querySelector('[data-cancel]')!.addEventListener('click', close);
+    form.addEventListener('keydown', (e) => e.key === 'Escape' && close());
+    out.addEventListener('click', logout);
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const problem = await login(input.value);
+      if (problem) {
+        error.textContent = problem;
+        error.hidden = false;
+        return;
+      }
+      input.value = '';
+    });
+  });
+</script>
+
+<style>
+  .team-login {
+    position: relative;
+  }
+
+  .small {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.3rem 0.8rem;
+    font-size: 0.85rem;
+  }
+
+  .on .dot {
+    width: 0.55rem;
+    height: 0.55rem;
+    background: #3f8a4c;
+    border-radius: 999px;
+  }
+
+  /* The form drops down under the button. */
+  .form {
+    position: absolute;
+    top: calc(100% + 0.5rem);
+    right: 0;
+    z-index: 10;
+    display: grid;
+    gap: 0.6rem;
+    width: min(20rem, calc(100vw - 2rem));
+    padding: 1rem;
+    background: var(--surface);
+    border: 2px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-lift);
+  }
+
+  .form[hidden] {
+    display: none;
+  }
+
+  /* On small screens the button wraps to the left, so the form opens to the right. */
+  @media (max-width: 40rem) {
+    .form {
+      right: auto;
+      left: 0;
+    }
+  }
+
+  label {
+    display: grid;
+    gap: 0.35rem;
+    font-weight: 800;
+  }
+
+  input {
+    padding: 0.4rem 0.6rem;
+    font: inherit;
+    font-weight: 400;
+    color: var(--ink);
+    background: var(--bg);
+    border: 2px solid var(--border);
+    border-radius: 10px;
+  }
+
+  .row {
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  .error {
+    margin: 0;
+    font-weight: 700;
+    color: var(--accent);
+  }
+</style>

@@ -2,13 +2,14 @@
 import { Image } from 'astro:assets';
 import Base from '../../layouts/Base.astro';
 import WeekSwitcher from '../../components/WeekSwitcher.astro';
-import { HOURS, weekdayLabel, weeksOf } from '../../lib/hours';
+import { fmtHours as fmt, getHours, weekdayLabel, weeksOf } from '../../lib/hours';
 import { withBase } from '../../lib/paths';
 import { photoOf } from '../../lib/photos';
 import { getPosts } from '../../lib/posts';
 import { initials, TEAM } from '../../lib/team';
 
 const posts = await getPosts();
+const HOURS = await getHours();
 
 // ---- hours statistics
 const total = HOURS.reduce((sum, h) => sum + h.hours, 0);
@@ -29,14 +30,13 @@ const dayOf = (date: string) => {
 const maxDay = Math.max(1, ...days.map((d) => dayOf(d).sum));
 const average = days.length ? total / days.length : 0;
 
-const fmt = (n: number) => String(Math.round(n * 100) / 100);
 const dayLabel = (iso: string) =>
   new Date(iso + 'T00:00:00Z').toLocaleDateString('en-GB', { day: 'numeric', month: 'short', timeZone: 'UTC' });
 
 const weeks = weeksOf(days).map((w) => {
   const wd = w.days.map(dayOf);
   const sum = wd.reduce((s, d) => s + d.sum, 0);
-  return { ...w, days: wd, title: `Week ${w.number} · ${w.label} · ${fmt(sum)} h` };
+  return { ...w, days: wd, title: `Week ${w.number} · ${w.label} · ${fmt(sum)}` };
 });
 ---
 
@@ -61,7 +61,7 @@ const weeks = weeksOf(days).map((w) => {
               </h2>
               <p class="role">{m.role}</p>
               <p class="facts">
-                {fmt(hours)} hours · {own.length} {own.length === 1 ? 'post' : 'posts'}
+                {fmt(hours)} worked · {own.length} {own.length === 1 ? 'post' : 'posts'}
               </p>
             </div>
             <span class="arrow" aria-hidden="true">→</span>
@@ -83,7 +83,7 @@ const weeks = weeksOf(days).map((w) => {
           <div class="tiles">
             <div class="tile">
               <span class="value">{fmt(total)}</span>
-              <span class="label">hours in total</span>
+              <span class="label">worked in total</span>
             </div>
             <div class="tile">
               <span class="value">{days.length}</span>
@@ -91,7 +91,7 @@ const weeks = weeksOf(days).map((w) => {
             </div>
             <div class="tile">
               <span class="value">{fmt(average)}</span>
-              <span class="label">hours per day on average</span>
+              <span class="label">per day on average</span>
             </div>
           </div>
 
@@ -103,7 +103,7 @@ const weeks = weeksOf(days).map((w) => {
                 <span class="bar-track">
                   <span class="bar" style={`--c: ${p.color}; width: ${(p.hours / maxPerson) * 100}%`} />
                 </span>
-                <span class="bar-value">{fmt(p.hours)} h</span>
+                <span class="bar-value">{fmt(p.hours)}</span>
               </li>
             ))}
           </ul>
@@ -120,13 +120,13 @@ const weeks = weeksOf(days).map((w) => {
                 hidden={i !== weeks.length - 1}
               >
                 {w.days.map((d) => (
-                  <div class:list={['day', { off: d.sum === 0 }]} title={`${dayLabel(d.date)}: ${fmt(d.sum)} h`}>
+                  <div class:list={['day', { off: d.sum === 0 }]} title={`${dayLabel(d.date)}: ${fmt(d.sum)}`}>
                     <span class="day-total">{d.sum ? fmt(d.sum) : ''}</span>
                     <div class="stack" style={`height: ${(d.sum / maxDay) * 100}%`}>
                       {d.parts
                         .filter((p) => p.hours > 0)
                         .map((p) => (
-                          <span style={`--c: ${p.color}; flex: ${p.hours}`} title={`${p.name}: ${fmt(p.hours)} h`} />
+                          <span style={`--c: ${p.color}; flex: ${p.hours}`} title={`${p.name}: ${fmt(p.hours)}`} />
                         ))}
                     </div>
                     <span class="day-label">
@@ -303,7 +303,7 @@ const weeks = weeksOf(days).map((w) => {
 
   .bars li {
     display: grid;
-    grid-template-columns: 10rem 1fr 3.5rem;
+    grid-template-columns: 10rem 1fr auto;
     align-items: center;
     gap: 0.75rem;
   }
@@ -354,6 +354,15 @@ const weeks = weeksOf(days).map((w) => {
   .day-total {
     font-size: 0.75rem;
     font-weight: 700;
+    letter-spacing: -0.02em;
+    white-space: nowrap;
+  }
+
+  /* Hours and minutes are wider than plain hours, so make them smaller on phones. */
+  @media (max-width: 30rem) {
+    .day-total {
+      font-size: 0.6rem;
+    }
   }
 
   .stack {
@@ -413,7 +422,7 @@ const weeks = weeksOf(days).map((w) => {
 
   @media (max-width: 30rem) {
     .bars li {
-      grid-template-columns: 1fr 3rem;
+      grid-template-columns: 1fr auto;
     }
 
     .bar-name {

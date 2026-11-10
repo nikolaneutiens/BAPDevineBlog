@@ -58,3 +58,18 @@ Store pictures in `src/content/blog/images/<post-name>/`. To place a picture bet
 ```
 
 A tag that isn't in `src/lib/tags.ts` fails the build. Selected filters are stored in the URL, for example `/?tag=Develop&tag=Design`.
+
+## Calendar (live tasks and timer)
+
+The Calendar page reads its tasks from a Supabase database (project `bap-blog`), so changes show up for everyone right away.
+
+- Everyone can see the tasks. To add, delete, tick off or assign tasks, or to use the work timer, click **Log in** at the top of any page and enter the team password once. The password is remembered in that browser until you click **Log out**.
+- The **Work timer** is on your own page (Team → your name): type what you are working on, press **Start**, **Pause** for a break (**Resume** goes on in the same session) and **Stop** when you are done.
+- Every timed stretch is added to that person's hours on the Team pages automatically (rounded to the minute, by day in Belgian time). The live site rebuilds every hour to pick them up; on localhost they show up when you reload the page.
+- Meetings and other fixed moments are in `src/lib/calendar.ts`.
+
+Setting or changing the team password: open the project in the Supabase dashboard, go to **SQL Editor** and run:
+
+```sql
+update private.team_secret set password_hash = extensions.crypt('the new password', extensions.gen_salt('bf'));
+```

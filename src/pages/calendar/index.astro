@@ -1,0 +1,711 @@
+---
+import Base from '../../layouts/Base.astro';
+import { EVENTS, TRACKS } from '../../lib/calendar';
+import { TEAM } from '../../lib/team';
+
+const team = TEAM.map(({ id, name, color }) => ({ id, name, color }));
+---
+
+<Base title="Calendar" description="Our planning for the BAP project: what we work on each day, per track.">
+  <h1>Calendar</h1>
+  <p class="intro">
+    Our planning: what we work on each day, split into design, UX and development. Tasks update live for everyone.
+  </p>
+
+  <div class="toolbar">
+    <ul class="legend" aria-label="Tracks">
+      {
+        TRACKS.map((t) => (
+          <li data-tag={t.tag}>
+            <span class="dot" aria-hidden="true" />
+            {t.label}
+          </li>
+        ))
+      }
+    </ul>
+
+  </div>
+
+  <form class="add-form" data-add-global hidden>
+    <p class="add-title">New task</p>
+    <div class="row">
+      <input name="title" type="text" placeholder="What needs to happen?" maxlength="200" required />
+    </div>
+    <div class="row">
+      <input name="date" type="date" required aria-label="Day" />
+      <select name="track" aria-label="Track">
+        {TRACKS.map((t) => <option value={t.id}>{t.label}</option>)}
+      </select>
+      <select name="assignee" aria-label="Person">
+        <option value="">Nobody yet</option>
+        {team.map((m) => <option value={m.id}>{m.name.split(' ')[0]}</option>)}
+      </select>
+      <button type="submit" class="pill">Add</button>
+    </div>
+  </form>
+
+  <p class="message" data-message hidden></p>
+  <div data-calendar aria-busy="true">
+    <p class="loading">Loading the planning…</p>
+  </div>
+
+  <script is:inline type="application/json" id="calendar-data" set:html={JSON.stringify({ events: EVENTS, tracks: TRACKS, team })}
+  ></script>
+</Base>
+
+<script>
+  import type { Task } from '../../lib/supabase';
+  import { canEdit, db, onAuthChange, teamCall } from '../../lib/teamAuth';
+
+  type Track = { id: Task['track']; label: string; tag: string };
+  type Member = { id: NonNullable<Task['assignee']>; name: string; color: string };
+  type Event = { date: string; time?: string; title: string };
+
+  const { events, tracks, team } = JSON.parse(document.getElementById('calendar-data')!.textContent!) as {
+    events: Event[];
+    tracks: Track[];
+    team: Member[];
+  };
+
+  const root = document.querySelector<HTMLElement>('[data-calendar]')!;
+  const messageEl = document.querySelector<HTMLElement>('[data-message]')!;
+  const globalAdd = document.querySelector<HTMLFormElement>('[data-add-global]')!;
+
+  let tasks: Task[] = [];
+  let loaded = false;
+  const openForms = new Set<string>(); // days with an open "add task" form
+
+  // ---------- talking to the database
+  function showMessage(text: string) {
+    messageEl.textContent = text;
+    messageEl.hidden = false;
+    clearTimeout((showMessage as any).t);
+    (showMessage as any).t = setTimeout(() => (messageEl.hidden = true), 6000);
+  }
+
+  async function call(fn: string, args: Record<string, unknown>) {
+    const problem = await teamCall(fn, args);
+    if (problem) {
+      showMessage(problem);
+      return false;
+    }
+    await load();
+    return true;
+  }
+
+  async function load() {
+    const t = await db.from('tasks').select('*').order('created_at');
+    if (t.error) {
+      root.setAttribute('aria-busy', 'false');
+      root.replaceChildren(el('p', { class: 'message' }, 'Could not load the planning. Try again later.'));
+      return;
+    }
+    tasks = t.data as Task[];
+    loaded = true;
+    render();
+  }
+
+  let reloadTimer: ReturnType<typeof setTimeout> | undefined;
+  db.channel('calendar')
+    .on('postgres_changes', { event: '*', schema: 'public', table: 'tasks' }, () => scheduleReload())
+    .subscribe();
+  function scheduleReload() {
+    clearTimeout(reloadTimer);
+    reloadTimer = setTimeout(load, 250);
+  }
+
+  // ---------- dates
+  const DAY = 86_400_000;
+  const iso = (t: number) => new Date(t).toISOString().slice(0, 10);
+  const utc = (d: string) => Date.parse(d + 'T00:00:00Z');
+  const mondayOf = (d: string) => utc(d) - ((new Date(utc(d)).getUTCDay() + 6) % 7) * DAY;
+  const fmt = (d: string, o: Intl.DateTimeFormatOptions) =>
+    new Date(utc(d)).toLocaleDateString('en-GB', { timeZone: 'UTC', ...o });
+  const todayIso = () => {
+    const n = new Date();
+    return `${n.getFullYear()}-${String(n.getMonth() + 1).padStart(2, '0')}-${String(n.getDate()).padStart(2, '0')}`;
+  };
+
+  // ---------- small DOM helper (text always goes in as text, never as HTML)
+  function el<K extends keyof HTMLElementTagNameMap>(
+    tag: K,
+    attrs: Record<string, string | boolean | undefined> = {},
+    ...children: (Node | string | null | false | undefined)[]
+  ) {
+    const node = document.createElement(tag);
+    for (const [k, v] of Object.entries(attrs)) {
+      if (v === undefined || v === false) continue;
+      node.setAttribute(k, v === true ? '' : v);
+    }
+    for (const c of children) if (c) node.append(c);
+    return node;
+  }
+
+  // ---------- rendering
+  function personChip(id: Task['assignee']) {
+    const m = team.find((p) => p.id === id);
+    if (!m) return null;
+    const chip = el('span', { class: 'chip', title: m.name }, m.name.split(' ')[0]);
+    chip.style.setProperty('--c', m.color);
+    return chip;
+  }
+
+  function taskItem(task: Task) {
+    const item = el('li', { class: `task${task.done ? ' done' : ''}` });
+    item.dataset.id = task.id;
+
+    const check = el('input', {
+      type: 'checkbox',
+      'aria-label': `Done: ${task.title}`,
+      disabled: !canEdit(),
+    }) as HTMLInputElement;
+    check.checked = task.done;
+    check.addEventListener('change', () => call('update_task', { task_id: task.id, task_done: check.checked }));
+
+    const head = el('div', { class: 'task-head' }, check, el('span', { class: 'task-title' }, task.title));
+
+    const meta = el('div', { class: 'task-meta' });
+    if (canEdit()) {
+      const select = el(
+        'select',
+        { class: 'assign', 'aria-label': `Who does ${task.title}` },
+        el('option', { value: '' }, 'Nobody'),
+        ...team.map((m) => el('option', { value: m.id }, m.name.split(' ')[0])),
+      ) as HTMLSelectElement;
+      select.value = task.assignee ?? '';
+      const m = team.find((p) => p.id === task.assignee);
+      if (m) select.style.setProperty('--c', m.color);
+      select.addEventListener('change', () =>
+        call('update_task', select.value ? { task_id: task.id, task_assignee: select.value } : { task_id: task.id, clear_assignee: true }),
+      );
+      meta.append(select);
+    } else {
+      const chip = personChip(task.assignee);
+      if (chip) meta.append(chip);
+    }
+
+    if (canEdit()) {
+      const del = el('button', { type: 'button', class: 'icon delete', title: 'Delete', 'aria-label': `Delete: ${task.title}` }, '✕');
+      del.addEventListener('click', () => {
+        if (confirm(`Delete "${task.title}"?`)) call('delete_task', { task_id: task.id });
+      });
+      meta.append(del);
+    }
+
+    item.append(head);
+    if (meta.childElementCount) item.append(meta);
+    return item;
+  }
+
+  function addForm(date: string) {
+    const form = el(
+      'form',
+      { class: 'add-form inline' },
+      el('div', { class: 'row' }, el('input', { name: 'title', type: 'text', placeholder: 'What needs to happen?', maxlength: '200', required: true, 'aria-label': 'Task' })),
+      el(
+        'div',
+        { class: 'row' },
+        el('select', { name: 'track', 'aria-label': 'Track' }, ...tracks.map((t) => el('option', { value: t.id }, t.label))),
+        el('select', { name: 'assignee', 'aria-label': 'Person' }, el('option', { value: '' }, 'Nobody yet'), ...team.map((m) => el('option', { value: m.id }, m.name.split(' ')[0]))),
+        el('button', { type: 'submit', class: 'pill' }, 'Add'),
+        el('button', { type: 'button', class: 'pill ghost', 'data-cancel': true }, 'Cancel'),
+      ),
+    ) as HTMLFormElement;
+    form.querySelector('[data-cancel]')!.addEventListener('click', () => {
+      openForms.delete(date);
+      render();
+    });
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const f = new FormData(form);
+      const ok = await call('add_task', {
+        task_date: date,
+        task_track: f.get('track'),
+        task_title: String(f.get('title')),
+        task_assignee: f.get('assignee') || null,
+      });
+      if (ok) openForms.delete(date), render();
+    });
+    return form;
+  }
+
+  function dayCard(date: string) {
+    const dayEvents = events.filter((e) => e.date === date);
+    const dayTasks = tasks.filter((t) => t.date === date);
+    const isToday = date === todayIso();
+    const card = el('li', { class: `day${isToday ? ' is-today' : ''}`, 'aria-current': isToday ? 'date' : undefined });
+
+    card.append(
+      el(
+        'time',
+        { class: 'date', datetime: date },
+        el('span', { class: 'weekday' }, fmt(date, { weekday: 'short' })),
+        el('span', { class: 'number' }, fmt(date, { day: 'numeric' })),
+        el('span', { class: 'month' }, fmt(date, { month: 'short' })),
+      ),
+    );
+
+    const plan = el('div', { class: 'plan' });
+    if (isToday) plan.append(el('span', { class: 'today-badge' }, 'Today'));
+    for (const ev of dayEvents) {
+      plan.append(el('p', { class: 'event' }, ev.time ? el('span', { class: 'event-time' }, ev.time) : null, ev.title));
+    }
+
+    const used = tracks.map((t, i) => ({ t, i, list: dayTasks.filter((x) => x.track === t.id) })).filter((x) => x.list.length);
+    if (used.length) {
+      const grid = el('div', { class: 'tracks' });
+      for (const { t, i, list } of used) {
+        const col = el('section', { class: 'track', 'data-tag': t.tag }, el('h3', {}, t.label), el('ul', { class: 'tasks' }, ...list.map(taskItem)));
+        col.style.setProperty('--col', String(i + 1));
+        grid.append(col);
+      }
+      plan.append(grid);
+    } else if (!dayEvents.length) {
+      plan.append(el('p', { class: 'nothing' }, 'Nothing planned.'));
+    }
+
+    if (canEdit()) {
+      if (openForms.has(date)) plan.append(addForm(date));
+      else {
+        const add = el('button', { type: 'button', class: 'add-btn' }, '+ Add task');
+        add.addEventListener('click', () => {
+          openForms.add(date);
+          render();
+          root.querySelector<HTMLInputElement>(`.day[data-date="${date}"] .add-form input`)?.focus();
+        });
+        plan.append(add);
+      }
+    }
+
+    card.append(plan);
+    card.dataset.date = date;
+    return card;
+  }
+
+  function render() {
+    // Keep focus and typed text in an open form when a live update comes in.
+    const active = document.activeElement as HTMLInputElement | null;
+    const typing = active?.closest('.add-form.inline') ? { date: active.closest<HTMLElement>('.day')?.dataset.date, value: active.value, name: active.name } : null;
+
+    const dates = [...tasks.map((t) => t.date), ...events.map((e) => e.date), todayIso()];
+    const first = Math.min(...dates.map(mondayOf));
+    const last = Math.max(...dates.map(mondayOf));
+    const weeks = el('div', { class: 'weeks' });
+    for (let t = first; t <= last; t += 7 * DAY) {
+      const days = Array.from({ length: 7 }, (_, i) => iso(t + i * DAY));
+      // Hide empty days, but always show today.
+      const shown = days.filter((d) => d === todayIso() || tasks.some((x) => x.date === d) || events.some((e) => e.date === d) || openForms.has(d));
+      if (!shown.length) continue;
+      weeks.append(
+        el(
+          'section',
+          { class: 'week' },
+          el('h2', {}, `${fmt(days[0], { day: 'numeric', month: 'short' })} – ${fmt(days[6], { day: 'numeric', month: 'short' })}`),
+          el('ol', { class: 'days' }, ...shown.map(dayCard)),
+        ),
+      );
+    }
+    root.setAttribute('aria-busy', 'false');
+    root.replaceChildren(weeks);
+
+    if (typing?.date) {
+      const input = root.querySelector<HTMLInputElement>(`.day[data-date="${typing.date}"] .add-form [name="${typing.name}"]`);
+      if (input) {
+        input.value = typing.value;
+        input.focus();
+      }
+    }
+  }
+
+  // Global form, for a day that is not on the calendar yet.
+  (globalAdd.elements.namedItem('date') as HTMLInputElement).value = todayIso();
+  globalAdd.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const f = new FormData(globalAdd);
+    const ok = await call('add_task', {
+      task_date: f.get('date'),
+      task_track: f.get('track'),
+      task_title: String(f.get('title')),
+      task_assignee: f.get('assignee') || null,
+    });
+    if (ok) (globalAdd.elements.namedItem('title') as HTMLInputElement).value = '';
+  });
+
+  onAuthChange(() => {
+    globalAdd.hidden = !canEdit();
+    if (loaded) render();
+  });
+  load();
+</script>
+
+<style>
+  h1 {
+    margin: 0 0 0.5rem;
+  }
+
+  .intro {
+    margin: 0 0 1.25rem;
+    color: var(--muted);
+  }
+
+  .toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .legend li {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    padding: 0.3rem 0.85rem;
+    font-size: 0.9rem;
+    font-weight: 700;
+    background: var(--surface);
+    border: 2px solid var(--border);
+    border-radius: 999px;
+  }
+
+  .dot {
+    width: 0.65rem;
+    height: 0.65rem;
+    background: var(--tag-color);
+    border-radius: 3px;
+    transform: rotate(-8deg);
+  }
+
+  :global(.add-form) {
+    display: grid;
+    gap: 0.5rem;
+    margin-bottom: 1.25rem;
+    padding: 1rem 1.1rem;
+    background: var(--surface);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+  }
+
+  .add-title {
+    margin: 0;
+    font-weight: 800;
+  }
+
+  :global(.add-form .row) {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  :global(.add-form input),
+  :global(.add-form select),
+  :global(select.assign) {
+    min-width: 0;
+    padding: 0.4rem 0.6rem;
+    font: inherit;
+    font-size: 0.95rem;
+    color: var(--ink);
+    background: var(--bg);
+    border: 2px solid var(--border);
+    border-radius: 10px;
+  }
+
+  :global(.add-form input[name='title']) {
+    flex: 1 1 14rem;
+  }
+
+  .message {
+    margin: 0 0 1rem;
+    font-weight: 700;
+    color: var(--accent);
+  }
+
+  .loading {
+    color: var(--muted);
+  }
+
+  /* ---------- weeks and days (built by the script) */
+  [data-calendar] :global(.week + .week) {
+    margin-top: 2.75rem;
+  }
+
+  [data-calendar] :global(.week h2) {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.25rem 0.75rem;
+    margin: 0 0 1rem;
+    font-size: 1.6rem;
+  }
+
+  [data-calendar] :global(.week-range) {
+    font-size: 1rem;
+    font-weight: 600;
+    letter-spacing: 0;
+    color: var(--muted);
+  }
+
+  [data-calendar] :global(.days) {
+    display: grid;
+    gap: 0.75rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  [data-calendar] :global(.day) {
+    display: grid;
+    grid-template-columns: 4.25rem minmax(0, 1fr);
+    gap: 1rem;
+    padding: 1rem 1.1rem;
+    background: var(--surface);
+    border: 2px solid transparent;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+  }
+
+  [data-calendar] :global(.day.is-today) {
+    border-color: var(--accent);
+  }
+
+  [data-calendar] :global(.date) {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 0.15rem;
+    line-height: 1.1;
+    text-align: center;
+  }
+
+  [data-calendar] :global(.weekday),
+  [data-calendar] :global(.month) {
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--muted);
+  }
+
+  [data-calendar] :global(.number) {
+    font-size: 1.9rem;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+  }
+
+  [data-calendar] :global(.is-today .number) {
+    color: var(--accent);
+  }
+
+  [data-calendar] :global(.plan) {
+    display: grid;
+    align-content: start;
+    gap: 0.6rem;
+  }
+
+  [data-calendar] :global(.today-badge) {
+    justify-self: start;
+    padding: 0.1rem 0.6rem;
+    font-size: 0.75rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: #fff;
+    background: var(--accent);
+    border-radius: 999px;
+  }
+
+  [data-calendar] :global(.event) {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.5rem;
+    margin: 0;
+    font-weight: 800;
+  }
+
+  [data-calendar] :global(.event-time) {
+    padding: 0.05rem 0.5rem;
+    font-size: 0.85rem;
+    font-variant-numeric: tabular-nums;
+    background: var(--hover);
+    border-radius: 6px;
+  }
+
+  [data-calendar] :global(.tracks) {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.75rem 1rem;
+  }
+
+  /* Every track keeps its own column, so they line up from day to day. */
+  [data-calendar] :global(.track) {
+    grid-column: var(--col);
+    padding-left: 0.75rem;
+    border-left: 3px solid var(--tag-color);
+  }
+
+  [data-calendar] :global(.track h3) {
+    margin: 0 0 0.2rem;
+    font-size: 0.78rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--muted);
+  }
+
+  [data-calendar] :global(.tasks) {
+    display: grid;
+    gap: 0.5rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  [data-calendar] :global(.task) {
+    display: grid;
+    gap: 0.3rem;
+    line-height: 1.35;
+  }
+
+  [data-calendar] :global(.task-head) {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.45rem;
+  }
+
+  [data-calendar] :global(.task-head input) {
+    flex: none;
+    width: 1rem;
+    height: 1rem;
+    margin: 0.15rem 0 0;
+    accent-color: var(--accent);
+  }
+
+  [data-calendar] :global(.task.done .task-title) {
+    color: var(--muted);
+    text-decoration: line-through;
+  }
+
+  [data-calendar] :global(.task-meta) {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.35rem;
+    padding-left: 1.45rem;
+  }
+
+  [data-calendar] :global(.chip) {
+    padding: 0 0.5rem;
+    font-size: 0.75rem;
+    font-weight: 800;
+    color: var(--tag-text);
+    background: var(--c);
+    border-radius: 999px;
+  }
+
+  [data-calendar] :global(.chip.empty) {
+    color: var(--muted);
+    background: var(--hover);
+  }
+
+  [data-calendar] :global(select.assign) {
+    padding: 0.05rem 0.35rem;
+    font-size: 0.78rem;
+    font-weight: 700;
+    border-radius: 999px;
+    border-color: var(--c, var(--border));
+  }
+
+  [data-calendar] :global(.icon) {
+    display: grid;
+    place-items: center;
+    width: 1.6rem;
+    height: 1.6rem;
+    padding: 0;
+    font: inherit;
+    font-size: 0.65rem;
+    font-weight: 800;
+    color: var(--ink);
+    background: var(--bg);
+    border: 0;
+    border-radius: 999px;
+    cursor: pointer;
+  }
+
+  [data-calendar] :global(.icon.delete) {
+    color: var(--muted);
+  }
+
+  @media (hover: hover) {
+    [data-calendar] :global(.icon.delete:hover) {
+      color: var(--accent);
+    }
+  }
+
+  [data-calendar] :global(.add-btn) {
+    justify-self: start;
+    padding: 0.2rem 0.7rem;
+    font: inherit;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--muted);
+    background: transparent;
+    border: 2px dashed var(--border);
+    border-radius: 999px;
+    cursor: pointer;
+  }
+
+  [data-calendar] :global(.add-btn:hover) {
+    color: var(--accent);
+    border-color: var(--accent);
+  }
+
+  [data-calendar] :global(.add-form.inline) {
+    margin: 0;
+    padding: 0.75rem;
+    background: var(--bg);
+    box-shadow: none;
+  }
+
+  [data-calendar] :global(.add-form.inline input),
+  [data-calendar] :global(.add-form.inline select) {
+    background: var(--surface);
+  }
+
+  [data-calendar] :global(.nothing) {
+    margin: 0;
+    color: var(--muted);
+  }
+
+  @media (max-width: 40rem) {
+    [data-calendar] :global(.tracks) {
+      grid-template-columns: 1fr;
+    }
+
+    [data-calendar] :global(.track) {
+      grid-column: auto;
+    }
+  }
+
+  @media (max-width: 30rem) {
+    [data-calendar] :global(.day) {
+      grid-template-columns: 3.25rem minmax(0, 1fr);
+      gap: 0.75rem;
+      padding: 0.9rem;
+    }
+
+    [data-calendar] :global(.number) {
+      font-size: 1.6rem;
+    }
+  }
+</style>

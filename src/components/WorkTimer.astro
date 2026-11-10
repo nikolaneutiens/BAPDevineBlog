@@ -1,0 +1,331 @@
+---
+/**
+ * Work timer for one team member: start when you begin working, pause for a break, stop when you're done.
+ * Every stretch is saved in the database and added to the hours automatically (see src/lib/hours.ts).
+ * Editing needs the team login at the top of the page.
+ */
+import { member, type MemberId } from '../lib/team';
+
+interface Props {
+  person: MemberId;
+}
+
+const m = member(Astro.props.person);
+const first = m.name.split(' ')[0];
+---
+
+<section class="work-timer" aria-labelledby="timer-title">
+  <h2 id="timer-title">Work timer</h2>
+
+  <div class="person" data-person={m.id} style={`--c: ${m.color}`}>
+    <div class="who">
+      <span class="light" aria-hidden="true"></span>
+      <p class="state" data-state>…</p>
+    </div>
+
+    <div class="numbers">
+      <span class="clock" data-clock aria-label="Time this session">0:00:00</span>
+      <span class="today" data-today></span>
+    </div>
+
+    <form class="controls" data-controls hidden>
+      <input name="note" type="text" maxlength="200" placeholder="What are you working on?" aria-label={`What ${first} is working on`} />
+      <div class="buttons">
+        <button type="submit" class="pill start" data-start>Start</button>
+        <button type="button" class="pill pause" data-pause hidden>Pause</button>
+        <button type="button" class="pill ghost" data-stop hidden>Stop</button>
+      </div>
+    </form>
+    <p class="hint" data-hint>Log in at the top of the page to start the timer.</p>
+  </div>
+  <p class="message" data-message hidden></p>
+</section>
+
+<script>
+  import type { TimeEntry, WorkTimer } from '../lib/supabase';
+  import { canEdit, db, onAuthChange, teamCall } from '../lib/teamAuth';
+
+  const section = document.querySelector<HTMLElement>('.work-timer');
+  if (section) {
+    const message = section.querySelector<HTMLElement>('[data-message]')!;
+    let timers: WorkTimer[] = [];
+    let entries: TimeEntry[] = [];
+
+    const startOfToday = () => {
+      const d = new Date();
+      d.setHours(0, 0, 0, 0);
+      return d.getTime();
+    };
+    const span = (e: TimeEntry, now: number, from = 0) =>
+      Math.max(0, (e.ended_at ? Date.parse(e.ended_at) : now) - Math.max(from, Date.parse(e.started_at)));
+    const clock = (ms: number) => {
+      const s = Math.floor(ms / 1000);
+      return `${Math.floor(s / 3600)}:${String(Math.floor((s % 3600) / 60)).padStart(2, '0')}:${String(s % 60).padStart(2, '0')}`;
+    };
+    const short = (ms: number) => {
+      const m = Math.round(ms / 60000);
+      return m < 60 ? `${m} min` : `${Math.floor(m / 60)} h ${String(m % 60).padStart(2, '0')}`;
+    };
+    const timeOfDay = (iso: string) => new Date(iso).toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
+
+    function stateOf(person: string) {
+      const timer = timers.find((t) => t.person === person);
+      const own = entries.filter((e) => e.person === person);
+      const running = own.some((e) => !e.ended_at);
+      return { timer, running, paused: !!timer && !running, session: timer ? own.filter((e) => e.session === timer.session) : [], own };
+    }
+
+    function tick() {
+      const now = Date.now();
+      const today = startOfToday();
+      section!.querySelectorAll<HTMLElement>('[data-person]').forEach((row) => {
+        const { session, own } = stateOf(row.dataset.person!);
+        row.querySelector('[data-clock]')!.textContent = clock(session.reduce((s, e) => s + span(e, now), 0));
+        const todayMs = own.reduce((s, e) => s + span(e, now, today), 0);
+        row.querySelector('[data-today]')!.textContent = todayMs >= 60000 ? `Today: ${short(todayMs)}` : '';
+      });
+    }
+
+    function render() {
+      section!.querySelectorAll<HTMLElement>('[data-person]').forEach((row) => {
+        const { timer, running, paused, session } = stateOf(row.dataset.person!);
+        row.classList.toggle('running', running);
+        row.classList.toggle('paused', paused);
+
+        const state = row.querySelector<HTMLElement>('[data-state]')!;
+        const first = session[0];
+        state.textContent = running
+          ? `Working since ${first ? timeOfDay(first.started_at) : 'now'}${timer?.note ? ` · ${timer.note}` : ''}`
+          : paused
+            ? `On a break${timer?.note ? ` · ${timer.note}` : ''}`
+            : 'Not working';
+
+        const controls = row.querySelector<HTMLFormElement>('[data-controls]')!;
+        controls.hidden = !canEdit();
+        row.querySelector<HTMLElement>('[data-hint]')!.hidden = canEdit();
+        const note = controls.elements.namedItem('note') as HTMLInputElement;
+        if (document.activeElement !== note) note.value = timer?.note ?? '';
+        const start = row.querySelector<HTMLButtonElement>('[data-start]')!;
+        start.hidden = running;
+        start.textContent = paused ? 'Resume' : 'Start';
+        row.querySelector<HTMLButtonElement>('[data-pause]')!.hidden = !running;
+        row.querySelector<HTMLButtonElement>('[data-stop]')!.hidden = !timer;
+      });
+      tick();
+    }
+
+    async function load() {
+      const since = new Date(startOfToday()).toISOString();
+      const [t, todays, open] = await Promise.all([
+        db.from('work_timers').select('*'),
+        db.from('time_entries').select('*').gte('started_at', since),
+        // Sessions that started before today (or ran past midnight) still count for the clock.
+        db.from('time_entries').select('*').or(`ended_at.is.null,ended_at.gte.${since}`),
+      ]);
+      if (t.error || todays.error || open.error) {
+        show('Could not load the timers.');
+        return;
+      }
+      timers = t.data as WorkTimer[];
+      const all = new Map<string, TimeEntry>();
+      for (const e of [...(todays.data as TimeEntry[]), ...(open.data as TimeEntry[])]) all.set(e.id, e);
+      // Also load the earlier parts of a session that's still going.
+      const sessions = timers.map((x) => x.session);
+      if (sessions.length) {
+        const s = await db.from('time_entries').select('*').in('session', sessions);
+        for (const e of (s.data ?? []) as TimeEntry[]) all.set(e.id, e);
+      }
+      entries = [...all.values()];
+      render();
+    }
+
+    function show(text: string) {
+      message.textContent = text;
+      message.hidden = false;
+      setTimeout(() => (message.hidden = true), 6000);
+    }
+
+    async function act(fn: string, args: Record<string, unknown>) {
+      const problem = await teamCall(fn, args);
+      if (problem) show(problem);
+      await load();
+    }
+
+    section.querySelectorAll<HTMLElement>('[data-person]').forEach((row) => {
+      const who = row.dataset.person!;
+      const form = row.querySelector<HTMLFormElement>('[data-controls]')!;
+      const note = form.elements.namedItem('note') as HTMLInputElement;
+      form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        act('work_start', { who, what: note.value });
+      });
+      row.querySelector('[data-pause]')!.addEventListener('click', () => act('work_pause', { who }));
+      row.querySelector('[data-stop]')!.addEventListener('click', () => act('work_stop', { who, what: note.value }));
+      // Changing the note while the timer runs saves it for this session.
+      note.addEventListener('change', () => {
+        if (stateOf(who).timer) act('work_note', { who, what: note.value });
+      });
+    });
+
+    let reload: ReturnType<typeof setTimeout> | undefined;
+    const later = () => {
+      clearTimeout(reload);
+      reload = setTimeout(load, 250);
+    };
+    db.channel('work-timer')
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'work_timers' }, later)
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'time_entries' }, later)
+      .subscribe();
+
+    onAuthChange(render);
+    setInterval(tick, 1000);
+    load();
+  }
+</script>
+
+<style>
+  .work-timer {
+    margin: 0 0 3rem;
+  }
+
+  h2 {
+    margin: 0 0 1rem;
+  }
+
+  .person {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 0.9rem 1rem;
+    padding: 1.1rem 1.25rem;
+    background: var(--surface);
+    border: 2px solid transparent;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+  }
+
+  .person.running {
+    border-color: var(--c);
+  }
+
+  .who {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    min-width: 0;
+  }
+
+  /* Grey when not working, the person's colour (pulsing) while working, orange on a break. */
+  .light {
+    flex: none;
+    width: 0.8rem;
+    height: 0.8rem;
+    background: var(--border);
+    border-radius: 999px;
+  }
+
+  .running .light {
+    background: var(--c);
+    box-shadow: 0 0 0 0 var(--c);
+    animation: pulse 1.6s ease-out infinite;
+  }
+
+  .paused .light {
+    background: #c27a1f;
+  }
+
+  @keyframes pulse {
+    to {
+      box-shadow: 0 0 0 0.5rem transparent;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .running .light {
+      animation: none;
+    }
+  }
+
+  .state {
+    margin: 0;
+    overflow: hidden;
+    font-weight: 700;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .numbers {
+    display: grid;
+    justify-items: end;
+  }
+
+  .clock {
+    font-size: 2rem;
+    font-weight: 800;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.02em;
+    color: var(--muted);
+  }
+
+  .running .clock {
+    color: var(--ink);
+  }
+
+  .today {
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--muted);
+  }
+
+  .controls {
+    display: flex;
+    flex-wrap: wrap;
+    grid-column: 1 / -1;
+    gap: 0.5rem;
+  }
+
+  .controls[hidden],
+  .hint[hidden] {
+    display: none;
+  }
+
+  .controls input {
+    flex: 1 1 14rem;
+    min-width: 0;
+    padding: 0.4rem 0.6rem;
+    font: inherit;
+    font-size: 0.95rem;
+    color: var(--ink);
+    background: var(--bg);
+    border: 2px solid var(--border);
+    border-radius: 10px;
+  }
+
+  .buttons {
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  .pill.start {
+    background: #3f8a4c;
+    border-color: #3f8a4c;
+  }
+
+  .pill.pause {
+    background: #c27a1f;
+    border-color: #c27a1f;
+  }
+
+  .hint {
+    grid-column: 1 / -1;
+    margin: 0;
+    font-size: 0.9rem;
+    color: var(--muted);
+  }
+
+  .message {
+    margin: 0.75rem 0 0;
+    font-weight: 700;
+    color: var(--accent);
+  }
+</style>

@@ -1,3 +1,4 @@
+import { fetchFinishedTimeEntries } from './supabase';
 import type { MemberId } from './team';
 
 /**
@@ -20,7 +21,8 @@ export interface HourEntry {
 const together = (date: string, hours: number, task: string): HourEntry[] =>
   (['lomme', 'ximen', 'nikolas'] as const).map((person) => ({ date, person, hours, task }));
 
-export const HOURS: HourEntry[] = [
+/** Hours logged by hand. Use getHours() to also get the hours timed with the work timer. */
+const MANUAL_HOURS: HourEntry[] = [
   // ---- together
   ...together('2026-10-27', 3, 'Kick-off at school (9:00–12:00)'),
   ...together('2026-10-28', 2, 'Team call'),
@@ -40,9 +42,46 @@ export const HOURS: HourEntry[] = [
   // Add your hours here.
 ];
 
+/**
+ * All hours: the ones above plus everything timed with the work timer (read fresh from the database
+ * every time, so new timed hours show up on the next page load in dev and on the next build online).
+ */
+export async function getHours(): Promise<HourEntry[]> {
+  return [...MANUAL_HOURS, ...(await timedHours())];
+}
+
+/**
+ * Turns the timed sessions from the database into hour entries: one per person, per day, per task.
+ * The day is the day in Belgium when the work started. If the database can't be reached, the build goes on without them.
+ */
+async function timedHours(): Promise<HourEntry[]> {
+  let rows;
+  try {
+    rows = await fetchFinishedTimeEntries();
+  } catch (error) {
+    console.warn(`[hours] Timed hours skipped: ${(error as Error).message}`);
+    return [];
+  }
+  const day = (t: string) => new Date(t).toLocaleDateString('en-CA', { timeZone: 'Europe/Brussels' });
+  const grouped = new Map<string, HourEntry>();
+  for (const r of rows) {
+    const date = day(r.started_at);
+    const hours = (Date.parse(r.ended_at!) - Date.parse(r.started_at)) / 3_600_000;
+    const task = r.note || 'Work session';
+    const key = `${date}|${r.person}|${task}`;
+    const entry = grouped.get(key) ?? { date, person: r.person, hours: 0, task };
+    entry.hours += hours;
+    grouped.set(key, entry);
+  }
+  // Round to the minute, and leave out sessions shorter than a minute.
+  return [...grouped.values()]
+    .map((e) => ({ ...e, hours: Math.round(e.hours * 60) / 60 }))
+    .filter((e) => e.hours > 0);
+}
+
 /** Hour statistics for one person, or for the whole team when no person is given. */
-export function hourStats(person?: MemberId) {
-  const entries = person ? HOURS.filter((h) => h.person === person) : HOURS;
+export function hourStats(hours: HourEntry[], person?: MemberId) {
+  const entries = person ? hours.filter((h) => h.person === person) : hours;
   const total = entries.reduce((sum, h) => sum + h.hours, 0);
   const days = [...new Set(entries.map((h) => h.date))].sort();
   const perDay = days.map((date) => ({
@@ -61,7 +100,15 @@ export function hourStats(person?: MemberId) {
   };
 }
 
-export const fmtHours = (n: number) => String(Math.round(n * 100) / 100);
+/** Hours as hours and minutes: 16.25 -> "16h 15m", 6 -> "6h", 0.75 -> "45m". */
+export const fmtHours = (n: number) => {
+  const total = Math.round(n * 60);
+  const h = Math.floor(total / 60);
+  const m = total % 60;
+  if (!h) return m ? `${m}m` : "0h";
+  // A non-breaking space keeps hours and minutes on one line.
+  return m ? `${h}h\u00a0${String(m).padStart(2, '0')}m` : `${h}h`;
+};
 
 const DAY = 86_400_000;
 const toIso = (t: number) => new Date(t).toISOString().slice(0, 10);
@@ -72,10 +119,16 @@ export interface Week {
   days: string[]; // Monday to Sunday, YYYY-MM-DD
 }
 
-/** Every week (Monday to Sunday) from the first to the last logged day, including weeks without hours. */
+/** Today in Belgium, as YYYY-MM-DD. */
+export const today = () => new Date().toLocaleDateString('en-CA', { timeZone: 'Europe/Brussels' });
+
+/**
+ * Every week (Monday to Sunday) from the first logged day up to the current week,
+ * including weeks without hours.
+ */
 export function weeksOf(dates: string[]): Week[] {
   if (dates.length === 0) return [];
-  const sorted = [...dates].sort();
+  const sorted = [...dates, today()].sort();
   const monday = (d: string) => {
     const t = Date.parse(d + 'T00:00:00Z');
     return t - ((new Date(t).getUTCDay() + 6) % 7) * DAY;

@@ -3,7 +3,8 @@ import { Image } from 'astro:assets';
 import PostCard from '../../components/PostCard.astro';
 import Base from '../../layouts/Base.astro';
 import WeekSwitcher from '../../components/WeekSwitcher.astro';
-import { dayLabel, fmtHours, hourStats, HOURS, weekdayLabel, weeksOf } from '../../lib/hours';
+import WorkTimer from '../../components/WorkTimer.astro';
+import { dayLabel, fmtHours, getHours, hourStats, weekdayLabel, weeksOf } from '../../lib/hours';
 import { withBase } from '../../lib/paths';
 import { photoOf } from '../../lib/photos';
 import { getPosts } from '../../lib/posts';
@@ -16,13 +17,14 @@ export function getStaticPaths() {
 const { m } = Astro.props;
 const photo = photoOf(m.id);
 const posts = (await getPosts()).filter((p) => p.data.author === m.id);
-const stats = hourStats(m.id);
+const HOURS = await getHours();
+const stats = hourStats(HOURS, m.id);
 const maxDay = Math.max(1, ...stats.perDay.map((d) => d.hours));
 // The same weeks as on the team page, so everyone's chart lines up.
 const weeks = weeksOf(HOURS.map((h) => h.date)).map((w) => {
   const days = w.days.map((date) => stats.perDay.find((d) => d.date === date) ?? { date, hours: 0, tasks: [] });
   const total = days.reduce((s, d) => s + d.hours, 0);
-  return { ...w, days, title: `Week ${w.number} · ${w.label} · ${fmtHours(total)} h` };
+  return { ...w, days, title: `Week ${w.number} · ${w.label} · ${fmtHours(total)}` };
 });
 ---
 
@@ -35,7 +37,7 @@ const weeks = weeksOf(HOURS.map((h) => h.date)).map((w) => {
       <p class="role">{m.role}</p>
       <dl class="stats">
         <div>
-          <dt>Hours in total</dt>
+          <dt>Worked in total</dt>
           <dd>{fmtHours(stats.total)}</dd>
         </div>
         <div>
@@ -43,7 +45,7 @@ const weeks = weeksOf(HOURS.map((h) => h.date)).map((w) => {
           <dd>{stats.days.length}</dd>
         </div>
         <div>
-          <dt>Hours per day</dt>
+          <dt>Per day on average</dt>
           <dd>{fmtHours(stats.average)}</dd>
         </div>
         <div>
@@ -65,6 +67,8 @@ const weeks = weeksOf(HOURS.map((h) => h.date)).map((w) => {
     </div>
   </section>
 
+  <WorkTimer person={m.id} />
+
   <section aria-labelledby="hours-title">
     <h2 id="hours-title">Hours worked</h2>
     {
@@ -84,7 +88,7 @@ const weeks = weeksOf(HOURS.map((h) => h.date)).map((w) => {
               {w.days.map((d) => (
                 <div
                   class:list={['day', { off: d.hours === 0 }]}
-                  title={`${dayLabel(d.date)}: ${fmtHours(d.hours)} h${d.tasks.length ? ' — ' + d.tasks.join(', ') : ''}`}
+                  title={`${dayLabel(d.date)}: ${fmtHours(d.hours)}${d.tasks.length ? ' — ' + d.tasks.join(', ') : ''}`}
                 >
                   <span class="day-total">{d.hours ? fmtHours(d.hours) : ''}</span>
                   <span class="bar" style={`--c: ${m.color}; height: ${(d.hours / maxDay) * 100}%`} />
@@ -238,6 +242,15 @@ const weeks = weeksOf(HOURS.map((h) => h.date)).map((w) => {
   .day-total {
     font-size: 0.75rem;
     font-weight: 700;
+    letter-spacing: -0.02em;
+    white-space: nowrap;
+  }
+
+  /* Hours and minutes are wider than plain hours, so make them smaller on phones. */
+  @media (max-width: 30rem) {
+    .day-total {
+      font-size: 0.6rem;
+    }
   }
 
   .bar {
