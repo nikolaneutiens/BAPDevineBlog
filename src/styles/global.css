@@ -32,7 +32,7 @@
 }
 
 [data-tag='Develop'] {
-  --tag-color: #f08c70;
+  --tag-color: #7db3e3;
 }
 
 [data-tag='Research'] {
@@ -40,7 +40,35 @@
 }
 
 [data-tag='Design'] {
-  --tag-color: #7db3e3;
+  --tag-color: #e8665a;
+}
+
+/* A post takes the colour of its first tag for links, hovers and details.
+   Darker than the tag colours so text stays readable. */
+[data-accent='Design'] {
+  --accent: #c2372b;
+}
+
+[data-accent='Research'] {
+  --accent: #3b7a33;
+}
+
+[data-accent='Develop'] {
+  --accent: #2a659e;
+}
+
+@media (prefers-color-scheme: dark) {
+  [data-accent='Design'] {
+    --accent: #e45a4b;
+  }
+
+  [data-accent='Research'] {
+    --accent: #8fcf85;
+  }
+
+  [data-accent='Develop'] {
+    --accent: #7db8ee;
+  }
 }
 
 *,
