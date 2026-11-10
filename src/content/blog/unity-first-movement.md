@@ -5,15 +5,6 @@ date: 2026-11-03
 author: lomme
 cover: ./images/unity-movement/cover.jpg
 coverAlt: An untextured, white RITS standing in a simple Unity test scene, looking into the camera
-gallery:
-  - src: ./images/unity-movement/idle.jpg
-    alt: RITS standing still in the middle of the test scene, turned towards the camera
-  - src: ./images/unity-movement/walk-left.jpg
-    alt: RITS on the left side of the test scene after walking to the left
-  - src: ./images/unity-movement/run.jpg
-    alt: RITS running to the right in profile, with small dust clouds behind his feet
-  - src: ./images/unity-movement/four-boxlings.jpg
-    alt: The four Boxlings running side by side in Unity, now with their cardboard textures
 tags: [Development]
 ai: I used AI (Claude) as a helper for some parts of the code.
 ---
@@ -28,8 +19,6 @@ In Samen in Balans, every player controls one Boxling by leaning left or right. 
 ## Step 1: a small test scene
 
 I started with the simplest scene possible: a camera, a light, a long ground plane and one Boxling. RITS came straight from Ximen's Blender file, with his rig and his animations. No level, no menus and no story yet. The only question this scene had to answer: does it feel good to move a Boxling left and right?
-
-The game is played from the side, like a side-scroller. That's why RITS can only move along one axis. He can't walk towards the camera or away from it.
 
 ## Step 2: moving left and right
 
@@ -77,7 +66,7 @@ Setting up one Boxling by hand is fine. Doing it four times, and again every tim
 
 ## What's next
 
-Right now, every Boxling still listens to the same keys. The next step is giving each player their own controls. Our Arduino already sends a left or right arrow key when you press a button, so Unity sees it as an ordinary keyboard and the movement works without extra code. After that, the four Boxlings go onto the plank together.
+Right now, every Boxling still listens to the same keys on the keyboard. The next step is testing our own controllers: buttons on an Arduino that tell Unity to go left or right. Because the movement listens to one *Move* action instead of to specific keys, the plan is that the Arduino can plug into that same action without changing the movement code. After that, each player gets their own Boxling, and the four of them go onto the plank together.
 
 ## What I'm taking with me
 
