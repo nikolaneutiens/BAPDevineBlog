@@ -34,9 +34,9 @@ All these values are fields in the Inspector, so we can tune how he feels withou
 
 ## Step 3: turning around
 
-A Boxling should look where he's going. While you walk, the model turns smoothly to the left or the right. When you let go, RITS turns back towards the camera, so he looks at the players while he waits.
+A Boxling should look where he's going. While you walk, the model turns smoothly to the left or the right. When you let go, RITS turns to the front again and his idle animation takes over: his head looks around a little, so he never stands completely still. That looking around isn't done in Unity: it's part of the idle animation that Ximen already made in Blender, and Unity simply plays it.
 
-Only the model turns, not the physics body. That keeps the movement and the looks separate: the body slides left and right, the model on top of it decides where RITS looks.
+Only the model turns, not the physics body. That keeps the movement and the looks separate: the body slides left and right, the model on top of it decides which way RITS faces.
 
 ![RITS standing still and looking into the camera](./images/unity-movement/idle.jpg)
 
