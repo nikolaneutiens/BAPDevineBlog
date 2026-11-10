@@ -1,5 +1,5 @@
 import { fetchFinishedTimeEntries } from './supabase';
-import type { MemberId } from './team';
+import { TEAM, type MemberId } from './team';
 
 /**
  * Time tracking: one line per person per day (or per task).
@@ -148,3 +148,47 @@ export const weekdayLabel = (iso: string) =>
 
 export const dayLabel = (iso: string) =>
   new Date(iso + 'T00:00:00Z').toLocaleDateString('en-GB', { day: 'numeric', month: 'short', timeZone: 'UTC' });
+
+// ---- What the Team pages show. Used when the page is built and again in the browser for live updates.
+
+/** Everything the Team overview shows: totals, hours per person and a stacked chart per week. */
+export function teamSummary(hours: HourEntry[]) {
+  const total = hours.reduce((sum, h) => sum + h.hours, 0);
+  const perPerson = TEAM.map((m) => ({
+    ...m,
+    hours: hours.filter((h) => h.person === m.id).reduce((sum, h) => sum + h.hours, 0),
+  }));
+  const days = [...new Set(hours.map((h) => h.date))].sort();
+  const dayOf = (date: string) => {
+    const parts = TEAM.map((m) => ({
+      ...m,
+      hours: hours.filter((h) => h.date === date && h.person === m.id).reduce((sum, h) => sum + h.hours, 0),
+    }));
+    return { date, parts, sum: parts.reduce((s, p) => s + p.hours, 0) };
+  };
+  const weeks = weeksOf(days).map((w) => {
+    const wd = w.days.map(dayOf);
+    const sum = wd.reduce((s, d) => s + d.sum, 0);
+    return { ...w, days: wd, title: `Week ${w.number} · ${w.label} · ${fmtHours(sum)}` };
+  });
+  return {
+    total,
+    perPerson,
+    maxPerson: Math.max(1, ...perPerson.map((p) => p.hours)),
+    days,
+    average: days.length ? total / days.length : 0,
+    maxDay: Math.max(1, ...days.map((d) => dayOf(d).sum)),
+    weeks,
+  };
+}
+
+/** Everything one member's page shows: their stats and their chart per week (lined up with the team's weeks). */
+export function memberSummary(hours: HourEntry[], person: MemberId) {
+  const stats = hourStats(hours, person);
+  const weeks = weeksOf(hours.map((h) => h.date)).map((w) => {
+    const days = w.days.map((date) => stats.perDay.find((d) => d.date === date) ?? { date, hours: 0, tasks: [] as string[] });
+    const total = days.reduce((s, d) => s + d.hours, 0);
+    return { ...w, days, title: `Week ${w.number} · ${w.label} · ${fmtHours(total)}` };
+  });
+  return { stats, weeks, maxDay: Math.max(1, ...stats.perDay.map((d) => d.hours)) };
+}

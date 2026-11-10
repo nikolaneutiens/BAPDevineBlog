@@ -2,7 +2,7 @@
 import { Image } from 'astro:assets';
 import Base from '../../layouts/Base.astro';
 import WeekSwitcher from '../../components/WeekSwitcher.astro';
-import { fmtHours as fmt, getHours, weekdayLabel, weeksOf } from '../../lib/hours';
+import { dayLabel, fmtHours as fmt, getHours, teamSummary, weekdayLabel } from '../../lib/hours';
 import { withBase } from '../../lib/paths';
 import { photoOf } from '../../lib/photos';
 import { getPosts } from '../../lib/posts';
@@ -11,33 +11,8 @@ import { initials, TEAM } from '../../lib/team';
 const posts = await getPosts();
 const HOURS = await getHours();
 
-// ---- hours statistics
-const total = HOURS.reduce((sum, h) => sum + h.hours, 0);
-const perPerson = TEAM.map((m) => ({
-  ...m,
-  hours: HOURS.filter((h) => h.person === m.id).reduce((sum, h) => sum + h.hours, 0),
-}));
-const maxPerson = Math.max(1, ...perPerson.map((p) => p.hours));
-
-const days = [...new Set(HOURS.map((h) => h.date))].sort();
-const dayOf = (date: string) => {
-  const parts = TEAM.map((m) => ({
-    ...m,
-    hours: HOURS.filter((h) => h.date === date && h.person === m.id).reduce((sum, h) => sum + h.hours, 0),
-  }));
-  return { date, parts, sum: parts.reduce((s, p) => s + p.hours, 0) };
-};
-const maxDay = Math.max(1, ...days.map((d) => dayOf(d).sum));
-const average = days.length ? total / days.length : 0;
-
-const dayLabel = (iso: string) =>
-  new Date(iso + 'T00:00:00Z').toLocaleDateString('en-GB', { day: 'numeric', month: 'short', timeZone: 'UTC' });
-
-const weeks = weeksOf(days).map((w) => {
-  const wd = w.days.map(dayOf);
-  const sum = wd.reduce((s, d) => s + d.sum, 0);
-  return { ...w, days: wd, title: `Week ${w.number} · ${w.label} · ${fmt(sum)}` };
-});
+// ---- hours statistics (the same summary is recalculated in the browser, see the script below)
+const { total, perPerson, maxPerson, days, average, maxDay, weeks } = teamSummary(HOURS);
 ---
 
 <Base title="Team" description="Who we are, who does what, and how many hours we spend on our bachelor's project.">
@@ -61,7 +36,7 @@ const weeks = weeksOf(days).map((w) => {
               </h2>
               <p class="role">{m.role}</p>
               <p class="facts">
-                {fmt(hours)} worked · {own.length} {own.length === 1 ? 'post' : 'posts'}
+                <span data-member-hours={m.id}>{fmt(hours)}</span> worked · {own.length} {own.length === 1 ? 'post' : 'posts'}
               </p>
             </div>
             <span class="arrow" aria-hidden="true">→</span>
@@ -71,7 +46,7 @@ const weeks = weeksOf(days).map((w) => {
     }
   </ul>
 
-  <section class="hours" aria-labelledby="hours-title">
+  <section class="hours" aria-labelledby="hours-title" data-live-hours>
     <h2 id="hours-title">Hours</h2>
     <p class="intro">How many hours each of us spends on the bachelor's project, per day.</p>
 
@@ -82,15 +57,15 @@ const weeks = weeksOf(days).map((w) => {
         <>
           <div class="tiles">
             <div class="tile">
-              <span class="value">{fmt(total)}</span>
+              <span class="value" data-total>{fmt(total)}</span>
               <span class="label">worked in total</span>
             </div>
             <div class="tile">
-              <span class="value">{days.length}</span>
+              <span class="value" data-days>{days.length}</span>
               <span class="label">days worked</span>
             </div>
             <div class="tile">
-              <span class="value">{fmt(average)}</span>
+              <span class="value" data-average>{fmt(average)}</span>
               <span class="label">per day on average</span>
             </div>
           </div>
@@ -98,7 +73,7 @@ const weeks = weeksOf(days).map((w) => {
           <h3>Per person</h3>
           <ul class="bars">
             {perPerson.map((p) => (
-              <li>
+              <li data-person={p.id}>
                 <span class="bar-name">{p.name}</span>
                 <span class="bar-track">
                   <span class="bar" style={`--c: ${p.color}; width: ${(p.hours / maxPerson) * 100}%`} />
@@ -120,7 +95,7 @@ const weeks = weeksOf(days).map((w) => {
                 hidden={i !== weeks.length - 1}
               >
                 {w.days.map((d) => (
-                  <div class:list={['day', { off: d.sum === 0 }]} title={`${dayLabel(d.date)}: ${fmt(d.sum)}`}>
+                  <div class:list={['day', { off: d.sum === 0 }]} data-date={d.date} title={`${dayLabel(d.date)}: ${fmt(d.sum)}`}>
                     <span class="day-total">{d.sum ? fmt(d.sum) : ''}</span>
                     <div class="stack" style={`height: ${(d.sum / maxDay) * 100}%`}>
                       {d.parts
@@ -151,6 +126,70 @@ const weeks = weeksOf(days).map((w) => {
     }
   </section>
 </Base>
+
+<script>
+  // Live update: recalculate the hours (including what was just timed or added) and redraw the numbers and bars.
+  import { fmtHours as fmt, getHours, teamSummary } from '../../lib/hours';
+  import { db } from '../../lib/teamAuth';
+
+  const section = document.querySelector<HTMLElement>('[data-live-hours]');
+  if (section) {
+    // Elements made here need the page's style-scope attribute to pick up the page's CSS.
+    const scope = [...section.attributes].find((a) => a.name.startsWith('data-astro-cid-'))?.name;
+
+    async function refresh() {
+      const s = teamSummary(await getHours());
+      const set = (sel: string, text: string) => document.querySelectorAll(sel).forEach((n) => (n.textContent = text));
+      set('[data-total]', fmt(s.total));
+      set('[data-days]', String(s.days.length));
+      set('[data-average]', fmt(s.average));
+      for (const p of s.perPerson) {
+        set(`[data-member-hours="${p.id}"]`, fmt(p.hours));
+        const row = section!.querySelector(`[data-person="${p.id}"]`);
+        if (!row) continue;
+        row.querySelector<HTMLElement>('.bar')!.style.width = `${(p.hours / s.maxPerson) * 100}%`;
+        row.querySelector('.bar-value')!.textContent = fmt(p.hours);
+      }
+      for (const w of s.weeks) {
+        for (const d of w.days) {
+          const day = section!.querySelector<HTMLElement>(`.day[data-date="${d.date}"]`);
+          if (!day) continue;
+          day.closest<HTMLElement>('[data-week]')!.dataset.title = w.title;
+          day.classList.toggle('off', d.sum === 0);
+          day.title = `${day.title.split(':')[0]}: ${fmt(d.sum)}`;
+          day.querySelector('.day-total')!.textContent = d.sum ? fmt(d.sum) : '';
+          const stack = day.querySelector<HTMLElement>('.stack')!;
+          stack.style.height = `${(d.sum / s.maxDay) * 100}%`;
+          stack.replaceChildren(
+            ...d.parts
+              .filter((p) => p.hours > 0)
+              .map((p) => {
+                const part = document.createElement('span');
+                if (scope) part.setAttribute(scope, '');
+                part.style.setProperty('--c', p.color);
+                part.style.flex = String(p.hours);
+                part.title = `${p.name}: ${fmt(p.hours)}`;
+                return part;
+              }),
+          );
+        }
+      }
+      // The week title above the chart.
+      const visible = section!.querySelector<HTMLElement>('[data-week]:not([hidden])');
+      const title = section!.querySelector('[data-title]:not([data-week])');
+      if (visible && title) title.textContent = visible.dataset.title ?? '';
+    }
+
+    let timer: ReturnType<typeof setTimeout> | undefined;
+    db.channel('team-hours')
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'time_entries' }, () => {
+        clearTimeout(timer);
+        timer = setTimeout(refresh, 400);
+      })
+      .subscribe();
+    refresh();
+  }
+</script>
 
 <style>
   h1 {

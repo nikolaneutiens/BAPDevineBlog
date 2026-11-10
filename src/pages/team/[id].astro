@@ -5,7 +5,7 @@ import Base from '../../layouts/Base.astro';
 import WeekSwitcher from '../../components/WeekSwitcher.astro';
 import LoggedSessions from '../../components/LoggedSessions.astro';
 import WorkTimer from '../../components/WorkTimer.astro';
-import { dayLabel, fmtHours, getHours, hourStats, weekdayLabel, weeksOf } from '../../lib/hours';
+import { dayLabel, fmtHours, getHours, memberSummary, weekdayLabel } from '../../lib/hours';
 import { withBase } from '../../lib/paths';
 import { photoOf } from '../../lib/photos';
 import { getPosts } from '../../lib/posts';
@@ -19,14 +19,8 @@ const { m } = Astro.props;
 const photo = photoOf(m.id);
 const posts = (await getPosts()).filter((p) => p.data.author === m.id);
 const HOURS = await getHours();
-const stats = hourStats(HOURS, m.id);
-const maxDay = Math.max(1, ...stats.perDay.map((d) => d.hours));
-// The same weeks as on the team page, so everyone's chart lines up.
-const weeks = weeksOf(HOURS.map((h) => h.date)).map((w) => {
-  const days = w.days.map((date) => stats.perDay.find((d) => d.date === date) ?? { date, hours: 0, tasks: [] });
-  const total = days.reduce((s, d) => s + d.hours, 0);
-  return { ...w, days, title: `Week ${w.number} · ${w.label} · ${fmtHours(total)}` };
-});
+// The same summary is recalculated in the browser for live updates (see the script below).
+const { stats, weeks, maxDay } = memberSummary(HOURS, m.id);
 ---
 
 <Base title={m.name} description={`${m.name}, ${m.role} in our bachelor's project.`}>
@@ -39,15 +33,15 @@ const weeks = weeksOf(HOURS.map((h) => h.date)).map((w) => {
       <dl class="stats">
         <div>
           <dt>Worked in total</dt>
-          <dd>{fmtHours(stats.total)}</dd>
+          <dd data-total>{fmtHours(stats.total)}</dd>
         </div>
         <div>
           <dt>Days worked</dt>
-          <dd>{stats.days.length}</dd>
+          <dd data-days>{stats.days.length}</dd>
         </div>
         <div>
           <dt>Per day on average</dt>
-          <dd>{fmtHours(stats.average)}</dd>
+          <dd data-average>{fmtHours(stats.average)}</dd>
         </div>
         <div>
           <dt>Blog posts</dt>
@@ -71,7 +65,7 @@ const weeks = weeksOf(HOURS.map((h) => h.date)).map((w) => {
   <WorkTimer person={m.id} />
   <LoggedSessions person={m.id} />
 
-  <section aria-labelledby="hours-title">
+  <section aria-labelledby="hours-title" data-live-hours={m.id}>
     <h2 id="hours-title">Hours worked</h2>
     {
       stats.entries.length === 0 ? (
@@ -90,6 +84,7 @@ const weeks = weeksOf(HOURS.map((h) => h.date)).map((w) => {
               {w.days.map((d) => (
                 <div
                   class:list={['day', { off: d.hours === 0 }]}
+                  data-date={d.date}
                   title={`${dayLabel(d.date)}: ${fmtHours(d.hours)}${d.tasks.length ? ' — ' + d.tasks.join(', ') : ''}`}
                 >
                   <span class="day-total">{d.hours ? fmtHours(d.hours) : ''}</span>
@@ -122,6 +117,49 @@ const weeks = weeksOf(HOURS.map((h) => h.date)).map((w) => {
     }
   </section>
 </Base>
+
+<script>
+  // Live update: recalculate this person's hours (including what was just timed or added) and redraw the chart.
+  import { dayLabel, fmtHours, getHours, memberSummary } from '../../lib/hours';
+  import type { MemberId } from '../../lib/team';
+  import { db } from '../../lib/teamAuth';
+
+  const section = document.querySelector<HTMLElement>('[data-live-hours]');
+  if (section) {
+    const person = section.dataset.liveHours as MemberId;
+
+    async function refresh() {
+      const { stats, weeks, maxDay } = memberSummary(await getHours(), person);
+      const set = (sel: string, text: string) => document.querySelectorAll(sel).forEach((n) => (n.textContent = text));
+      set('[data-total]', fmtHours(stats.total));
+      set('[data-days]', String(stats.days.length));
+      set('[data-average]', fmtHours(stats.average));
+      for (const w of weeks) {
+        for (const d of w.days) {
+          const day = section!.querySelector<HTMLElement>(`.day[data-date="${d.date}"]`);
+          if (!day) continue;
+          day.closest<HTMLElement>('[data-week]')!.dataset.title = w.title;
+          day.classList.toggle('off', d.hours === 0);
+          day.title = `${dayLabel(d.date)}: ${fmtHours(d.hours)}${d.tasks.length ? ' — ' + d.tasks.join(', ') : ''}`;
+          day.querySelector('.day-total')!.textContent = d.hours ? fmtHours(d.hours) : '';
+          day.querySelector<HTMLElement>('.bar')!.style.height = `${(d.hours / maxDay) * 100}%`;
+        }
+      }
+      const visible = section!.querySelector<HTMLElement>('[data-week]:not([hidden])');
+      const title = section!.querySelector('[data-title]:not([data-week])');
+      if (visible && title) title.textContent = visible.dataset.title ?? '';
+    }
+
+    let timer: ReturnType<typeof setTimeout> | undefined;
+    db.channel(`hours-${person}`)
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'time_entries' }, () => {
+        clearTimeout(timer);
+        timer = setTimeout(refresh, 400);
+      })
+      .subscribe();
+    refresh();
+  }
+</script>
 
 <style>
   .back {

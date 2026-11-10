@@ -66,7 +66,7 @@ The Calendar page reads its tasks from a Supabase database (project `bap-blog`),
 - Everyone can see the tasks. To add, delete, tick off or assign tasks, or to use the work timer, click **Log in** at the top of any page and enter the team password once. The password is remembered in that browser until you click **Log out**.
 - The **Work timer** is on your own page (Team → your name): type what you are working on, press **Start**, **Pause** for a break (**Resume** goes on in the same session) and **Stop** when you are done.
 - Forgot the timer? On your own page, under **Logged sessions**, add hours afterwards with a day and a from–to time. A wrong session can be deleted there too.
-- Every timed stretch is added to that person's hours on the Team pages automatically (rounded to the minute, by day in Belgian time). The live site rebuilds every hour to pick them up; on localhost they show up when you reload the page.
+- Every timed stretch is added to that person's hours on the Team pages automatically (rounded to the minute, by day in Belgian time). The Team pages update live in the browser as soon as hours are timed, added or deleted.
 - Meetings and other fixed moments are in `src/lib/calendar.ts`.
 
 Setting or changing the team password: open the project in the Supabase dashboard, go to **SQL Editor** and run:

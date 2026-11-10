@@ -111,12 +111,6 @@ const m = member(Astro.props.person);
           const note = document.createElement('span');
           note.className = 'note';
           note.textContent = r.note || 'Work session';
-          if (r.manual) {
-            const tag = document.createElement('span');
-            tag.className = 'manual';
-            tag.textContent = 'added afterwards';
-            note.append(' ', tag);
-          }
 
           const dur = document.createElement('span');
           dur.className = 'dur';
@@ -170,7 +164,7 @@ const m = member(Astro.props.person);
       field('to').value = '';
       field('note').value = '';
       showDuration();
-      show('Added. The hours chart shows it after a reload (online: within the hour).');
+      show('Added to your hours.');
       load();
     });
 
@@ -297,16 +291,6 @@ const m = member(Astro.props.person);
 
   .list :global(.note) {
     overflow-wrap: anywhere;
-  }
-
-  .list :global(.manual) {
-    padding: 0 0.4rem;
-    font-size: 0.72rem;
-    font-weight: 700;
-    color: var(--muted);
-    white-space: nowrap;
-    background: var(--hover);
-    border-radius: 999px;
   }
 
   .list :global(.dur) {
