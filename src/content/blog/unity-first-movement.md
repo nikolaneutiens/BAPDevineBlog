@@ -16,7 +16,6 @@ gallery:
     alt: The four Boxlings running side by side in Unity, now with their cardboard textures
 tags: [Development]
 ai: I used AI (Claude) as a helper for some parts of the code.
-draft: true
 ---
 
 In Samen in Balans, every player controls one Boxling by leaning left or right. Before anything else, a Boxling has to be able to do exactly that in Unity: walk left, walk right and stand still.
