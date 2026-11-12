@@ -33,14 +33,17 @@
 
 [data-tag='Development'] {
   --tag-color: #7db3e3;
+  --tag-border: #2a659e;
 }
 
 [data-tag='Research'] {
   --tag-color: #95c78c;
+  --tag-border: #3b7a33;
 }
 
 [data-tag='Design'] {
   --tag-color: #e8665a;
+  --tag-border: #c2372b;
 }
 
 /* A post takes the colour of its first tag for links, hovers and details.

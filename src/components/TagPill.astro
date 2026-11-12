@@ -19,6 +19,8 @@ const Element = href ? 'a' : 'span';
     color: var(--tag-text);
     text-decoration: none;
     background: var(--tag-color);
+    /* Each tag gets a border in a darker shade of its own colour. */
+    border: 2px solid var(--tag-border, var(--tag-color));
     border-radius: 999px;
   }
 </style>
