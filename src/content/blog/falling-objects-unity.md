@@ -6,7 +6,7 @@ author: lomme
 cover: ./images/falling-objects-unity/cover.jpg
 coverAlt: A white box tumbling through the air above a traffic cone in a simple Unity test scene
 tags: [Development]
-ai: I used AI (Claude) as a helper for some parts of the code.
+ai: I used AI (ChatGPT) to understand the process.
 ---
 
 In Samen in Balans, things fall from the sky and land on the plank the Boxlings are balancing on. Ximen already made the four objects in Blender: a duck, a box, a traffic cone and a barrel (you can read about them in [Falling Objects: a Duck, a Box, a Cone and a Barrel](../falling-objects/)). Now it was my turn to make them actually fall in Unity. I did it in three steps, and recorded each one.
