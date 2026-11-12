@@ -237,3 +237,45 @@ pre {
   outline: 2px solid var(--accent);
   outline-offset: 2px;
 }
+
+/* A grid of small images, e.g. storyboard scenes. Faded ones (.cut) were left out. */
+.scene-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1rem;
+  margin-block: 1.5rem;
+}
+
+.scene-grid figure {
+  margin: 0;
+}
+
+article .scene-grid img {
+  width: 100%;
+  margin: 0;
+}
+
+.scene-grid figcaption {
+  margin-top: 0.4rem;
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.scene-grid .cut img {
+  opacity: 0.35;
+  filter: grayscale(1);
+}
+
+.scene-grid .cut figcaption {
+  color: var(--muted, inherit);
+}
+
+.scene-grid figcaption span {
+  margin-left: 0.5rem;
+  padding: 0.1rem 0.5rem;
+  border-radius: 999px;
+  background: var(--accent);
+  color: #fff;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+}
