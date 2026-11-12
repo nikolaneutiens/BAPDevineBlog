@@ -18,6 +18,8 @@ ai: The textures were made with AI, because they were hard to realise otherwise.
 
 RITS isn't alone anymore. The Boxlings are a team of four, and this week the other three joined him: SPRIET, KRABBEL and PUK. Together they're the cast of the game, each with a personality you can read from a distance.
 
+Their colours, headgear and emblems come from the sketches we made at the start. You can see how they were designed in [Designing the Boxlings: From First Sketch to Details](../boxling-design/).
+
 ![RITS, SPRIET, KRABBEL and PUK standing in a row and waving at the camera together](./images/new-boxlings/group-wave.gif)
 
 ## One body, four characters

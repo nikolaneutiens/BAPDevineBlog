@@ -20,6 +20,8 @@ ai: The textures were made with AI, because they were hard to realise otherwise.
 
 RITS is the first of the four Boxlings: small figures that look as if they were built from old cardboard boxes. The goal was a character that feels like a handmade toy: straight blocks, tape, a bit of paint, and cardboard that has clearly been through a few things.
 
+Before modelling RITS, we first designed all four Boxlings on paper. You can see those sketches in [Designing the Boxlings: From First Sketch to Details](../boxling-design/).
+
 ## 1. The base model
 
 I started in Blender with simple blocks: a big head, a rectangular body, arms made of separate segments and a cap worn backwards. Everything stayed deliberately angular, to match the idea of folded cardboard.

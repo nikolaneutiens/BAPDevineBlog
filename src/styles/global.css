@@ -441,3 +441,42 @@ article .concept li.con::before {
   article .concept li.pro::before { color: #8fcf85; }
   article .concept li.con::before { color: #e45a4b; }
 }
+
+/* A row of character cards, each with its own colour on top. */
+.cast {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 0.75rem;
+  margin-block: 1.5rem;
+}
+
+.cast > div {
+  padding: 0.85rem;
+  border-top: 6px solid var(--c);
+  border-radius: 10px;
+  background: var(--surface);
+  box-shadow: var(--shadow);
+  font-size: 0.85rem;
+}
+
+.cast strong {
+  display: block;
+  margin-bottom: 0.4rem;
+  color: var(--c);
+  font-size: 1.05rem;
+  letter-spacing: 0.04em;
+}
+
+.cast dl {
+  margin: 0;
+}
+
+.cast dt {
+  color: var(--muted);
+  font-size: 0.7rem;
+  text-transform: uppercase;
+}
+
+.cast dd {
+  margin: 0 0 0.35rem;
+}
