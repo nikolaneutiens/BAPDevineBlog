@@ -3,10 +3,9 @@ title: "Balancing With Your Feet: Why We Chose Foot Panels"
 description: Why the players control Samen in Balans by shifting their weight on foot panels, and how we got there from a brainstorm, a set of possible controllers and four sketches.
 date: 2026-10-30T10:00:00Z
 author: ximen
-cover: ./images/pitch/balance-pedals.webp
-coverAlt: The four balance pedals in red, green, blue and yellow, each with a left and right arrow
+cover: ./images/foot-panels/panels.webp
+coverAlt: Drawing of the four foot panels in red, green, blue and orange, each with a left and right arrow and the face of its Boxling
 tags: [Research, Design]
-ai: The image of the four coloured pedals is a concept image from our pitch, generated with AI (ChatGPT). The brainstorm and the sketches were made by us.
 ---
 
 In Samen in Balans, the players don't hold a controller. They stand on foot panels. In this post we explain why, and how we got to this idea.
@@ -15,9 +14,9 @@ In Samen in Balans, the players don't hold a controller. They stand on foot pane
 
 We want children to feel that they are balancing themselves, not just pressing buttons. On the panels, a player moves their character by shifting their weight from one foot to the other. That way they also move their own centre of gravity, just like the Tipper on the rope.
 
-![The four balance pedals in red, green, blue and yellow](./images/pitch/balance-pedals.webp)
+![The four foot panels in red, green, blue and orange, each with its Boxling](./images/foot-panels/panels.webp)
 
-Every player has their own panel with a left and a right side. Each panel has its own colour and features that link it to the Boxling it controls: RITS, SPRIET, KRABBEL or PUK. This way every child can quickly see which character on the screen is theirs.
+Every player has their own panel with a left and a right side. Each panel has its own colour and features that link it to the Boxling it controls: red with the cap for RITS, green with the sprout hat for SPRIET, blue with the spikes and goggles for KRABBEL and orange with the cat ears for PUK. This way every child can quickly see which character on the screen is theirs.
 
 ## How we got there
 
