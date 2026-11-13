@@ -1,10 +1,10 @@
 ---
 # Copy this file and give it a name without _ . The file name becomes the URL:
-#   teachers-boxling-designs.md -> /feedback/teachers-boxling-designs/
+#   experts-boxling-designs.md -> /feedback/experts-boxling-designs/
 title: "Feedback on the Boxling designs"
 date: 2026-11-10
 # monthOnly: true          # use this when you only know the month (then put the 1st as date)
-category: teachers         # client, teachers, peer or experts
+category: experts          # client, coach, peer or experts
 description: "One or two sentences for the card on the overview page."
 tags: [Design, Characters] # 2-3 key topics
 intro: "A short introduction: what we presented and what the session was about."

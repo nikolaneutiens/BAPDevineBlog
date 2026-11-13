@@ -4,7 +4,7 @@
  */
 export const FEEDBACK_CATEGORIES = [
   { id: 'client', filter: 'Client', label: 'Client Feedback' },
-  { id: 'teachers', filter: 'Teachers', label: 'Teacher Feedback' },
+  { id: 'coach', filter: 'Coach', label: 'Coach Feedback' },
   { id: 'peer', filter: 'Peer Feedback', label: 'Peer Feedback' },
   { id: 'experts', filter: 'Experts', label: 'Expert Feedback' },
 ] as const;

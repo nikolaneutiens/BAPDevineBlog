@@ -2,7 +2,7 @@
 import { getCollection, render } from 'astro:content';
 import Author from '../../components/Author.astro';
 import Base from '../../layouts/Base.astro';
-import { ACTION_STATUS, categoryLabel, feedbackDate } from '../../lib/feedback';
+import { categoryLabel, feedbackDate } from '../../lib/feedback';
 import { withBase } from '../../lib/paths';
 import { member } from '../../lib/team';
 
@@ -13,7 +13,7 @@ export async function getStaticPaths() {
 
 const { report } = Astro.props;
 const { Content } = await render(report);
-const { title, date, monthOnly, category, description, intro, takeaways, sections, actions, author, attendees } =
+const { title, date, monthOnly, category, description, intro, takeaways, sections, author, attendees } =
   report.data;
 const hasBody = Boolean(report.body?.trim());
 ---
@@ -115,22 +115,6 @@ const hasBody = Boolean(report.body?.trim());
 
     {hasBody && <div class="body"><Content /></div>}
 
-    {
-      actions.length > 0 && (
-        <section class="actions" aria-labelledby="actions-title">
-          <h2 id="actions-title">Actions &amp; Decisions</h2>
-          <p class="note">What we plan to do with this feedback. Planned actions are not finished yet.</p>
-          <ul>
-            {actions.map((a) => (
-              <li>
-                <span class:list={['status', a.status]}>{ACTION_STATUS[a.status]}</span>
-                <span>{a.text}</span>
-              </li>
-            ))}
-          </ul>
-        </section>
-      )
-    }
   </article>
 
   <p class="back bottom"><a href={withBase('/feedback/')}>← Back to Feedback</a></p>
@@ -300,57 +284,6 @@ const hasBody = Boolean(report.body?.trim());
     dt {
       line-height: 1.4;
     }
-  }
-
-  /* Actions & decisions: subtle but clearly separate. */
-  .actions {
-    padding: 1.25rem 1.4rem;
-    border: 2px dashed var(--border);
-    border-left: 5px solid var(--accent);
-    border-radius: var(--radius);
-  }
-
-  .note {
-    margin: -0.35rem 0 0.9rem;
-    font-size: 0.9rem;
-    color: var(--muted);
-  }
-
-  .actions ul {
-    display: grid;
-    gap: 0.55rem;
-    margin: 0;
-    padding: 0;
-    list-style: none;
-  }
-
-  .actions li {
-    display: grid;
-    grid-template-columns: 5.5rem 1fr;
-    align-items: start;
-    gap: 0.75rem;
-  }
-
-  .status {
-    padding: 0.05rem 0;
-    font-size: 0.75rem;
-    font-weight: 700;
-    line-height: 1.9;
-    text-align: center;
-    border: 1.5px solid var(--border);
-    border-radius: 999px;
-  }
-
-  .status.decided {
-    color: #fff;
-    background: var(--accent);
-    border-color: var(--accent);
-  }
-
-  .status.done {
-    color: var(--tag-text);
-    background: #95c78c;
-    border-color: #95c78c;
   }
 
   @view-transition {

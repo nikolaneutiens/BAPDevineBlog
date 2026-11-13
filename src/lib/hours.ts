@@ -38,7 +38,7 @@ const MANUAL_HOURS: HourEntry[] = [
   { date: '2026-11-04', person: 'ximen', hours: 2.75, task: 'Final KRABBEL and PUK, organising files, blog pages, first Unity prototype' },
   { date: '2026-11-06', person: 'ximen', hours: 3.75, task: 'Falling objects (duck, box, cone, barrel), modelling, colour and rig of TIPPER, two blog posts' },
   { date: '2026-11-07', person: 'ximen', hours: 6.25, task: 'Scene1 environment (cardboard trees, pencils, planks, backdrop, lighting, grass), colour-blind readability check, Feedback section of the blog' },
-  { date: '2026-11-10', person: 'ximen', hours: 6.5, task: 'Packed textures into all Blender files, styleboard and moodboard in Figma, cardboard texture references, blog posts on the pitch, styleboard and storyboard, blog colours, client and teacher feedback reports' },
+  { date: '2026-11-10', person: 'ximen', hours: 6.5, task: 'Packed textures into all Blender files, styleboard and moodboard in Figma, cardboard texture references, blog posts on the pitch, styleboard and storyboard, blog colours, client and expert feedback reports' },
 
   // Add your hours here.
 ];

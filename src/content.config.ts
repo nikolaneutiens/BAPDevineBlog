@@ -25,7 +25,7 @@ const blog = defineCollection({
 });
 
 /**
- * Feedback reports: one file per feedback session (client, teachers, peers or experts).
+ * Feedback reports: one file per feedback session (client, coach, peers or experts).
  * The file name is the URL: client-concept-validation.md -> /feedback/client-concept-validation/.
  * Files starting with _ are ignored (see _template.md).
  */

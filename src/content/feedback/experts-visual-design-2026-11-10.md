@@ -1,10 +1,10 @@
 ---
-title: "Step Back and Prioritise UX — Design Teacher"
+title: "Step Back and Prioritise UX — Visual Design Expert"
 date: 2026-11-10
-category: teachers
-description: "Our design teacher advised us to take a step back and define the core gameplay and user experience first, and gave feedback on visual consistency, AI-generated backgrounds and the logo."
+category: experts
+description: "A visual design expert advised us to take a step back and define the core gameplay and user experience first, and gave feedback on visual consistency, AI-generated backgrounds and the logo."
 tags: [UX, Gameplay, Visual Design]
-intro: "We showed our design teacher the current state of the game. The main message was to slow down: there is still a lot of design work to do, and the core gameplay and user experience need to be clear before we produce more assets and features."
+intro: "In an expert consult on visual design, we showed the current state of the game. The main message was to slow down: there is still a lot of design work to do, and the core gameplay and user experience need to be clear before we produce more assets and features."
 takeaways:
   - "Focus on UX and core gameplay before continuing with detailed production."
   - "Define what happens in edge cases, like players losing all their lives or leaving mid-game."
