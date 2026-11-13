@@ -271,11 +271,12 @@ const { stats, weeks, maxDay } = memberSummary(HOURS, m.id);
     border-radius: var(--radius);
   }
 
+  /* The bar sits in its own row, so its height is a share of that row and not squeezed by the labels. */
   .day {
-    display: flex;
+    display: grid;
     flex: 1 0 2.4rem;
-    flex-direction: column;
-    align-items: center;
+    grid-template-rows: auto minmax(0, 1fr) auto;
+    justify-items: center;
     height: 100%;
   }
 
@@ -296,7 +297,7 @@ const { stats, weeks, maxDay } = memberSummary(HOURS, m.id);
   .bar {
     width: 70%;
     min-height: 2px;
-    margin-top: auto;
+    align-self: end;
     background: var(--c);
     border-radius: 5px 5px 0 0;
   }
