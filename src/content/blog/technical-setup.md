@@ -5,7 +5,7 @@ date: 2026-11-13T15:00:00Z
 author: lomme
 cover: ./images/technical-setup/render.webp
 coverAlt: A 3D render of the installation, with four cardboard foot boxes in front of a projected game, a beamer on the ceiling, two speakers on stands and a wooden cabinet on the right
-tags: [Development]
+tags: [Research]
 ai: The 3D render was made with ChatGPT, based on my own sketch.
 ---
 
