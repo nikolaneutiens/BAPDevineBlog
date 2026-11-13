@@ -1,7 +1,7 @@
 ---
 title: "Who Are We Designing For? Defining Our Players"
 description: Research into balance, motivation and fairness in children told us who Samen in Balans is for. From sticky notes to a target group and a persona called Noah.
-date: 2026-11-13T09:00:00Z
+date: 2026-10-29T12:00:00Z
 author: nikola
 cover: ./images/user-definition/cover.webp
 coverAlt: The persona card for Noah Peeters, an 8-year-old from Antwerp, next to his motivations and frustrations

@@ -1,7 +1,7 @@
 ---
 title: "Mapping the Experience: Goaled User Journey Map and User Flow"
 description: How we mapped the ideal experience of a child at Samen in Balans, from curious first look to stepping off the platform, and the user flow that makes it work.
-date: 2026-11-13T15:00:00Z
+date: 2026-10-30T14:00:00Z
 author: nikola
 cover: ./images/user-journey-and-flow/cover.webp
 coverAlt: The Goaled User Journey Map with its four rows, action, feeling, thought and touchpoint, and an emotional curve running through it
