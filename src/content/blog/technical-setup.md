@@ -43,6 +43,18 @@ The game needs a computer, and we chose a Mac mini:
 - **We already work on Macs.** We build and test the game on our own MacBooks, so it runs the same way on the Mac mini.
 - **Everything is built in.** It has HDMI for the beamer, USB for the Arduino and Bluetooth for the speakers, without extra parts.
 
+### What's inside
+
+Samen in Balans is a 3D game. Four animated Boxlings, the plank, falling objects, a forest full of cardboard trees, light and shadows all have to be drawn again many times per second, on a beamer picture that's 3 metres wide. Most of that work is done by the GPU, the part that draws the picture. That's why the Mac mini needs at least:
+
+- **Chip:** an Apple M6, the chip in the standard Mac mini.
+- **CPU:** 12 cores. The CPU runs the game logic, like the tilt of the plank, the physics of the falling objects and the input from the foot panels.
+- **GPU:** 12 cores. Enough to draw our 3D scene smoothly at full HD, without stuttering.
+- **Memory:** 16 GB. On a Mac, the CPU and GPU share the same memory, so the models, textures and animations of the game all fit in it with room to spare.
+- **Storage:** 256 GB. The game itself is small, so this is more than enough.
+
+We don't need the more expensive M5 Pro version. Our game is not that heavy, and the standard Mac mini has power to spare. If the game turns out heavier than expected, we can still choose more memory.
+
 ## A beamer on the ceiling
 
 The game is projected on the wall by a beamer. If the beamer stood on a table or on the floor between the players and the wall, children would walk in front of it, and their shadow would cover the game. That's why it hangs from the ceiling. The light comes from above the players, so they can move freely without blocking the picture.
