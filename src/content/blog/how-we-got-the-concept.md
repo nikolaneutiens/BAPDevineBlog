@@ -6,7 +6,7 @@ author: nikola
 cover: ./images/how-we-got-the-concept/cover.webp
 coverAlt: "Our final How Might We question: How might we create an automative game installation that lets children (8+) test their balancing skills in a cooperative way without the need of human assistance?"
 tags: [Research]
-ai: No AI was used in this process. The questions, assumptions, inspiration board and brainstorm were made by us in FigJam.
+ai: AI was used to research and find resources, and to cite them correctly. The questions, assumptions, inspiration board and brainstorm were made by us in FigJam.
 ---
 
 Samen in Balans didn't start as a balance game. At the start of the project we only had a brief: make an interactive installation for children at the Jeugdfilmfestival. This post shows the steps we took to get from that open brief to a concept: How Might We questions, an assumption matrix, inspiration and an interaction brainstorm.
