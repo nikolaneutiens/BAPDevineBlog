@@ -53,7 +53,7 @@ Still, our game isn't heavy. The scene is small, with a fixed camera and simple 
 - **CPU:** 8 cores or more.
 - **GPU:** 8 cores or more. Enough to draw our 3D scene smoothly at full HD.
 - **Memory:** 8 GB at least, 16 GB is better. On a Mac, the CPU and GPU share the same memory, and with 16 GB the models, textures and animations fit in it with room to spare.
-- **Storage:** 256 GB. The game itself is small, so this is plenty.
+- **Storage:** 256 GB. The game itself will be small, so this is plenty.
 - **macOS:** Monterey (12) or newer.
 
 Every Mac mini that meets these specs also has HDMI for the beamer, USB for the Arduino and Bluetooth for the speakers.
