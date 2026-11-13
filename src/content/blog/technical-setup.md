@@ -45,15 +45,22 @@ The game needs a computer, and we chose a Mac mini:
 
 ### What's inside
 
-Samen in Balans is a 3D game. Four animated Boxlings, the plank, falling objects, a forest full of cardboard trees, light and shadows all have to be drawn again many times per second, on a beamer picture that's 3 metres wide. Most of that work is done by the GPU, the part that draws the picture. That's why the Mac mini needs at least:
+Samen in Balans is a 3D game. Four animated Boxlings, the plank, falling objects, a forest full of cardboard trees, light and shadows all have to be drawn many times per second, on a beamer picture that's 3 metres wide. Most of that work is done by the GPU, the part that draws the picture. The CPU runs the game logic, like the tilt of the plank, the physics of the falling objects and the input from the foot panels.
 
-- **Chip:** an Apple M6, the chip in the standard Mac mini.
-- **CPU:** 12 cores. The CPU runs the game logic, like the tilt of the plank, the physics of the falling objects and the input from the foot panels.
-- **GPU:** 12 cores. Enough to draw our 3D scene smoothly at full HD, without stuttering.
-- **Memory:** 16 GB. On a Mac, the CPU and GPU share the same memory, so the models, textures and animations of the game all fit in it with room to spare.
-- **Storage:** 256 GB. The game itself is small, so this is more than enough.
+Still, our game isn't heavy. The scene is small, with a fixed camera and simple cardboard models. Unity games run on every Mac with an Apple chip, from the first M1 on. So we don't need the newest or most expensive Mac mini.
 
-We don't need the more expensive M5 Pro version. Our game is not that heavy, and the standard Mac mini has power to spare. If the game turns out heavier than expected, we can still choose more memory.
+Our choice is a **refurbished Mac mini with the M4 chip**:
+
+- **CPU:** 10 cores.
+- **GPU:** 10 cores. More than enough to draw our 3D scene smoothly at full HD.
+- **Memory:** 16 GB. On a Mac, the CPU and GPU share the same memory, so the models, textures and animations fit in it with room to spare.
+- **Storage:** 256 GB. The game itself is small, so this is plenty.
+
+Why this one, and not an older or a newer one?
+
+- **Newer is not needed.** The newest Mac mini is faster, but costs more, and our game wouldn't use the extra power.
+- **Older is a risk.** An M1 or M2 Mac mini would also run the game, but those came with only 8 GB of memory as standard, and they'll stop getting macOS updates sooner. The installation has to keep working for years.
+- **Refurbished saves money.** Now that there's a newer model, the M4 Mac mini can be found refurbished for less than a new one, with a warranty. It's still a recent chip, so it will be supported for a long time.
 
 ## A beamer on the ceiling
 
