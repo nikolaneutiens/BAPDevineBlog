@@ -535,3 +535,123 @@ article .tool-row img {
   font-size: 0.75rem;
   text-align: center;
 }
+
+/* Risk management: level labels, risk cards and compact risk lists. */
+.lvl {
+  display: inline-block;
+  padding: 0.05rem 0.55rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  line-height: 1.6;
+  white-space: nowrap;
+  color: #1f1812;
+}
+
+.lvl.high { background: #f2a49b; }
+.lvl.medium { background: #f3cf86; }
+.lvl.low { background: #b9dcb1; }
+
+.risk-cards {
+  display: grid;
+  gap: 1rem;
+  margin-block: 1.5rem;
+}
+
+.risk-card {
+  padding: 1rem 1.2rem;
+  border-left: 6px solid var(--risk, var(--accent));
+  border-radius: var(--radius);
+  background: var(--surface);
+  box-shadow: var(--shadow);
+}
+
+.risk-card[data-level='high'] { --risk: #d9574a; }
+.risk-card[data-level='medium'] { --risk: #e0a43a; }
+.risk-card[data-level='low'] { --risk: #6aa860; }
+
+.risk-card h3 {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin: 0 0 0.5rem;
+  font-size: 1.1rem;
+}
+
+.risk-card p {
+  margin: 0 0 0.75rem;
+}
+
+.risk-card dl {
+  display: grid;
+  grid-template-columns: 6.5rem 1fr;
+  gap: 0.35rem 0.75rem;
+  margin: 0;
+  font-size: 0.95rem;
+}
+
+.risk-card dt {
+  color: var(--muted);
+  font-size: 0.75rem;
+  font-weight: 700;
+  line-height: 1.9;
+  text-transform: uppercase;
+}
+
+.risk-card dd {
+  margin: 0;
+}
+
+@media (max-width: 520px) {
+  .risk-card dl {
+    grid-template-columns: 1fr;
+  }
+
+  .risk-card dd {
+    margin-bottom: 0.4rem;
+  }
+}
+
+.risk-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  gap: 0.75rem;
+  margin-block: 1.5rem;
+}
+
+.risk-list > div {
+  padding: 0.8rem 1rem;
+  border-top: 5px solid var(--risk, var(--accent));
+  border-radius: 10px;
+  background: var(--surface);
+  box-shadow: var(--shadow);
+  font-size: 0.92rem;
+}
+
+.risk-list[data-level='medium'] { --risk: #e0a43a; }
+.risk-list[data-level='low'] { --risk: #6aa860; }
+
+.risk-list strong {
+  display: block;
+  margin-bottom: 0.3rem;
+}
+
+.risk-list p {
+  margin: 0.25rem 0 0;
+}
+
+.risk-list .fix {
+  color: var(--muted);
+}
+
+.risk-table td:nth-child(n + 2):nth-child(-n + 4) {
+  white-space: nowrap;
+}
+
+/* Wide tables scroll sideways on small screens instead of widening the page. */
+.table-scroll {
+  max-width: 100%;
+  overflow-x: auto;
+}
