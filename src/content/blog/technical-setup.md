@@ -74,7 +74,7 @@ For the sound we use two speakers, one on each side of the screen. Active speake
 
 ## What's next
 
-Our client now has a clear picture of what the installation needs. The next step is choosing the exact beamer, speakers and Arduino, and building the foot boxes and the cabinet out of wood once all the materials are in.
+Our client now has a clear picture of what the installation needs. The Mac mini, the beamer and the speakers will be rented, so with this list they know what to look for. On our side, the next step is building the foot boxes and the cabinet out of wood once all the materials are in.
 
 ## What I'm taking with me
 
