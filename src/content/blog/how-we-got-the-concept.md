@@ -1,15 +1,15 @@
 ---
 title: "How We Got to Our Concept"
-description: From a wall of How Might We questions to an assumption matrix and an interaction brainstorm. The steps that led us to a cooperative balance game for children.
+description: From How Might We questions and an assumption matrix to an inspiration board and an interaction brainstorm. The steps that led us to a cooperative balance game for children.
 date: 2026-10-28T12:00:00Z
 author: nikola
 cover: ./images/how-we-got-the-concept/cover.webp
 coverAlt: "Our final How Might We question: How might we create an automative game installation that lets children (8+) test their balancing skills in a cooperative way without the need of human assistance?"
 tags: [Research]
-ai: No AI was used in this process. The questions, assumptions and brainstorm were made by us in FigJam.
+ai: No AI was used in this process. The questions, assumptions, inspiration board and brainstorm were made by us in FigJam.
 ---
 
-Samen in Balans didn't start as a balance game. At the start of the project we only had a brief: make an interactive installation for children at the Jeugdfilmfestival. This post shows the steps we took to get from that open brief to a concept: How Might We questions, an assumption matrix and an interaction brainstorm.
+Samen in Balans didn't start as a balance game. At the start of the project we only had a brief: make an interactive installation for children at the Jeugdfilmfestival. This post shows the steps we took to get from that open brief to a concept: How Might We questions, an assumption matrix, inspiration and an interaction brainstorm.
 
 ## How Might We
 
@@ -79,6 +79,40 @@ Our main concerns were:
 
 These concerns told us what to research and test first. The questions about age, focus and challenge became the start of our [target audience research](../user-definition/). The questions about physical interaction led straight to the next step.
 
+## Inspiration
+
+Next to asking questions, we looked at what others had already made: playful installations and games where you play with your body or with an unusual controller instead of a joystick. We collected them on an inspiration board.
+
+![Our inspiration board with Toy Car Racer, Crashboard, Playing Democracy 2.0, Overboard, Incontrolab, indievisual and Slime Rancher 2](./images/how-we-got-the-concept/inspo.webp)
+
+### Toy Car Racer by Devillé Arcade
+
+Devillé Arcade is a studio of two brothers from Antwerp who combine woodworking and game development into handmade arcade cabinets and playful installations. For the Speelgoedmuseum Mechelen they built Toy Car Racer: a life-sized toy car you sit in to race, with force-feedback steering and snap-on upgrades like rocket boosters and horns (Devillé Arcade, n.d.). It showed us how a game becomes an installation when the controller is a real, physical object made for it, and that this is made right here in Antwerp.
+
+### Crashboard
+
+Crashboard, by Emilie Breslavetz and Léon Denise, was shown in the alternative controller section of A MAZE. / Berlin 2024. It's a surfing game controlled by a real skateboard: you dodge waves of pop-up windows by **leaning** on the board to move (A MAZE., 2024). Steering a game by shifting your weight is very close to how our balance pedals work now.
+
+### Incontrolab
+
+Incontrolab is the collective behind Crashboard: artists and game developers who make alternative game controllers and playful installations, or as they say themselves, "uncontrollables" (Incontrolab, n.d.). Their other projects include a bullet hell game played with a real globe and a game where you ride a ball. They showed us how many ways there are to control a game without a joystick.
+
+### Playing Democracy 2.0 by Ling Tan
+
+Playing Democracy 2.0 by artist Ling Tan is a giant game of Pong for up to four players, who control the paddles with their body. Each time a team scores, it can change one of six rules of the game, which explore principles like fairness and equality (Tan, n.d.). It's a group game in a big space, where players have to agree with each other, and it was even exhibited at the Jeugdfilmfestival in 2025. It also uses camera tracking, which is something we later decided to avoid.
+
+### Overboard by RIT
+
+Overboard is an interactive installation by new media design and development students at the Rochester Institute of Technology. Players are shipwrecked pirates in a "floor-is-lava" game, and the project won the Interactive and Experiential category at MODE Fest 2025 (Garland, 2025). Running across a floor projection to stay safe is close to the running and dodging that ended up in our game.
+
+### indievisual
+
+We also saved the website of indievisual, a studio that explores, designs and builds, and captures, directs and crafts (indievisual, n.d.), as a reference for how a studio combines design, building and film.
+
+### Slime Rancher 2
+
+Finally, we looked at a let's play of Slime Rancher 2, the colourful farming adventure by Monomi Park set on Rainbow Island (Monomi Park, 2025). Its bright world and cute, wobbly creatures appeal to the age group we're designing for.
+
 ## Interaction brainstorm
 
 Three of our main concerns were about movement: which physical interactions, which gestures and which objects children enjoy. So we brainstormed every way a child could play with their body: jumping and stomping, pointing and "shooting", waving and wiping, flapping their arms like a bird, throwing, catching and grabbing, kicking, running and dodging, crouching and popping back up, balancing and freezing, spinning, clapping and shouting, and pretend-play poses.
@@ -107,3 +141,13 @@ Balancing didn't make the shortlist as a game of freezing in place, but it came 
 - **Write down your assumptions.** Seeing questions and assumptions side by side showed us how much we were guessing.
 - **Research the risky unknowns first.** The high-risk, uncertain quadrant told us exactly what to look into next.
 - **Constraints make choices easier.** No motion tracking, no sound and a physical controller removed half of the list at once.
+
+## Sources
+
+- A MAZE. (2024). *Crashboard* [Alternative controller game by E. Breslavetz & L. Denise]. A MAZE. / Berlin 2024 – 13th International Games and Playful Media Festival. https://2024.amaze-berlin.de/submissions/crashboard
+- Devillé Arcade. (n.d.). *Toy Car Racer*. Retrieved November 13, 2026, from http://www.devillearcade.com/work/toycarracer/
+- Garland, A. (2025, October 2). *RIT new media designers continue success in 'MODE Fest'*. Rochester Institute of Technology. https://www.rit.edu/news/rit-new-media-designers-continue-success-mode-fest
+- Incontrolab. (n.d.). *Incontrolab*. Retrieved November 13, 2026, from https://incontrolab.github.io/
+- indievisual. (n.d.). *indievisual*. Retrieved November 13, 2026, from https://indievisual.sk/
+- Monomi Park. (2025). *Slime Rancher 2* [Video game]. Monomi Park.
+- Tan, L. (n.d.). *Playing Democracy 2.0* [Interactive installation]. Retrieved November 13, 2026, from https://lingql.com/playing-democracy-2-0/
