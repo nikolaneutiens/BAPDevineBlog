@@ -105,13 +105,13 @@ Playing Democracy 2.0 by artist Ling Tan is a giant game of Pong for up to four 
 
 Overboard is an interactive installation by new media design and development students at the Rochester Institute of Technology. Players are shipwrecked pirates in a "floor-is-lava" game, and the project won the Interactive and Experiential category at MODE Fest 2025 (Garland, 2025). Running across a floor projection to stay safe is close to the running and dodging that ended up in our game.
 
-### indievisual
+### Birell E-Game by indievisual
 
-We also saved the website of indievisual, a studio that explores, designs and builds, and captures, directs and crafts (indievisual, n.d.), as a reference for how a studio combines design, building and film.
+indievisual is a Bratislava agency that makes commercials, events and immersive experiences for brands. For the launch of Birell Active, they made a festival game in a converted shipping container that combines physical movement, teamwork and a digital game. Four players control **one shared character**, each with their own role and physical controller: a running wheel to move, a pressure pad to jump and a swing to change direction. Together they try to get as far as possible, avoid obstacles and collect fruit for stamina (indievisual, 2025). This is the closest to what we wanted to make: a group that only gets ahead by working together, each player on their own physical controller.
 
 ### Slime Rancher 2
 
-Finally, we looked at a let's play of Slime Rancher 2, the colourful farming adventure by Monomi Park set on Rainbow Island (Monomi Park, 2025). Its bright world and cute, wobbly creatures appeal to the age group we're designing for.
+Finally, we watched a let's play of Slime Rancher 2 (The Killer Bits Archive, 2025), the colourful farming adventure by Monomi Park set on Rainbow Island. Its bright world and cute, wobbly creatures appeal to the age group we're designing for.
 
 ## Interaction brainstorm
 
@@ -148,6 +148,6 @@ Balancing didn't make the shortlist as a game of freezing in place, but it came 
 - Devillé Arcade. (n.d.). *Toy Car Racer*. Retrieved November 13, 2026, from http://www.devillearcade.com/work/toycarracer/
 - Garland, A. (2025, October 2). *RIT new media designers continue success in 'MODE Fest'*. Rochester Institute of Technology. https://www.rit.edu/news/rit-new-media-designers-continue-success-mode-fest
 - Incontrolab. (n.d.). *Incontrolab*. Retrieved November 13, 2026, from https://incontrolab.github.io/
-- indievisual. (n.d.). *indievisual*. Retrieved November 13, 2026, from https://indievisual.sk/
-- Monomi Park. (2025). *Slime Rancher 2* [Video game]. Monomi Park.
+- indievisual. (2025). *Birell | E-Game* [Interactive installation for Birell]. https://www.indievisual.sk/birell-e-game
 - Tan, L. (n.d.). *Playing Democracy 2.0* [Interactive installation]. Retrieved November 13, 2026, from https://lingql.com/playing-democracy-2-0/
+- The Killer Bits Archive. (2025, November 9). *Slime Rancher 2 - Part 1 - Welcome to Rainbow Island* [Video]. YouTube. https://www.youtube.com/watch?v=pwlLtGOgtNQ
