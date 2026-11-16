@@ -1,12 +1,12 @@
 ---
 title: "Designing the Idle State: Research and First Sketches"
-description: What should Samen in Balans show when nobody is playing? Research on public displays told us what an idle screen has to do, and four sketches explored how to do it.
-date: 2026-11-04T12:00:00Z
+description: What should Samen in Balans show when nobody is playing? Research on public displays told us what an idle screen has to do, and our first sketches explore how. The final design is still open.
+date: 2026-11-16T12:00:00Z
 author: nikola
 cover: ./images/idle-state/cover.webp
 coverAlt: A sketch of the idle screen with four Boxlings in a forest, one standing up with a check mark above its head, and "waiting for players" at the bottom
 tags: [Research, Design]
-ai: AI was used to research and find resources, and to cite them correctly. The goals were written by us based on that research, and all sketches were drawn by hand.
+ai: AI was used for research, to find resources and cite them correctly. It was not used for the sketches or the ideas, which were all drawn and thought up by us.
 ---
 
 Most of the time at the festival, nobody will be playing Samen in Balans. Children walk past, groups wait for the next film, and the installation just stands there. That moment, the **idle state**, is the first thing a child sees, so it decides whether they ever step onto a platform. Before sketching, we looked into what research says about public interactive displays and wrote down what our idle screen has to do.
@@ -81,13 +81,15 @@ The last version starts the same way: four Boxlings sitting down with dots above
 - **Worked:** again, the ready and not-ready states are very clear.
 - **Didn't work:** the screen gets too busy.
 
-## What we're taking with us
+## Where we are now
 
-- **Never look empty.** The sketches with nothing on screen at 0 players felt lifeless. The sitting Boxlings give passers-by something to look at, even when nobody is playing.
-- **React instantly.** A Boxling standing up the moment you step on is our version of the Looking Glass mirror.
+We haven't chosen a final design for the idle state yet. These sketches and the feedback on them are how we're going about it, and they give us a few things to keep in mind for the next round:
+
+- **Never look empty.** The sketches with nothing on screen at 0 players felt lifeless. Whatever we choose, passers-by need something to look at, even when nobody is playing.
+- **React instantly.** The moment a child steps on, their character should respond. That's our version of the Looking Glass mirror.
 - **Ready has to look ready.** Standing up with a mark above your head reads as "ready", sitting in a chair doesn't.
 - **Stay within our own world.** Chairs, and anything that looks like another game, don't belong in Samen in Balans.
-- **Teach the balance early, but keep it calm.** Letting players move in the idle state could introduce the balance mechanic, as long as the screen doesn't get too busy.
+- **Clear, but not too busy.** The idle screen could already hint at the balance mechanic, as long as it stays calm and readable from a distance.
 
 ## Sources
 
