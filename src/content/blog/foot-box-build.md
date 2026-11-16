@@ -97,8 +97,8 @@ I also made a shopping list for all four foot boxes. To keep it cheap, it change
 How we'll put the Boxling on the sign isn't decided yet, so that's not on the list. The photos come from the web shops, and the links go to the product. Prices include VAT and were checked on 16 November 2026.
 
 <div class="shop-total">
-  <div><b>€ 236.85</b><span>in total, foot switches included</span></div>
-  <div><b>€ 181.90</b><span>still to buy</span></div>
+  <div><b>€ 250.53</b><span>in total, foot switches included</span></div>
+  <div><b>€ 195.58</b><span>still to buy</span></div>
 </div>
 
 <div class="shop-item">
@@ -149,22 +149,22 @@ How we'll put the Boxling on the sign isn't decided yet, so that's not on the li
   <img src="../../images/foot-box-shop/schroef40.jpg" alt="Product photo of a box of chipboard screws" width="355" height="355" />
   <div>
     <p class="name">Chipboard screws 4 × 40 mm</p>
-    <p class="spec">about 200 · <b>already at home</b></p>
+    <p class="spec">box of 200 · about 50 per box, 200 for all four · <b>buy 1 box</b></p>
     <p>For the walls, the battens, the cover plate and the foot plates. One of them is the adjusting screw above every foot switch.</p>
     <p><a href="https://www.hubo.be/nl/p/pgb-fasteners-spaanplaatschroeven-vzk-t-drive-voldraad-4x40-mm-verzinkt-200-stuks/393767/">View at Hubo ↗</a></p>
   </div>
-  <div class="price"><b>€ 0</b><span>already at home</span></div>
+  <div class="price"><b>€ 6.69</b><span>1 × € 6.69</span></div>
 </div>
 
 <div class="shop-item">
   <img src="../../images/foot-box-shop/schroef30.jpg" alt="Product photo of a universal screw" width="355" height="355" />
   <div>
     <p class="name">Universal screws 4 × 30 mm</p>
-    <p class="spec">about 120 · <b>already at home</b></p>
+    <p class="spec">box of 200 · about 30 per box, 120 for all four · <b>buy 1 box</b></p>
     <p>For the pedal frames, the sign and the braces. The braces are screwed through the sign and from under the base plate, so we don't need corner brackets.</p>
     <p><a href="https://www.gamma.be/nl/assortiment/ok-schroef-universeel-4-0x30-mm-verzinkt-200-stuks/p/B458439">View at Gamma ↗</a></p>
   </div>
-  <div class="price"><b>€ 0</b><span>already at home</span></div>
+  <div class="price"><b>€ 6.99</b><span>1 × € 6.99</span></div>
 </div>
 
 <div class="shop-item">
