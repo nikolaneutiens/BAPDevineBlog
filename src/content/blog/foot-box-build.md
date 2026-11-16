@@ -171,11 +171,11 @@ How we'll put the Boxling on the sign isn't decided yet, so that's not on the li
   <img src="../../images/foot-box-shop/pedaal.jpg" alt="Product photo of two black foot switches with a cable" width="400" height="345" />
   <div>
     <p class="name">Foot switches</p>
-    <p class="spec">9.9 × 6.1 × 3.8 cm, set of 8 · <b>we already have these</b></p>
+    <p class="spec">9.9 × 6.1 × 3.8 cm · <b>8 foot switches</b> (we already have these)</p>
     <p>One foot switch under every foot plate.</p>
     <p><a href="https://www.amazon.com.be/-/nl/dp/B08B5YC29H">View at Amazon ↗</a></p>
   </div>
-  <div class="price"><b>€ 0</b><span>already have (€ 54.95)</span></div>
+  <div class="price"><b>€ 54.95</b><span>for all 8</span></div>
 </div>
 
 <div class="shop-item">
