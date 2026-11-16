@@ -1,12 +1,12 @@
 ---
-title: "Building the Foot Boxes: From Sketch to Shopping List"
+title: "The Technical Side of the Foot Boxes: From Sketch to 3D"
 description: How the wooden foot boxes of Samen in Balans work on the inside. From my own sketches to 3D drawings, technical drawings with every measurement, and a shopping list for all four stations.
 date: 2026-11-16T12:00:00Z
 author: lomme
 cover: ./images/foot-box-build/3d-dimensions.webp
 coverAlt: A 3D drawing of one wooden foot box, 90 cm wide and 81 cm deep, with two red foot plates and a sign board of 49 cm high at the back
 tags: [Development]
-ai: I made the first sketches myself. Claude turned them into the 3D drawings, the technical drawings and the shopping list.
+ai: I made the first sketches myself. Claude turned them into the 3D drawings and the technical drawings.
 ---
 
 In the [foot pedals post](../foot-pedals-movement/), the players stood on loose USB foot switches on the floor. In the [setup post](../technical-setup/), every player got a foot box with two panels. This time I worked out what's inside those boxes: how a foot panel presses a foot switch, how strong it has to be for jumping children, and what we need to buy to build four of them.
@@ -88,7 +88,7 @@ The cutting plan on the last sheet shows that all the plywood parts of one box f
 
 ## The shopping list
 
-Claude also turned the drawings into a shopping list for all four foot boxes. To keep it cheap, it changes a few things compared to the drawings:
+I also made a shopping list for all four foot boxes. To keep it cheap, it changes a few things compared to the drawings:
 
 - **MDF instead of multiplex.** It's cheaper and smooth, without splinters. The support battens and pedal frames are cut from what's left of the boards, so we don't need to buy battens.
 - **A screw instead of the M8 bolt.** One screw in the bottom of every foot plate, above the foot switch. We adjust it by turning it in or out, so we don't need bolts, nuts or insert nuts.
