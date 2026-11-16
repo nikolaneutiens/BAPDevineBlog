@@ -741,22 +741,4 @@ article .shop-item img {
     grid-column: 1 / -1;
     text-align: left;
   }
-
-/* Placeholder for an image that still has to be added */
-.sketch-placeholder {
-  display: grid;
-  place-items: center;
-  gap: 0.35rem;
-  min-height: 240px;
-  margin-block: 1.5rem;
-  padding: 1.5rem;
-  border: 2px dashed var(--border);
-  border-radius: var(--radius);
-  background: var(--surface);
-  color: var(--muted);
-  text-align: center;
-}
-
-.sketch-placeholder strong {
-  color: var(--ink);
 }
