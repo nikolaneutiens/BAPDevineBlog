@@ -43,7 +43,7 @@ To make it easier to build, the box is drawn in five steps.
 
 ![The battens inside the frame: support battens with grey stop strips on top, and two battens at the back, numbers 7, 8 and 13](./images/foot-box-build/step-2-battens.webp)
 
-**3. The foot switches.** Every compartment gets one FS221-P foot switch, the same ones from the pedals test. A small frame of thin battens keeps it in place, and its cable runs to the back.
+**3. The foot switches.** Every compartment gets one foot switch. A small frame of thin battens keeps it in place, and its cable runs to the back.
 
 ![Two black foot switches, each in a small wooden frame, with a green cable running to the back, numbers 10, 11 and 12](./images/foot-box-build/step-3-pedals.webp)
 
@@ -167,11 +167,13 @@ How we'll put the Boxling on the sign isn't decided yet, so that's not on the li
   <div class="price"><b>€ 0</b><span>already at home</span></div>
 </div>
 
-<div class="shop-item no-photo">
+<div class="shop-item">
+  <img src="../../images/foot-box-shop/pedaal.jpg" alt="Product photo of two black foot switches with a cable" width="400" height="345" />
   <div>
     <p class="name">Foot switches</p>
     <p class="spec">9.9 × 6.1 × 3.8 cm, set of 8 · <b>we already have these</b></p>
-    <p>One foot switch under every foot plate. We already bought them for the pedals test.</p>
+    <p>One foot switch under every foot plate.</p>
+    <p><a href="https://www.amazon.com.be/-/nl/dp/B08B5YC29H">View at Amazon ↗</a></p>
   </div>
   <div class="price"><b>€ 0</b><span>already have (€ 54.95)</span></div>
 </div>
