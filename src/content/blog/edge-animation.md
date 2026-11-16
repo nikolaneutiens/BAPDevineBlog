@@ -15,12 +15,9 @@ So the side of the plank works like an invisible wall. But a wall that suddenly 
 
 ## The sketch
 
-Before animating, I first sketched how the pose should look: the body leaning forward over the edge, one foot still on the plank and the arms going around like windmills.
+Before animating, I first sketched the whole moment in six steps: the Boxling runs, reaches the edge, leans forward over it, circles his arms to keep his balance, steps back and is safe again. Steps 3 and 4 are the part I animated in this post.
 
-<div class="sketch-placeholder">
-  <strong>Sketch of the edge animation</strong>
-  <span>Coming soon: Lomme will add the sketch here.</span>
-</div>
+![Sketch of the Boxling edge animation in six steps: running, reaching the edge, leaning forward, circling the arms, recovering back and safe](./images/edge-animation/sketch.webp)
 
 ## Animating in Blender
 
