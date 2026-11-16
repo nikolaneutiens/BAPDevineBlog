@@ -742,3 +742,8 @@ article .shop-item img {
     text-align: left;
   }
 }
+
+/* An item we have no product photo of. */
+.shop-item.no-photo {
+  grid-template-columns: minmax(0, 1fr) auto;
+}

@@ -167,11 +167,36 @@ How we'll put the Boxling on the sign isn't decided yet, so that's not on the li
   <div class="price"><b>€ 0</b><span>already at home</span></div>
 </div>
 
-**Already there, nothing to buy**
+<div class="shop-item no-photo">
+  <div>
+    <p class="name">Foot switches</p>
+    <p class="spec">9.9 × 6.1 × 3.8 cm, set of 8 · <b>we already have these</b></p>
+    <p>One foot switch under every foot plate. We already bought them for the pedals test.</p>
+  </div>
+  <div class="price"><b>€ 0</b><span>already have (€ 54.95)</span></div>
+</div>
 
-- **Foot switches:** a set of 8, one under every foot plate. We already bought them for € 54.95.
-- **Sandpaper,** grit 80 and 120, to round off all the edges, which is important for children. We can borrow it from school or bring it from home.
-- **Wood glue** is optional: the screws hold everything together.
+<div class="shop-item">
+  <img src="../../images/foot-box-shop/schuur.jpg" alt="Product photo of a roll of GAMMA sandpaper, grit 80" width="355" height="355" />
+  <div>
+    <p class="name">Sandpaper</p>
+    <p class="spec">grit 80 and 120 · <b>we already have this</b></p>
+    <p>To round off all the edges, which is important for children. We borrow it from school or bring it from home.</p>
+    <p><a href="https://www.gamma.be/nl/assortiment/gamma-schuurrol-k80/p/B559835">View at Gamma ↗</a></p>
+  </div>
+  <div class="price"><b>€ 0</b><span>already have</span></div>
+</div>
+
+<div class="shop-item">
+  <img src="../../images/foot-box-shop/lijm.jpg" alt="Product photo of a bottle of Pattex wood glue" width="355" height="355" />
+  <div>
+    <p class="name">Wood glue</p>
+    <p class="spec">optional · <b>we already have this</b></p>
+    <p>Not really needed, because the screws hold everything together. But handy, and we already have it.</p>
+    <p><a href="https://www.gamma.be/nl/assortiment/pattex-houtlijm-classic-250-g/p/B480584">View at Gamma ↗</a></p>
+  </div>
+  <div class="price"><b>€ 0</b><span>already have</span></div>
+</div>
 
 ## What's next
 
