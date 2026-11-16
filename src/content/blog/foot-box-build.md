@@ -97,8 +97,8 @@ I also made a shopping list for all four foot boxes. To keep it cheap, it change
 How we'll put the Boxling on the sign isn't decided yet, so that's not on the list. The photos come from the web shops, and the links go to the product. Prices include VAT and were checked on 16 November 2026.
 
 <div class="shop-total">
-  <div><b>€ 228.46</b><span>in total, foot switches included</span></div>
-  <div><b>€ 173.51</b><span>still to buy</span></div>
+  <div><b>€ 236.85</b><span>in total, foot switches included</span></div>
+  <div><b>€ 181.90</b><span>still to buy</span></div>
 </div>
 
 <div class="shop-item">
@@ -193,11 +193,11 @@ How we'll put the Boxling on the sign isn't decided yet, so that's not on the li
   <img src="../../images/foot-box-shop/lijm.jpg" alt="Product photo of a bottle of Pattex wood glue" width="355" height="355" />
   <div>
     <p class="name">Wood glue</p>
-    <p class="spec">optional · <b>we already have this</b></p>
-    <p>Not really needed, because the screws hold everything together. But handy, and we already have it.</p>
+    <p class="spec">Pattex Classic, 250 g · <b>buy 1 bottle</b></p>
+    <p>Together with the screws, it makes the walls and battens extra strong for jumping children.</p>
     <p><a href="https://www.gamma.be/nl/assortiment/pattex-houtlijm-classic-250-g/p/B480584">View at Gamma ↗</a></p>
   </div>
-  <div class="price"><b>€ 0</b><span>already have</span></div>
+  <div class="price"><b>€ 8.39</b><span>1 × € 8.39</span></div>
 </div>
 
 ## What's next
