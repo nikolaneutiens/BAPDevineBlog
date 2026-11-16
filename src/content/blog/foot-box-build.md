@@ -5,7 +5,7 @@ date: 2026-11-16T12:00:00Z
 author: lomme
 cover: ./images/foot-box-build/3d-dimensions.webp
 coverAlt: A 3D drawing of one wooden foot box, 90 cm wide and 81 cm deep, with two red foot plates and a sign board of 49 cm high at the back
-tags: [Development]
+tags: [Development, Research]
 ai: I made the first sketches myself. Claude turned them into the 3D drawings and the technical drawings.
 ---
 
