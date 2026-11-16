@@ -88,42 +88,124 @@ The cutting plan on the last sheet shows that all the plywood parts of one box f
 
 ## The shopping list
 
-This is everything we need for all four foot boxes.
+Claude also turned the drawings into a shopping list for all four foot boxes, with prices from Gamma and Hubo. To keep it cheap, it changes a few things compared to the drawings:
 
-**Wood**
+- **MDF instead of multiplex.** It's cheaper, and the support battens and pedal frames can be cut from what's left of the boards.
+- **Rubber draught strip instead of springs.** Two layers on the ends of every support batten, and the foot plate springs back on them.
+- **A screw instead of the M8 bolt.** One screw under every foot plate, above the foot switch. We can still turn it in or out to adjust it.
 
-| What | Amount |
-|---|---|
-| Multiplex 18 mm, 2500 × 1220 mm (one sheet per box) | 4 sheets |
-| Spruce battens 44 × 44 mm, 2.4 m | 8 lengths |
-| Battens 18 × 18 mm, 2.4 m | 2 lengths |
-| Hardboard or multiplex 4 mm (for the stop strips) | 1 sheet |
+The drawings of the items are sketches, not photos. The links go to the real product in the web shop. Prices include VAT and were checked on 16 November 2026.
 
-The foot plates are best made of birch multiplex, because it's harder and wears less.
+<div class="shop-total">
+  <div><b>€ 219.62</b><span>in total, foot switches included</span></div>
+  <div><b>€ 164.67</b><span>still to buy</span></div>
+</div>
 
-**Hardware**
+<div class="shop-item">
+  <img src="../../images/foot-box-shop/mdf.svg" alt="Drawing of an MDF board of 18 mm" width="220" height="160" />
+  <div>
+    <p class="name">MDF board 18 mm</p>
+    <p class="spec">244 × 122 cm · <b>buy 4 boards</b></p>
+    <p>Base plate, walls, foot plates, cover plate, sign and braces, and the support battens and pedal frames, cut from what's left.</p>
+    <p><a href="https://www.gamma.be/nl/assortiment/mdf-plaat-244-x-122-cm-18-mm/p/B284873">View at Gamma ↗</a></p>
+  </div>
+  <div class="price"><b>€ 123.96</b><span>4 × € 30.99</span></div>
+</div>
 
-| What | Per box | For 4 boxes |
-|---|---|---|
-| Compression springs Ø 12 × 22 mm, about 3 N/mm | 8 | 32 (+ spares) |
-| Insert nuts M8 | 2 | 8 |
-| Bolts M8 × 20 | 2 | 8 |
-| Nuts M8 | 2 | 8 |
-| Rubber pads 3 mm | 2 | 8 |
-| Chipboard screws 4 × 40 mm | about 60 | about 240 |
-| Chipboard screws 4 × 50 mm | about 20 | about 80 |
-| Corner brackets 40 × 40 mm | 6 | 24 |
-| Cable grommets Ø 30 mm | 2 | 8 |
-| Cable clips | a few | a pack |
-| Wood glue D3 | | 1 bottle |
-| Anti-slip paint or tape for the foot plates | | enough for 8 plates |
-| Optional: rubber feet or an anti-slip mat under the box | 4 feet | 16 feet |
+<div class="shop-item">
+  <img src="../../images/foot-box-shop/hardboard.svg" alt="Drawing of a thin hardboard sheet of 3.2 mm" width="220" height="160" />
+  <div>
+    <p class="name">Hardboard 3.2 mm</p>
+    <p class="spec">122 × 61 cm · <b>buy 1 sheet</b></p>
+    <p>The stop strips: the foot plate lands on them, so the foot switch never gets the full weight.</p>
+    <p><a href="https://www.gamma.be/nl/assortiment/hardboard-plaat-naturel-122-x-61-cm-3-2-mm/p/B110088">View at Gamma ↗</a></p>
+  </div>
+  <div class="price"><b>€ 3.89</b><span>1 × € 3.89</span></div>
+</div>
 
-**Electronics**
+<div class="shop-item">
+  <img src="../../images/foot-box-shop/tochtband.svg" alt="Drawing of a roll of rubber draught strip with a P-profile" width="220" height="160" />
+  <div>
+    <p class="name">Rubber draught strip, P-profile</p>
+    <p class="spec">self-adhesive, 2 × 3 m · <b>buy 2 packs</b></p>
+    <p>Replaces the springs: two layers on the ends of every support batten. The foot plate springs back on it.</p>
+    <p><a href="https://www.gamma.be/nl/assortiment/handson-tochtband-p-profiel-2x-3-m-antraciet/p/B555383">View at Gamma ↗</a></p>
+  </div>
+  <div class="price"><b>€ 11.18</b><span>2 × € 5.59</span></div>
+</div>
 
-| What | Amount |
-|---|---|
-| FS221-P foot switches | 8 (2 per box) |
+<div class="shop-item">
+  <img src="../../images/foot-box-shop/schroef40.svg" alt="Drawing of a box of 200 chipboard screws of 4 by 40 mm" width="220" height="160" />
+  <div>
+    <p class="name">Chipboard screws 4 × 40 mm</p>
+    <p class="spec">box of 200 · <b>buy 1 box</b></p>
+    <p>For the walls, the support battens and the cover plate. And one screw under every foot plate, as the adjusting screw above the foot switch.</p>
+    <p><a href="https://www.hubo.be/nl/p/pgb-fasteners-spaanplaatschroeven-vzk-t-drive-voldraad-4x40-mm-verzinkt-200-stuks/393767/">View at Hubo ↗</a></p>
+  </div>
+  <div class="price"><b>€ 6.69</b><span>1 × € 6.69</span></div>
+</div>
+
+<div class="shop-item">
+  <img src="../../images/foot-box-shop/schroef30.svg" alt="Drawing of a box of 200 screws of 4 by 30 mm" width="220" height="160" />
+  <div>
+    <p class="name">Universal screws 4 × 30 mm</p>
+    <p class="spec">box of 200 · <b>buy 1 box</b></p>
+    <p>For the frames around the foot switches, the sign and the braces. They're shorter, so they don't go through two layers of wood.</p>
+    <p><a href="https://www.gamma.be/nl/assortiment/ok-schroef-universeel-4-0x30-mm-verzinkt-200-stuks/p/B458439">View at Gamma ↗</a></p>
+  </div>
+  <div class="price"><b>€ 6.99</b><span>1 × € 6.99</span></div>
+</div>
+
+<div class="shop-item">
+  <img src="../../images/foot-box-shop/verf.svg" alt="Drawing of four small paint pots in red, green, blue and orange" width="220" height="160" />
+  <div>
+    <p class="name">Paint testers, matt wall paint, 55 ml</p>
+    <p class="spec">red, green, blue and orange · <b>buy 4 pots</b></p>
+    <p>The foot plates in the colour of each Boxling, one pot per foot box.</p>
+    <p><a href="https://www.gamma.be/nl/assortiment/gamma-mengbare-kleurtester-muurverf-mat-55-ml/p/B371774">View at Gamma ↗</a></p>
+  </div>
+  <div class="price"><b>€ 11.96</b><span>4 × € 2.99</span></div>
+</div>
+
+<div class="shop-item">
+  <img src="../../images/foot-box-shop/pedaal.svg" alt="Drawing of a black foot switch with a cable" width="220" height="160" />
+  <div>
+    <p class="name">Foot switches</p>
+    <p class="spec">set of 8 · <b>already bought</b></p>
+    <p>One foot switch under every foot plate.</p>
+  </div>
+  <div class="price"><b>€ 54.95</b><span>already bought</span></div>
+</div>
+
+<div class="shop-item">
+  <img src="../../images/foot-box-shop/print.svg" alt="Drawing of a colour print of a Boxling's face" width="220" height="160" />
+  <div>
+    <p class="name">Print of the Boxling</p>
+    <p class="spec">A3 or A2, in colour · <b>4 prints</b></p>
+    <p>Glued onto the sign. We can print them at school, which is free or costs a few cents.</p>
+  </div>
+  <div class="price"><b>free</b><span>printed at school</span></div>
+</div>
+
+<div class="shop-item">
+  <img src="../../images/foot-box-shop/schuur.svg" alt="Drawing of two sheets of sandpaper" width="220" height="160" />
+  <div>
+    <p class="name">Sandpaper</p>
+    <p class="spec">grit 80 and 120 · <b>nothing to buy</b></p>
+    <p>To round off all the edges, which is important for children. We can borrow it from school or bring it from home.</p>
+  </div>
+  <div class="price"><b>free</b><span>borrowed</span></div>
+</div>
+
+<div class="shop-item">
+  <img src="../../images/foot-box-shop/lijm.svg" alt="Drawing of a bottle of wood glue" width="220" height="160" />
+  <div>
+    <p class="name">Wood glue</p>
+    <p class="spec">optional · <b>nothing to buy</b></p>
+    <p>Not needed, because the screws hold everything together. Handy if we already have some.</p>
+  </div>
+  <div class="price"><b>free</b><span>if we have it</span></div>
+</div>
 
 ## What's next
 
