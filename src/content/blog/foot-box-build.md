@@ -94,7 +94,7 @@ Claude also turned the drawings into a shopping list for all four foot boxes, wi
 - **Rubber draught strip instead of springs.** Two layers on the ends of every support batten, and the foot plate springs back on them.
 - **A screw instead of the M8 bolt.** One screw under every foot plate, above the foot switch. We can still turn it in or out to adjust it.
 
-The drawings of the items are sketches, not photos. The links go to the real product in the web shop. Prices include VAT and were checked on 16 November 2026.
+The photos come from the web shops, and the links go to the product. Prices include VAT and were checked on 16 November 2026.
 
 <div class="shop-total">
   <div><b>€ 219.62</b><span>in total, foot switches included</span></div>
@@ -102,7 +102,7 @@ The drawings of the items are sketches, not photos. The links go to the real pro
 </div>
 
 <div class="shop-item">
-  <img src="../../images/foot-box-shop/mdf.svg" alt="Drawing of an MDF board of 18 mm" width="220" height="160" />
+  <img src="../../images/foot-box-shop/mdf.jpg" alt="Product photo of an MDF board" width="355" height="355" />
   <div>
     <p class="name">MDF board 18 mm</p>
     <p class="spec">244 × 122 cm · <b>buy 4 boards</b></p>
@@ -113,7 +113,7 @@ The drawings of the items are sketches, not photos. The links go to the real pro
 </div>
 
 <div class="shop-item">
-  <img src="../../images/foot-box-shop/hardboard.svg" alt="Drawing of a thin hardboard sheet of 3.2 mm" width="220" height="160" />
+  <img src="../../images/foot-box-shop/hardboard.jpg" alt="Product photo of a hardboard sheet" width="355" height="355" />
   <div>
     <p class="name">Hardboard 3.2 mm</p>
     <p class="spec">122 × 61 cm · <b>buy 1 sheet</b></p>
@@ -124,7 +124,7 @@ The drawings of the items are sketches, not photos. The links go to the real pro
 </div>
 
 <div class="shop-item">
-  <img src="../../images/foot-box-shop/tochtband.svg" alt="Drawing of a roll of rubber draught strip with a P-profile" width="220" height="160" />
+  <img src="../../images/foot-box-shop/tochtband.jpg" alt="Product photo of a roll of black rubber draught strip" width="355" height="355" />
   <div>
     <p class="name">Rubber draught strip, P-profile</p>
     <p class="spec">self-adhesive, 2 × 3 m · <b>buy 2 packs</b></p>
@@ -135,7 +135,7 @@ The drawings of the items are sketches, not photos. The links go to the real pro
 </div>
 
 <div class="shop-item">
-  <img src="../../images/foot-box-shop/schroef40.svg" alt="Drawing of a box of 200 chipboard screws of 4 by 40 mm" width="220" height="160" />
+  <img src="../../images/foot-box-shop/schroef40.jpg" alt="Product photo of a box of chipboard screws" width="355" height="355" />
   <div>
     <p class="name">Chipboard screws 4 × 40 mm</p>
     <p class="spec">box of 200 · <b>buy 1 box</b></p>
@@ -146,7 +146,7 @@ The drawings of the items are sketches, not photos. The links go to the real pro
 </div>
 
 <div class="shop-item">
-  <img src="../../images/foot-box-shop/schroef30.svg" alt="Drawing of a box of 200 screws of 4 by 30 mm" width="220" height="160" />
+  <img src="../../images/foot-box-shop/schroef30.jpg" alt="Product photo of a universal screw" width="355" height="355" />
   <div>
     <p class="name">Universal screws 4 × 30 mm</p>
     <p class="spec">box of 200 · <b>buy 1 box</b></p>
@@ -157,7 +157,7 @@ The drawings of the items are sketches, not photos. The links go to the real pro
 </div>
 
 <div class="shop-item">
-  <img src="../../images/foot-box-shop/verf.svg" alt="Drawing of four small paint pots in red, green, blue and orange" width="220" height="160" />
+  <img src="../../images/foot-box-shop/verf.jpg" alt="Product photo of a GAMMA paint tester pot" width="355" height="355" />
   <div>
     <p class="name">Paint testers, matt wall paint, 55 ml</p>
     <p class="spec">red, green, blue and orange · <b>buy 4 pots</b></p>
@@ -167,45 +167,12 @@ The drawings of the items are sketches, not photos. The links go to the real pro
   <div class="price"><b>€ 11.96</b><span>4 × € 2.99</span></div>
 </div>
 
-<div class="shop-item">
-  <img src="../../images/foot-box-shop/pedaal.svg" alt="Drawing of a black foot switch with a cable" width="220" height="160" />
-  <div>
-    <p class="name">Foot switches</p>
-    <p class="spec">set of 8 · <b>already bought</b></p>
-    <p>One foot switch under every foot plate.</p>
-  </div>
-  <div class="price"><b>€ 54.95</b><span>already bought</span></div>
-</div>
+**Already there, nothing to buy**
 
-<div class="shop-item">
-  <img src="../../images/foot-box-shop/print.svg" alt="Drawing of a colour print of a Boxling's face" width="220" height="160" />
-  <div>
-    <p class="name">Print of the Boxling</p>
-    <p class="spec">A3 or A2, in colour · <b>4 prints</b></p>
-    <p>Glued onto the sign. We can print them at school, which is free or costs a few cents.</p>
-  </div>
-  <div class="price"><b>free</b><span>printed at school</span></div>
-</div>
-
-<div class="shop-item">
-  <img src="../../images/foot-box-shop/schuur.svg" alt="Drawing of two sheets of sandpaper" width="220" height="160" />
-  <div>
-    <p class="name">Sandpaper</p>
-    <p class="spec">grit 80 and 120 · <b>nothing to buy</b></p>
-    <p>To round off all the edges, which is important for children. We can borrow it from school or bring it from home.</p>
-  </div>
-  <div class="price"><b>free</b><span>borrowed</span></div>
-</div>
-
-<div class="shop-item">
-  <img src="../../images/foot-box-shop/lijm.svg" alt="Drawing of a bottle of wood glue" width="220" height="160" />
-  <div>
-    <p class="name">Wood glue</p>
-    <p class="spec">optional · <b>nothing to buy</b></p>
-    <p>Not needed, because the screws hold everything together. Handy if we already have some.</p>
-  </div>
-  <div class="price"><b>free</b><span>if we have it</span></div>
-</div>
+- **Foot switches:** a set of 8, one under every foot plate. We already bought them for € 54.95.
+- **Prints of the Boxlings:** A3 or A2 in colour, glued onto the signs. We can print them at school.
+- **Sandpaper,** grit 80 and 120, to round off all the edges. We can borrow it from school or bring it from home.
+- **Wood glue** is optional: the screws hold everything together.
 
 ## What's next
 

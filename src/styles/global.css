@@ -696,7 +696,9 @@ article .tool-row img {
 article .shop-item img {
   width: 100%;
   margin: 0;
-  background: #f6f1e8;
+  aspect-ratio: 1;
+  object-fit: contain;
+  background: #fff;
   border-radius: 10px;
   box-shadow: none;
 }
