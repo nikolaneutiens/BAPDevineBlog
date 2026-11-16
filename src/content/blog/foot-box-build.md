@@ -47,7 +47,7 @@ To make it easier to build, the box is drawn in five steps.
 
 ![Two black foot switches, each in a small wooden frame, with a green cable running to the back, numbers 10, 11 and 12](./images/foot-box-build/step-3-pedals.webp)
 
-**4. The cover and the sign.** A cover plate closes the back part, where the cables are. The sign with the Boxling stands behind it, held by two triangles.
+**4. The cover and the sign.** A cover plate closes the back part, where the cables are. The sign stands behind it, held by two triangles.
 
 ![The rear cover plate and the sign board standing behind it with a triangle brace, numbers 14, 15 and 16](./images/foot-box-build/step-4-cover-sign.webp)
 
@@ -61,12 +61,12 @@ The most important part is what happens when a child steps on a foot plate. A fo
 
 ![Technical drawing of a cross-section through one compartment, with a detail of the spring on the support batten and a detail of the adjusting bolt above the foot switch](./images/foot-box-build/sheet-3-section.webp)
 
-- **At rest,** the foot plate rests on four springs. Under the plate is a bolt with a little rubber on its head, about 2 mm above the foot switch.
+- **At rest,** the foot plate rests on four springs. Under the plate is an adjusting bolt, about 2 mm above the foot switch.
 - **When a child steps on it,** the plate goes down. After about 3 mm, the bolt presses the foot switch and the Boxling moves.
-- **At 6 mm,** the plate lands on the stop strips. From there, all the weight goes to the wooden battens, and not to the foot switch. The rubber catches the last bit.
+- **At 6 mm,** the plate lands on the stop strips. From there, all the weight goes to the wooden battens, and not to the foot switch.
 - **When the child steps off,** the springs push the plate back up.
 
-The bolt can be turned higher or lower, so we can adjust exactly when the switch is pressed. We'll test every compartment with the lightest and the heaviest child (and an adult).
+The bolt can be turned higher or lower, so we can adjust exactly when the switch is pressed. In the shopping list below, it became a normal screw that works the same way. We'll test every compartment with the lightest and the heaviest child (and an adult).
 
 A few things are there for safety:
 
@@ -88,17 +88,17 @@ The cutting plan on the last sheet shows that all the plywood parts of one box f
 
 ## The shopping list
 
-Claude also turned the drawings into a shopping list for all four foot boxes, with prices from Gamma and Hubo. To keep it cheap, it changes a few things compared to the drawings:
+Claude also turned the drawings into a shopping list for all four foot boxes. To keep it cheap, it changes a few things compared to the drawings:
 
-- **MDF instead of multiplex.** It's cheaper, and the support battens and pedal frames can be cut from what's left of the boards.
-- **Rubber draught strip instead of springs.** Two layers on the ends of every support batten, and the foot plate springs back on them.
-- **A screw instead of the M8 bolt.** One screw under every foot plate, above the foot switch. We can still turn it in or out to adjust it.
+- **MDF instead of multiplex.** It's cheaper and smooth, without splinters. The support battens and pedal frames are cut from what's left of the boards, so we don't need to buy battens.
+- **A screw instead of the M8 bolt.** One screw in the bottom of every foot plate, above the foot switch. We adjust it by turning it in or out, so we don't need bolts, nuts or insert nuts.
+- **Matt wall paint instead of spray paint and anti-slip tape.** Matt paint is less slippery than lacquer, and it's a lot cheaper.
 
-The photos come from the web shops, and the links go to the product. Prices include VAT and were checked on 16 November 2026.
+How we'll put the Boxling on the sign isn't decided yet, so that's not on the list. The photos come from the web shops, and the links go to the product. Prices include VAT and were checked on 16 November 2026.
 
 <div class="shop-total">
-  <div><b>€ 219.62</b><span>in total, foot switches included</span></div>
-  <div><b>€ 164.67</b><span>still to buy</span></div>
+  <div><b>€ 228.46</b><span>in total, foot switches included</span></div>
+  <div><b>€ 173.51</b><span>still to buy</span></div>
 </div>
 
 <div class="shop-item">
@@ -106,7 +106,7 @@ The photos come from the web shops, and the links go to the product. Prices incl
   <div>
     <p class="name">MDF board 18 mm</p>
     <p class="spec">244 × 122 cm · <b>buy 4 boards</b></p>
-    <p>Base plate, walls, foot plates, cover plate, sign and braces, and the support battens and pedal frames, cut from what's left.</p>
+    <p>All the wooden parts. Every box fits on one board, with the same cutting plan as on sheet 4. Always pre-drill, and don't screw too close to the edge.</p>
     <p><a href="https://www.gamma.be/nl/assortiment/mdf-plaat-244-x-122-cm-18-mm/p/B284873">View at Gamma ↗</a></p>
   </div>
   <div class="price"><b>€ 123.96</b><span>4 × € 30.99</span></div>
@@ -117,43 +117,21 @@ The photos come from the web shops, and the links go to the product. Prices incl
   <div>
     <p class="name">Hardboard 3.2 mm</p>
     <p class="spec">122 × 61 cm · <b>buy 1 sheet</b></p>
-    <p>The stop strips: the foot plate lands on them, so the foot switch never gets the full weight.</p>
+    <p>The stop strips: two strips on top of each other on every support batten, like in the drawings. The foot plate lands on them, so the foot switch never gets the full weight.</p>
     <p><a href="https://www.gamma.be/nl/assortiment/hardboard-plaat-naturel-122-x-61-cm-3-2-mm/p/B110088">View at Gamma ↗</a></p>
   </div>
   <div class="price"><b>€ 3.89</b><span>1 × € 3.89</span></div>
 </div>
 
 <div class="shop-item">
-  <img src="../../images/foot-box-shop/tochtband.jpg" alt="Product photo of a roll of black rubber draught strip" width="355" height="355" />
+  <img src="../../images/foot-box-shop/veer.jpg" alt="Product photo of stainless steel compression springs" width="400" height="222" />
   <div>
-    <p class="name">Rubber draught strip, P-profile</p>
-    <p class="spec">self-adhesive, 2 × 3 m · <b>buy 2 packs</b></p>
-    <p>Replaces the springs: two layers on the ends of every support batten. The foot plate springs back on it.</p>
-    <p><a href="https://www.gamma.be/nl/assortiment/handson-tochtband-p-profiel-2x-3-m-antraciet/p/B555383">View at Gamma ↗</a></p>
+    <p class="name">Compression springs, stainless steel</p>
+    <p class="spec">wire 1.2 mm, Ø 12 mm, 20 mm long, bags of 10 · <b>buy 4 bags</b></p>
+    <p>One spring under every corner of every foot plate, in a hole of Ø 14 mm. We need 32, so 40 leaves 8 spares.</p>
+    <p><a href="https://www.amazon.nl/dp/B0FPVB7H98">View at Amazon ↗</a></p>
   </div>
-  <div class="price"><b>€ 11.18</b><span>2 × € 5.59</span></div>
-</div>
-
-<div class="shop-item">
-  <img src="../../images/foot-box-shop/schroef40.jpg" alt="Product photo of a box of chipboard screws" width="355" height="355" />
-  <div>
-    <p class="name">Chipboard screws 4 × 40 mm</p>
-    <p class="spec">box of 200 · <b>buy 1 box</b></p>
-    <p>For the walls, the support battens and the cover plate. And one screw under every foot plate, as the adjusting screw above the foot switch.</p>
-    <p><a href="https://www.hubo.be/nl/p/pgb-fasteners-spaanplaatschroeven-vzk-t-drive-voldraad-4x40-mm-verzinkt-200-stuks/393767/">View at Hubo ↗</a></p>
-  </div>
-  <div class="price"><b>€ 6.69</b><span>1 × € 6.69</span></div>
-</div>
-
-<div class="shop-item">
-  <img src="../../images/foot-box-shop/schroef30.jpg" alt="Product photo of a universal screw" width="355" height="355" />
-  <div>
-    <p class="name">Universal screws 4 × 30 mm</p>
-    <p class="spec">box of 200 · <b>buy 1 box</b></p>
-    <p>For the frames around the foot switches, the sign and the braces. They're shorter, so they don't go through two layers of wood.</p>
-    <p><a href="https://www.gamma.be/nl/assortiment/ok-schroef-universeel-4-0x30-mm-verzinkt-200-stuks/p/B458439">View at Gamma ↗</a></p>
-  </div>
-  <div class="price"><b>€ 6.99</b><span>1 × € 6.99</span></div>
+  <div class="price"><b>€ 33.70</b><span>4 × € 7.68 + shipping</span></div>
 </div>
 
 <div class="shop-item">
@@ -161,26 +139,47 @@ The photos come from the web shops, and the links go to the product. Prices incl
   <div>
     <p class="name">Paint testers, matt wall paint, 55 ml</p>
     <p class="spec">red, green, blue and orange · <b>buy 4 pots</b></p>
-    <p>The foot plates in the colour of each Boxling, one pot per foot box.</p>
+    <p>The foot plates in the colour of each Boxling, one pot per foot box. Gamma mixes every colour.</p>
     <p><a href="https://www.gamma.be/nl/assortiment/gamma-mengbare-kleurtester-muurverf-mat-55-ml/p/B371774">View at Gamma ↗</a></p>
   </div>
   <div class="price"><b>€ 11.96</b><span>4 × € 2.99</span></div>
 </div>
 
+<div class="shop-item">
+  <img src="../../images/foot-box-shop/schroef40.jpg" alt="Product photo of a box of chipboard screws" width="355" height="355" />
+  <div>
+    <p class="name">Chipboard screws 4 × 40 mm</p>
+    <p class="spec">about 200 · <b>already at home</b></p>
+    <p>For the walls, the battens, the cover plate and the foot plates. One of them is the adjusting screw above every foot switch.</p>
+    <p><a href="https://www.hubo.be/nl/p/pgb-fasteners-spaanplaatschroeven-vzk-t-drive-voldraad-4x40-mm-verzinkt-200-stuks/393767/">View at Hubo ↗</a></p>
+  </div>
+  <div class="price"><b>€ 0</b><span>already at home</span></div>
+</div>
+
+<div class="shop-item">
+  <img src="../../images/foot-box-shop/schroef30.jpg" alt="Product photo of a universal screw" width="355" height="355" />
+  <div>
+    <p class="name">Universal screws 4 × 30 mm</p>
+    <p class="spec">about 120 · <b>already at home</b></p>
+    <p>For the pedal frames, the sign and the braces. The braces are screwed through the sign and from under the base plate, so we don't need corner brackets.</p>
+    <p><a href="https://www.gamma.be/nl/assortiment/ok-schroef-universeel-4-0x30-mm-verzinkt-200-stuks/p/B458439">View at Gamma ↗</a></p>
+  </div>
+  <div class="price"><b>€ 0</b><span>already at home</span></div>
+</div>
+
 **Already there, nothing to buy**
 
 - **Foot switches:** a set of 8, one under every foot plate. We already bought them for € 54.95.
-- **Prints of the Boxlings:** A3 or A2 in colour, glued onto the signs. We can print them at school.
-- **Sandpaper,** grit 80 and 120, to round off all the edges. We can borrow it from school or bring it from home.
+- **Sandpaper,** grit 80 and 120, to round off all the edges, which is important for children. We can borrow it from school or bring it from home.
 - **Wood glue** is optional: the screws hold everything together.
 
 ## What's next
 
-With the drawings and the shopping list, we can buy the materials and start building. We'll build one box first and test it with children, to check the springs and the adjusting bolts, before we make the other three.
+With the drawings and the shopping list, we can buy the materials and start building. We'll build one box first and test it with children, to check the springs and the adjusting screws, before we make the other three.
 
 ## What I'm taking with me
 
 - **A rough sketch is enough to start.** My two sketches had the whole idea in them. The 3D and technical drawings worked it out in detail.
 - **Protect the electronics.** The foot switch only has to be pressed, not carried. The stop strips take the weight, so the switch survives jumping children.
-- **Make it adjustable.** Every child is different, and every foot switch too. The adjusting bolt lets us fix that without rebuilding the box.
+- **Make it adjustable.** Every child is different, and every foot switch too. The adjusting screw lets us fix that without rebuilding the box.
 - **Think about building it too.** Drawing the box in steps, with a cut list and a cutting plan, makes building four of them much easier.
