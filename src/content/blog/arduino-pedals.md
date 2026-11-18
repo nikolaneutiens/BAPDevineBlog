@@ -1,12 +1,12 @@
 ---
 title: "The New Foot Pedals: Soldering, Wiring and a First Test"
 description: Our new foot switches arrived. Their cables were too thick for the Arduino, so I soldered them onto thinner wires, connected two pedals and made one Boxling walk left and right with my feet.
-date: 2026-11-18T12:00:00Z
+date: 2026-11-18
 author: lomme
 cover: ./images/arduino-pedals/setup.jpg
 coverAlt: Two black foot switches on a desk, with red and white wires running to an Arduino on a breadboard in front of a laptop
 tags: [Development]
-ai: I used AI (Claude) to help write the Arduino code and connect it to Unity.
+ai: No Ai used
 ---
 
 Today the new foot switches arrived. These are the pedals that will go inside the [wooden foot boxes](../foot-box-build/), one under every foot plate. Unlike the USB pedals from the [foot pedals post](../foot-pedals-movement/), these are simple switches with a cable. They don't do anything on their own: an Arduino has to read them and tell the game when a pedal is pressed.
