@@ -37,11 +37,16 @@ The fix was to use two cameras:
 - **A background camera.** It only sees the canyon layers, and it's the one that flies back from the island.
 - **The game camera.** It stays in the same place and only sees the plank and the Boxlings. Unity draws its picture on top of the background camera's picture.
 
-So the canyon moves behind the plank, but the plank and the Boxlings always stay in the same spot on the screen.
+Now the plank and the Boxlings stayed in the same spot on the screen. But the canyon moved far too fast behind them.
+
+<video autoplay loop muted playsinline preload="metadata" poster="../../videos/canyon-unity-fast-poster.jpg" style="width: 100%; border-radius: 14px; margin-block: 1.5rem;">
+  <source src="../../videos/canyon-unity-fast.mp4" type="video/mp4" />
+  Your browser can't play this video.
+</video>
 
 ## Much, much slower
 
-The first camera ride took only 8 seconds, and it sped up in the middle. Behind a game that's about calm balancing, that was far too busy. Now the ride takes 90 seconds at a constant speed. Then it waits for a moment and starts again. The canyon slowly comes closer, and you hardly notice it while you play, but the world feels alive.
+The camera ride took only 8 seconds, and it sped up in the middle. Behind a game that's about calm balancing, that was far too busy. Now the ride takes 90 seconds at a constant speed. Then it waits for a moment and starts again. The canyon slowly comes closer, and you hardly notice it while you play, but the world feels alive.
 
 The speed is a setting on the background camera, so we can still make it faster or slower when we test it with children.
 
