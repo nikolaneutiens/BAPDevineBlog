@@ -13,7 +13,11 @@ During the game, a Boxling walks towards the camera and the camera moves along. 
 
 ## The idea
 
-The idea was a canyon with a big plateau in the middle, steep cliffs, forests and clouds. I liked the feeling of depth: you look past close cliffs into a deep canyon towards one big island. Building all of that at once would get messy, so I split it into steps and checked the result after every step before going further.
+The idea was a canyon with a big plateau in the middle, steep cliffs, forests and clouds. I liked the feeling of depth: you look past close cliffs into a deep canyon towards one big island. I sketched it first: the view from the camera on top, and the layout seen from above underneath. The central island has a big forest on top, clouds fill the canyon, and close cliffs on both sides frame the view. From above, the side islands form a path that leads the eye to the central island.
+
+![Sketch of the canyon: on top the view from the camera, with a central island covered in a big forest, clouds in the canyon and foreground cliffs on both sides; underneath the layout from above, with the central island and smaller islands around a path towards it](./images/canyon/sketch.webp)
+
+Building all of that at once would get messy, so I split it into steps and checked the result after every step before going further.
 
 ## Step 1: one island in clay
 
