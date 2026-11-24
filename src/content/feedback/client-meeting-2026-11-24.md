@@ -23,7 +23,7 @@ sections:
     details:
       - "The bottom of the boxes is fixed to the concrete floor with double-sided tape."
     decision: "The foot boxes are fixed to the concrete floor with double-sided tape."
-    next: "Keep the bottom of the foot boxes flat and smooth, so the tape sticks well, and add double-sided tape to the materials list."
+    next: "Keep the bottom of the foot boxes flat and smooth, so the tape sticks well."
   - topic: Installation — Room and Beamer
     feedback: "The client told us where the installation will stand at the festival."
     details:
@@ -49,7 +49,7 @@ sections:
       - "Small sound effects are fine, but it must not become overstimulating."
     next: "Keep the idle screen mostly quiet, with a few varied, small sound effects, for example when a Boxling wakes up."
 actions:
-  - text: "Fix the foot boxes to the concrete floor with double-sided tape, and add the tape to the materials list."
+  - text: "Fix the foot boxes to the concrete floor with double-sided tape."
     status: decided
   - text: "Update the setup plan for the big hall and a rear-projection beamer."
   - text: "Add a question about the length of the flow to the test form."
