@@ -9,33 +9,33 @@ tags: [Design]
 ai: No AI was used for the UI designs.
 ---
 
-In [UI Elements: From Pencil Sketch to Cardboard](../ui-elements/), Nikola worked out our UI elements in the cardboard style: player cards, a player count, a check mark and a countdown. Now that the [idle screen](../idle-screen-unity/) and the [canyon](../canyon-unity/) run in Unity, I put those elements on top of real screenshots of the game. Some things worked straight away. Others took up too much room, or didn't tell the children enough. So I redesigned them, first for the idle screen and then for the game itself.
+In [UI Elements: From Pencil Sketch to Cardboard](../ui-elements/), Nikola worked out our UI elements in the cardboard style: player cards, a player count, a check mark and a countdown. Now that the [idle screen](../idle-screen-unity/) and the [canyon](../canyon-unity/) run in Unity, we put those elements on top of real screenshots of the game. Some things worked straight away. Others took up too much room, or didn't tell the children enough. So we redesigned them, first for the idle screen and then for the game itself.
 
 ## The idle screen: telling children what to do
 
-The idle screen has one job: getting a child to step onto a foot box. I started with a big card in the top right corner, with a drawing of a Boxling standing on a platform and the text "Sta op het platform!" (stand on the platform). The player count, 1/4, sat in the middle at the bottom.
+The idle screen has one job: getting a child to step onto a foot box. We started with a big card in the top right corner, with a drawing of a Boxling standing on a platform and the text "Sta op het platform!" (stand on the platform). The player count, 1/4, sat in the middle at the bottom.
 
 ![The idle screen with the logo in the top left, a big card in the top right with a drawing of a Boxling on a platform and the text "Sta op het platform!", a check mark above KRABBEL and a 1/4 player count at the bottom](./images/ui-redesign/idle-1-big-card.webp)
 
-The text didn't say *why* you should stand on the platform, so it became "Sta op het platform om mee te doen!" (stand on the platform to join in). I also tried putting the player count on top of the card, so everything about joining is in one place.
+The text didn't say *why* you should stand on the platform, so it became "Sta op het platform om mee te doen!" (stand on the platform to join in). We also tried putting the player count on top of the card, so everything about joining is in one place.
 
 ![The same idle screen, with the player count 1/4 on top of the card and the longer text "Sta op het platform om mee te doen!"](./images/ui-redesign/idle-2-count-on-card.webp)
 
-The card with the drawing was big, and it covered a lot of the forest. The Boxlings themselves already show what happens when you step on: they wake up and get a check mark. So I replaced the card with a small speech bubble with an exclamation mark, and moved the player count under the logo.
+The card with the drawing was big, and it covered a lot of the forest. The Boxlings themselves already show what happens when you step on: they wake up and get a check mark. So we replaced the card with a small speech bubble with an exclamation mark, and moved the player count under the logo.
 
 ![The idle screen with a small speech bubble in the top right with an exclamation mark and the text "Sta op het platform om mee te doen!", and the player count 1/4 under the logo](./images/ui-redesign/idle-3-pill.webp)
 
-I also tried both small elements together in the bottom right corner. That left the top of the screen calm, but the call to action ended up next to the Boxlings, where it's easy to miss.
+We also tried both small elements together in the bottom right corner. That left the top of the screen calm, but the call to action ended up next to the Boxlings, where it's easy to miss.
 
 ![The idle screen with the player count and the speech bubble in the bottom right corner](./images/ui-redesign/idle-4-bottom-right.webp)
 
 ## A countdown that tells you how long to wait
 
-Our client asked us to test how long children stay patient while they wait at the idle screen. A child who doesn't know how long they have to wait will walk away sooner. So I added a banner at the top: "We starten in 25s" (we start in 25 seconds). That way the players who are ready know how long they still have to wait, and the others know they still have time to join.
+Our client asked us to test how long children stay patient while they wait at the idle screen. A child who doesn't know how long they have to wait will walk away sooner. So we added a banner at the top: "We starten in 25s" (we start in 25 seconds). That way the players who are ready know how long they still have to wait, and the others know they still have time to join.
 
 ![The idle screen with a dark brown banner at the top saying "We starten in 25s", the speech bubble in the top right, a smaller logo in the top left and the player count 1/4 at the bottom](./images/ui-redesign/idle-5-countdown-banner.webp)
 
-The last seconds become the big 3, 2, 1 from Nikola's design, right in the middle of the screen, in red with the thick cardboard border.
+When the timer reaches 4 seconds, the big 3, 2, 1 from the first UI design appears right in the middle of the screen, in red with the thick cardboard border. This is the final version of the idle screen.
 
 ![The same screen with a big red 3 in a cream cardboard border in the middle, under the countdown banner](./images/ui-redesign/idle-6-countdown-number.webp)
 
@@ -43,7 +43,7 @@ This version also has a smaller logo. On the idle screen the logo can be big, bu
 
 ## Smaller player cards
 
-In the game, the player cards stay on the screen the whole time, so they must not cover the plank or the canyon. I tried a lot of layouts next to each other: the head with the lives under it or next to it, and the left and right arrows under the card or on either side of the head.
+In the game, the player cards stay on the screen the whole time, so they must not cover the plank or the canyon. We tried a lot of layouts next to each other: the head with the lives under it or next to it, and the left and right arrows under the card or on either side of the head.
 
 ![A sheet with eight versions of the player card for KRABBEL and RITS: with the diamonds under or next to the head, and the arrows under the card or on both sides of the head](./images/ui-redesign/card-variants.webp)
 
@@ -55,7 +55,7 @@ A few things changed compared to the first cards:
 
 ## Where the cards go
 
-Then I tried where the four cards should go. Next to each other in one corner felt messy, and it was hard to tell which card belongs to which foot box.
+Then we tried where the four cards should go. Next to each other in one corner felt messy, and it was hard to tell which card belongs to which foot box.
 
 ![Two player cards next to each other in the bottom left corner of the idle screen](./images/ui-redesign/cards-two-side.webp)
 
@@ -63,7 +63,7 @@ In the four corners of the screen, the cards were far apart and hardly covered a
 
 ![The four player cards in the four corners of the screen](./images/ui-redesign/cards-corners.webp)
 
-So the cards went along the bottom of the screen, in the same order as the foot boxes. I tried them with the diamonds next to the head and the arrows underneath, and with the arrows on top and the diamonds standing upright next to the head.
+So the cards went along the bottom of the screen, in the same order as the foot boxes. We tried them with the diamonds next to the head and the arrows underneath, and with the arrows on top and the diamonds standing upright next to the head.
 
 ![Four player cards along the bottom of the screen, each with three diamonds next to the head and the arrows underneath](./images/ui-redesign/cards-bottom-a.webp)
 
@@ -73,11 +73,11 @@ The first version reads best: head, lives, then the pedals, like a line you read
 
 ## In the game
 
-This is how the cards look in the canyon, with the plank in between. The cards stay in the bottom corners and in the gaps under the plank, so they never cover the Boxlings.
+This is the final version of the cards in the game. With four players, the four cards sit along the bottom of the screen, in the corners and in the gaps under the plank, so they never cover the Boxlings.
 
 ![PUK and KRABBEL on the plank in the canyon, with four player cards along the bottom of the screen](./images/ui-redesign/game-four-cards.webp)
 
-Here only two players are on the plank, but all four cards are shown. A card of a Boxling that isn't playing only confuses the children. So in the final version, only the cards of the players who are really playing appear, in the bottom corners.
+When fewer children are playing, only the cards of the players who are really playing appear. A card of a Boxling that isn't playing would only confuse the children. With two players, their cards move to the bottom corners.
 
 ![PUK and KRABBEL on the plank, with only their two player cards in the bottom left and bottom right corners](./images/ui-redesign/game-two-cards.webp)
 
@@ -85,7 +85,7 @@ Here only two players are on the plank, but all four cards are shown. A card of 
 
 The next step is building these elements in Unity: the speech bubble, the countdown banner and the player cards. After that, we'll test them with children, and check if they understand the call to action and the countdown.
 
-## What I'm taking with me
+## What we're taking with us
 
 - **Test the UI on the real game.** On a white page, the big card looked fine. On top of the forest, it covered too much.
 - **Let the game do the explaining.** The Boxlings waking up already show what stepping on does, so the text can be short.
