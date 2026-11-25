@@ -33,13 +33,11 @@ We also tried both small elements together in the bottom right corner. That left
 
 Our client asked us to test how long children stay patient while they wait at the idle screen. A child who doesn't know how long they have to wait will walk away sooner. So we added a banner at the top: "We starten in 25s" (we start in 25 seconds). That way the players who are ready know how long they still have to wait, and the others know they still have time to join.
 
-![The idle screen with a dark brown banner at the top saying "We starten in 25s", the speech bubble in the top right, a smaller logo in the top left and the player count 1/4 at the bottom](./images/ui-redesign/idle-5-countdown-banner.webp)
+![The idle screen with a dark brown banner at the top saying "We starten in 25s", the speech bubble in the top right, the logo in the top left and the player count 1/4 at the bottom](./images/ui-redesign/idle-5-countdown-banner.webp)
 
 When the timer reaches 4 seconds, the big 3, 2, 1 from the first UI design appears right in the middle of the screen, in red with the thick cardboard border. This is the final version of the idle screen.
 
 ![The same screen with a big red 3 in a cream cardboard border in the middle, under the countdown banner](./images/ui-redesign/idle-6-countdown-number.webp)
-
-This version also has a smaller logo. On the idle screen the logo can be big, but once the countdown starts, the attention should go to the banner and the Boxlings.
 
 ## Smaller player cards
 
