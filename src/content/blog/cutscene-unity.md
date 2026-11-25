@@ -1,6 +1,6 @@
 ---
 title: "From the Idle Screen to the Cutscene"
-description: When the countdown on the idle screen reaches zero, the intro cutscene now plays in Unity. The first version still showed the idle screen's UI on top of the cutscene, so we hid it.
+description: When the countdown on the idle screen reaches zero, a test version of the intro cutscene now plays in Unity, to try out the game flow. The first version still showed the idle screen's UI on top of the cutscene, so we hid it.
 date: 2026-11-25T16:00:00Z
 author: lomme
 cover: ./images/cutscene-unity/cover.jpg
@@ -10,6 +10,8 @@ ai: No AI was used.
 ---
 
 On the [idle screen](../ui-2d-unity/), a countdown starts as soon as two players are ready. Until now, nothing happened when it reached zero. In the game, that's the moment the story starts: the intro cutscene that Ximen made, where the drawings of the kingdom, the Boxlings and TIPPER on his rope lie as pictures on a table ([Taking the Intro Cutscene Further](../cutscene/)). This time I linked the two together in Unity.
+
+The cutscene in this post isn't the final one yet. Two scenes already have their real, coloured designs; the others are still pencil sketches. The goal now was to test the game flow: does the story start at the right moment, and does the screen look right while it plays?
 
 ## Playing the cutscene
 
@@ -37,6 +39,7 @@ Now the whole idle screen UI disappears as soon as the countdown reaches zero. A
 
 ## What's next
 
+- Replace the sketches with the final designs, so the whole cutscene is finished.
 - Start the game itself when the cutscene ends, so the Boxlings appear on the plank above the canyon.
 - Keep the players who were ready in the game during the cutscene, even if they shift their feet for a moment.
 - Test with children whether they watch the cutscene, or whether it should be shorter.
