@@ -1,7 +1,7 @@
 ---
 title: "Redesigning the UI: Less on the Screen, More in the Game"
 description: Putting our UI elements on top of the real game in Unity showed what didn't work yet. A shorter call to action, a countdown that tells you how long to wait, and smaller player cards that only show up for the players who are really playing.
-date: 2026-11-25T12:00:00Z
+date: 2026-11-23T12:00:00Z
 author: lomme
 cover: ./images/ui-redesign/game-two-cards.webp
 coverAlt: PUK and KRABBEL on the plank in the canyon, with only their two player cards in the bottom corners, each with three diamonds and a left and right arrow
