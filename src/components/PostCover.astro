@@ -30,11 +30,11 @@ const { src, alt, sizes } = Astro.props;
     overflow: hidden;
   }
 
-  /* Keeps the frame at least square, while still letting it stretch to fill a taller parent. */
+  /* Keeps the frame at least 4:3, while still letting it stretch to fill a taller parent. */
   .frame::before {
     content: '';
     display: block;
-    padding-top: 100%;
+    padding-top: 75%;
   }
 
   /* Pictures that don't match the frame's shape are cropped to fit. */
@@ -50,7 +50,7 @@ const { src, alt, sizes } = Astro.props;
   /* Zooms inside the frame when the surrounding post is hovered or focused. */
   :global([data-post]:hover) .cover,
   :global([data-post]:focus-within) .cover {
-    transform: scale(1.08);
+    transform: scale(1.03);
   }
 
   @media (prefers-reduced-motion: reduce) {

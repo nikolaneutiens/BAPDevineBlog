@@ -6,10 +6,12 @@ import { withBase } from '../lib/paths';
 interface Props {
   title: string;
   description?: string;
+  /** A wider page, for overviews with cards. */
+  wide?: boolean;
 }
 
 const siteName = 'BAP Devine Blog';
-const { title, description = 'Process blog for our BAP project at Devine.' } = Astro.props;
+const { title, description = 'Process blog for our BAP project at Devine.', wide = false } = Astro.props;
 
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 const here = Astro.url.pathname.replace(base, '') || '/';
@@ -38,8 +40,14 @@ const nav = [
       href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&display=swap"
     />
     <title>{title === siteName ? title : `${title} | ${siteName}`}</title>
+    <!-- Marks the page for the fade-in animations before anything is drawn, so nothing flickers. -->
+    <script is:inline>
+      if (!matchMedia('(prefers-reduced-motion: reduce)').matches && 'IntersectionObserver' in window) {
+        document.documentElement.classList.add('reveal');
+      }
+    </script>
   </head>
-  <body>
+  <body class:list={{ wide }}>
     <header class="site-header">
       <a class="wordmark" href={withBase('/')}>
         <span class="mark" aria-hidden="true"></span>
@@ -63,6 +71,33 @@ const nav = [
     </main>
   </body>
 </html>
+
+<script>
+  // Fades elements marked with data-reveal in as they scroll into view.
+  // Elements that appear together come in one after another, a little apart.
+  if (document.documentElement.classList.contains('reveal')) {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const shown = entries.filter((e) => e.isIntersecting);
+        shown.forEach((e, i) => {
+          const el = e.target as HTMLElement;
+          el.style.transitionDelay = `${Math.min(i, 5) * 60}ms`;
+          el.classList.add('is-visible');
+          observer.unobserve(el);
+          // Clear the delay afterwards, so hover effects aren't slowed down.
+          setTimeout(() => (el.style.transitionDelay = ''), 900);
+        });
+      },
+      { rootMargin: '0px 0px -5% 0px' },
+    );
+    const watch = () => document.querySelectorAll('[data-reveal]:not(.is-visible)').forEach((el) => observer.observe(el));
+    // On the posts page the preloader covers everything until the pictures have loaded.
+    if (document.readyState === 'complete' || !document.getElementById('preloader')) watch();
+    else window.addEventListener('load', watch, { once: true });
+    // Content that a script adds later (e.g. the calendar) can ask to be watched too.
+    document.addEventListener('reveal:scan', watch);
+  }
+</script>
 
 <style>
   .site-header {

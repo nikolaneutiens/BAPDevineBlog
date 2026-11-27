@@ -13,40 +13,46 @@ const HOURS = await getHours();
 
 // ---- hours statistics (the same summary is recalculated in the browser, see the script below)
 const { total, perPerson, maxPerson, days, average, maxDay, weeks } = teamSummary(HOURS);
+
+// The member cards lean a little, like cards spread out on a table.
+const TILTS = [-4, 2.5, -2];
 ---
 
-<Base title="Team" description="Who we are, who does what, and how many hours we spend on our bachelor's project.">
+<Base wide title="Team" description="Who we are, who does what, and how many hours we spend on our bachelor's project.">
   <h1>Team</h1>
   <p class="intro">We are three students working on our bachelor's project at Devine. This is who does what.</p>
 
-  <ul class="members">
+  <ul class="people" aria-label="Team members">
     {
-      TEAM.map((m) => {
+      TEAM.map((m, i) => {
         const own = posts.filter((p) => p.data.author === m.id);
         const hours = HOURS.filter((h) => h.person === m.id).reduce((s, h) => s + h.hours, 0);
         const photo = photoOf(m.id);
         return (
-          <li class="member" id={m.id}>
-            <span class="avatar" style={`--c: ${m.color}`} aria-hidden="true">
-              {photo ? <Image src={photo} alt="" widths={[120, 240]} sizes="3.5rem" /> : initials(m.name)}
+          <li class="person" data-reveal id={m.id} style={`--c: ${m.color}; --tilt: ${TILTS[i % TILTS.length]}deg`}>
+            <span class="number" aria-hidden="true">
+              0{i + 1}
             </span>
-            <div>
-              <h2>
-                <a href={withBase(`/team/${m.id}/`)}>{m.name}</a>
-              </h2>
-              <p class="role">{m.role}</p>
-              <p class="facts">
-                <span data-member-hours={m.id}>{fmt(hours)}</span> worked · {own.length} {own.length === 1 ? 'post' : 'posts'}
-              </p>
-            </div>
-            <span class="arrow" aria-hidden="true">→</span>
+            <span class="face" aria-hidden="true">
+              {photo ? <Image src={photo} alt="" widths={[240, 480]} sizes="9rem" /> : initials(m.name)}
+            </span>
+            <h2>
+              <a href={withBase(`/team/${m.id}/`)}>{m.name}</a>
+            </h2>
+            <p class="card-role">{m.role}</p>
+            <p class="facts">
+              <span data-member-hours={m.id}>{fmt(hours)}</span> worked · {own.length} {own.length === 1 ? 'post' : 'posts'}
+            </p>
+            <span class="go" aria-hidden="true">
+              View profile →
+            </span>
           </li>
         );
       })
     }
   </ul>
 
-  <section class="hours" aria-labelledby="hours-title" data-live-hours>
+  <section class="hours" aria-labelledby="hours-title" data-live-hours data-reveal>
     <h2 id="hours-title">Hours</h2>
     <p class="intro">How many hours each of us spends on the bachelor's project, per day.</p>
 
@@ -201,93 +207,196 @@ const { total, perPerson, maxPerson, days, average, maxDay, weeks } = teamSummar
     color: var(--muted);
   }
 
-  .members {
+  /* ---------- the team: three big cards, spread out a little like on a table */
+  .people {
     display: grid;
-    gap: 1rem;
-    margin: 0 0 3rem;
-    padding: 0;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1.75rem;
+    margin: 0 0 4rem;
+    padding: 1rem 0.5rem 0;
     list-style: none;
   }
 
-  .member {
+  .person {
     position: relative;
-    display: grid;
-    grid-template-columns: auto 1fr auto;
-    align-items: center;
-    gap: 1.1rem;
-    padding: 1.25rem;
-    background: var(--surface);
-    border-radius: var(--radius);
-    box-shadow: var(--shadow);
-    transition: transform var(--post-hover-speed) ease, box-shadow var(--post-hover-speed) ease;
-  }
-
-  .member:hover {
-    transform: translateY(-3px);
-    box-shadow: var(--shadow-lift);
-  }
-
-  .avatar {
-    display: grid;
-    place-items: center;
-    width: 3.5rem;
-    height: 3.5rem;
-    overflow: hidden;
-    font-size: 1.15rem;
-    font-weight: 800;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    min-width: 0;
+    min-height: 26rem;
+    padding: 1.5rem;
     color: var(--tag-text);
     background: var(--c);
-    border-radius: 12px;
-    box-shadow: inset 0 -0.35rem 0 rgb(0 0 0 / 0.12);
+    border-radius: 20px;
+    box-shadow: var(--shadow), inset 0 -0.6rem 0 rgb(0 0 0 / 0.1);
+    rotate: var(--tilt);
+    transition:
+      rotate 350ms ease,
+      translate 350ms ease,
+      scale 350ms ease,
+      box-shadow 350ms ease,
+      opacity 600ms ease;
   }
 
-  .avatar img {
+  .person:hover,
+  .person:focus-within {
+    rotate: 0deg;
+    translate: 0 -6px;
+    scale: 1.02;
+    box-shadow: var(--shadow-lift), inset 0 -0.6rem 0 rgb(0 0 0 / 0.1);
+  }
+
+  .person:focus-within {
+    outline: 3px solid var(--ink);
+    outline-offset: 4px;
+  }
+
+  .person a:focus-visible {
+    outline: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .person {
+      transition: none;
+    }
+
+    .person:hover,
+    .person:focus-within {
+      translate: none;
+      scale: none;
+    }
+  }
+
+  .number {
+    font-size: 0.9rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    opacity: 0.65;
+  }
+
+  .face {
+    display: grid;
+    place-items: center;
+    width: 9rem;
+    height: 9rem;
+    margin: auto 0 1.25rem;
+    overflow: hidden;
+    font-size: 3rem;
+    font-weight: 800;
+    background: rgb(255 255 255 / 0.5);
+    border-radius: 22px;
+    rotate: -6deg;
+    transition: rotate 350ms ease;
+  }
+
+  .person:hover .face {
+    rotate: 0deg;
+  }
+
+  .face img {
     width: 100%;
     height: 100%;
     object-fit: cover;
   }
 
-  .member h2 {
+  .person h2 {
     margin: 0;
-    font-size: 1.35rem;
+    font-size: 1.9rem;
+    line-height: 1.05;
   }
 
-  .member h2 a {
+  .person h2 a {
     color: inherit;
     text-decoration: none;
   }
 
-  /* De hele kaart is klikbaar. */
-  .member h2 a::after {
+  /* The whole card is clickable. */
+  .person h2 a::after {
     content: '';
     position: absolute;
     inset: 0;
+    border-radius: inherit;
   }
 
-  .member:hover h2 a {
-    color: var(--accent);
-  }
-
-  .role {
-    margin: 0.15rem 0 0;
-    font-weight: 600;
-    color: var(--accent);
+  .card-role {
+    margin: 0.4rem 0 0;
+    font-weight: 700;
+    line-height: 1.3;
+    opacity: 0.85;
   }
 
   .facts {
-    margin: 0.3rem 0 0;
+    margin: 0.6rem 0 0;
     font-size: 0.9rem;
-    color: var(--muted);
+    opacity: 0.75;
   }
 
-  .arrow {
-    font-size: 1.4rem;
-    font-weight: 700;
-    color: var(--muted);
+  .go {
+    margin-top: 1.1rem;
+    padding: 0.35rem 0.9rem;
+    font-size: 0.9rem;
+    font-weight: 800;
+    background: rgb(255 255 255 / 0.45);
+    border-radius: 999px;
+    transition: background-color 250ms ease;
   }
 
-  .member:hover .arrow {
-    color: var(--accent);
+  .person:hover .go {
+    background: rgb(255 255 255 / 0.75);
+  }
+
+  @media (max-width: 52rem) {
+    .people {
+      gap: 1.1rem;
+    }
+
+    .person {
+      min-height: 22rem;
+      padding: 1.2rem;
+    }
+
+    .face {
+      width: 6.5rem;
+      height: 6.5rem;
+      font-size: 2.2rem;
+    }
+
+    .person h2 {
+      font-size: 1.5rem;
+    }
+  }
+
+  /* On phones the cards stack, still big, still leaning a little. */
+  @media (max-width: 36rem) {
+    .people {
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+      padding-inline: 0.75rem;
+    }
+
+    .person {
+      min-height: 0;
+      display: grid;
+      grid-template-columns: auto minmax(0, 1fr);
+      column-gap: 1.1rem;
+      align-items: center;
+    }
+
+    .number {
+      grid-column: 1 / -1;
+    }
+
+    .face {
+      grid-row: span 4;
+      width: 6rem;
+      height: 6rem;
+      margin: 0.5rem 0;
+    }
+
+    .go {
+      justify-self: start;
+      margin-top: 0.75rem;
+    }
   }
 
   .hours h2 {

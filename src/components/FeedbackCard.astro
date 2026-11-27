@@ -11,7 +11,7 @@ const { report } = Astro.props;
 const { title, date, monthOnly, category, description, tags } = report.data;
 ---
 
-<li class="card" data-category={category}>
+<li class="card" data-reveal data-category={category}>
   <div class="top">
     <span class="category">{categoryLabel(category)}</span>
     <time datetime={date.toISOString()}>{feedbackDate(date, monthOnly)}</time>
@@ -37,7 +37,9 @@ const { title, date, monthOnly, category, description, tags } = report.data;
     box-shadow: var(--shadow);
     transition:
       transform var(--post-hover-speed) ease,
-      box-shadow var(--post-hover-speed) ease;
+      box-shadow var(--post-hover-speed) ease,
+      opacity 600ms ease,
+      translate 600ms cubic-bezier(0.2, 0.7, 0.2, 1);
   }
 
   .card:hover {
